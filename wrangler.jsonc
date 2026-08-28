@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "omarchy-extras",
+  "compatibility_date": "2026-08-28",
+  "assets": {
+    "directory": "./dist/client",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    {
+      "pattern": "omarchy.palash.dev",
+      "custom_domain": true
+    }
+  ]
+}

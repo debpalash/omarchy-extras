@@ -1,0 +1,49 @@
+[
+  {
+    "slug": "vice",
+    "name": "Vice",
+    "summary": "A charcoal-plum Omarchy theme with flamingo pink focus, pool-water cyan status colors, and six original-resolution GTA VI backgrounds.",
+    "repository": "https://github.com/debpalash/omarchy-vice-theme",
+    "install": "omarchy theme install https://github.com/debpalash/omarchy-vice-theme.git",
+    "wallpaperCount": 6,
+    "palette": ["#130f17", "#f4eadc", "#62cfc8", "#ff5c9a"],
+    "previews": [
+      {
+        "src": "/previews/1-vice-sunset-ultrawide.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/1-vice-sunset-ultrawide.png",
+        "label": "Vice sunset",
+        "source": "https://wallhaven.cc/w/7pmg8e"
+      },
+      {
+        "src": "/previews/2-six-at-sunset.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/2-six-at-sunset.jpg",
+        "label": "Six at sunset",
+        "source": "https://wallhaven.cc/w/w5qz7r"
+      },
+      {
+        "src": "/previews/3-beach-reflections.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/3-beach-reflections.png",
+        "label": "Beach reflections",
+        "source": "https://wallhaven.cc/w/je972m"
+      },
+      {
+        "src": "/previews/4-monster-truck-sunset.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/4-monster-truck-sunset.png",
+        "label": "Monster truck sunset",
+        "source": "https://wallhaven.cc/w/ly9p5q"
+      },
+      {
+        "src": "/previews/5-keys-motel.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/5-keys-motel.png",
+        "label": "Keys motel",
+        "source": "https://wallhaven.cc/w/6lj6vl"
+      },
+      {
+        "src": "/previews/6-lifeguard-sunset.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-vice-theme/main/backgrounds/6-lifeguard-sunset.png",
+        "label": "Lifeguard sunset",
+        "source": "https://wallhaven.cc/w/yq7o1d"
+      }
+    ]
+  }
+]

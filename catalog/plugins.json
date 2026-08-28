@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "bootable",
+    "name": "Bootable",
+    "kind": "bar-widget",
+    "version": "1.4.6",
+    "summary": "Search ISO releases, choose removable media, review the erase plan, and follow write progress from the Omarchy bar.",
+    "repository": "https://github.com/debpalash/omarchy-bootable",
+    "project": "https://bootable.palash.dev",
+    "install": "omarchy plugin add https://github.com/debpalash/omarchy-bootable.git --enable",
+    "update": "omarchy plugin update io.github.debpalash.bootable",
+    "preview": "/bootable-preview.png",
+    "requirements": [
+      "Omarchy 4 or newer",
+      "Bootable 0.1.4 or newer for the complete in-panel flow"
+    ]
+  }
+]
