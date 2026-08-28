@@ -2,11 +2,48 @@
   {
     "slug": "gta6",
     "name": "GTA6",
-    "summary": "A charcoal-plum Omarchy theme with flamingo pink focus, pool-water cyan status colors, and six original-resolution GTA VI backgrounds.",
+    "summary": "Four restrained GTA VI palettes, from midnight plum to coastal daylight, with twelve original-resolution backgrounds.",
     "repository": "https://github.com/debpalash/omarchy-gta6-theme",
     "install": "omarchy theme install https://github.com/debpalash/omarchy-gta6-theme.git",
-    "wallpaperCount": 6,
-    "palette": ["#130f17", "#f4eadc", "#62cfc8", "#ff5c9a"],
+    "wallpaperCount": 12,
+    "variants": [
+      {
+        "slug": "vice-sunset",
+        "name": "Vice Sunset",
+        "mode": "Dark",
+        "description": "The default: charcoal plum with one clean flamingo-pink focus color.",
+        "accent": "#ff5c9a",
+        "palette": ["#130f17", "#f4eadc", "#62cfc8", "#ff5c9a"],
+        "command": "omarchy theme set gta6"
+      },
+      {
+        "slug": "ocean-drive",
+        "name": "Ocean Drive",
+        "mode": "Dark",
+        "description": "Blue-black night surfaces with pool-water cyan for focus and selection.",
+        "accent": "#62d5cf",
+        "palette": ["#08171d", "#f2ead9", "#ef9567", "#62d5cf"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh ocean-drive"
+      },
+      {
+        "slug": "leonida-night",
+        "name": "Leonida Night",
+        "mode": "Dark",
+        "description": "Midnight plum grounded by warm streetlight gold rather than loud neon.",
+        "accent": "#f3b85f",
+        "palette": ["#100b16", "#f5e7da", "#69ced0", "#f3b85f"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh leonida-night"
+      },
+      {
+        "slug": "biscayne-day",
+        "name": "Biscayne Day",
+        "mode": "Light",
+        "description": "Low-glare sand surfaces with a deep coastal-teal focus color.",
+        "accent": "#146c72",
+        "palette": ["#f5efe3", "#241a24", "#ae552c", "#146c72"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh biscayne-day"
+      }
+    ],
     "previews": [
       {
         "src": "/previews/1-vice-sunset-ultrawide.jpg",
@@ -43,6 +80,42 @@
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/6-lifeguard-sunset.png",
         "label": "Lifeguard sunset",
         "source": "https://wallhaven.cc/w/yq7o1d"
+      },
+      {
+        "src": "/previews/7-palm-gradient.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/7-palm-gradient.png",
+        "label": "Palm gradient",
+        "source": "https://wallhaven.cc/w/gpv8e7"
+      },
+      {
+        "src": "/previews/8-coastal-bridge.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/8-coastal-bridge.jpg",
+        "label": "Coastal bridge",
+        "source": "https://wallhaven.cc/w/7jleyy"
+      },
+      {
+        "src": "/previews/9-nightlife.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/9-nightlife.jpg",
+        "label": "Leonida nightlife",
+        "source": "https://wallhaven.cc/w/6ljr57"
+      },
+      {
+        "src": "/previews/10-forest-drive.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/10-forest-drive.jpg",
+        "label": "Forest drive",
+        "source": "https://wallhaven.cc/w/qrd96l"
+      },
+      {
+        "src": "/previews/11-vice-sunset-8k.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/11-vice-sunset-8k.png",
+        "label": "Vice sunset",
+        "source": "https://wallhaven.cc/w/o5w357"
+      },
+      {
+        "src": "/previews/12-vice-city-postcard.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/12-vice-city-postcard.jpg",
+        "label": "Vice City postcard",
+        "source": "https://wallhaven.cc/w/8gx18o"
       }
     ]
   }

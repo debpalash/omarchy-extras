@@ -307,7 +307,7 @@ h2 {
 
 .palette {
   display: flex;
-  margin-top: 2rem;
+  margin-top: 1.4rem;
 }
 
 .palette span {
@@ -319,6 +319,64 @@ h2 {
 
 .palette span + span {
   margin-left: -0.35rem;
+}
+
+.variant-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.8rem;
+}
+
+.variant-picker button {
+  display: grid;
+  grid-template-columns: 0.7rem minmax(0, 1fr);
+  gap: 0.65rem;
+  min-width: 0;
+  min-height: 54px;
+  align-items: center;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--sand);
+  text-align: left;
+  cursor: pointer;
+}
+
+.variant-picker button:hover,
+.variant-picker button.selected {
+  border-color: var(--variant-accent);
+  background: var(--raised);
+}
+
+.variant-picker button > span:first-child {
+  width: 0.7rem;
+  height: 2rem;
+  background: var(--variant-accent);
+}
+
+.variant-picker button > span:last-child {
+  min-width: 0;
+  font-size: 0.8rem;
+  font-weight: 780;
+  line-height: 1.15;
+}
+
+.variant-picker small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.record-heading .variant-description {
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .theme-stage {
@@ -410,6 +468,17 @@ h2 {
   color: var(--sand);
 }
 
+.install-copy {
+  display: grid;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.variant-install {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
 .command-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -448,8 +517,7 @@ h2 {
   background: var(--sand);
 }
 
-.install-block .record-links {
-  grid-column: 2;
+.install-copy .record-links {
   margin-top: 0;
 }
 
@@ -580,10 +648,6 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .install-block .record-links {
-    grid-column: 1;
-  }
-
   .plugin-visual {
     min-height: 520px;
   }
@@ -641,6 +705,10 @@ footer {
 
   .wallpaper-picker {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .variant-picker {
+    grid-template-columns: 1fr;
   }
 
   .install-block {

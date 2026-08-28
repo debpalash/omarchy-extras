@@ -6,7 +6,7 @@ Reading this as: a curated Omarchy extras catalog for Linux power users and GTA 
 
 - Personality: composed, capable, sly, and fan-aware.
 - Mood: night asphalt under a Miami sunset, never a neon casino.
-- Audience: Omarchy users who read install commands and care how their desktop feels.
+- Audience: Omarchy users who read install commands, compare palette variants, and care how their desktop feels.
 - Motif: a single forward slash appears in the wordmark, record labels, and list markers.
 
 ## Palette
@@ -31,4 +31,5 @@ Reading this as: a curated Omarchy extras catalog for Linux power users and GTA 
 - Cards: only install commands and the Bootable screenshot receive framed surfaces because they are actionable artifacts.
 - Imagery: real Wallhaven selections and the real Bootable screenshot provide evidence instead of decorative illustration.
 - Overlay: the dark desktop bar and image caption ensure legibility while demonstrating the actual theme palette.
+- Variant selector: four square-edged controls compare accent behavior without turning the catalog into a theme-store grid.
 - Motion: only hover and selection transitions are used because this catalog should feel settled, not cinematic.

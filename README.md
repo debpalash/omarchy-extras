@@ -5,7 +5,7 @@ A curated catalog of public Omarchy extras by Palash Deb, served at [omarchy.pal
 The first catalog entries are:
 
 - [Bootable](https://github.com/debpalash/omarchy-bootable), an Omarchy bar plugin for safe image discovery and removable-media writing
-- [GTA6](https://github.com/debpalash/omarchy-gta6-theme), an unofficial GTA VI fan theme for Omarchy Quattro
+- [GTA6](https://github.com/debpalash/omarchy-gta6-theme), four unofficial GTA VI fan palettes and twelve high-resolution backgrounds for Omarchy Quattro
 
 ## Stack
 
