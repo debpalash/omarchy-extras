@@ -91,15 +91,15 @@ export default function App() {
       <main id="main">
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <p class="kicker">Curated by Palash Deb</p>
-            <h1 id="hero-title">The side streets of <span>Omarchy.</span></h1>
+            <p class="kicker">By Palash Deb</p>
+            <h1 id="hero-title">Extras for <span>Omarchy.</span></h1>
             <p class="lede">
-              A small catalog of extras that earn their place. One serious media writer,
-              sixteen wallpaper-matched GTA6 editions, twenty-seven backgrounds, and direct Git installs.
+              Public plugins and themes with visible install commands, source links, and
+              wallpaper attribution.
             </p>
             <div class="hero-actions">
-              <a class="primary-link" href="#themes">Meet GTA6</a>
-              <a class="text-link" href="#plugins">See Bootable</a>
+              <a class="primary-link" href="#themes">Browse GTA6</a>
+              <a class="text-link" href="#plugins">Open Bootable</a>
             </div>
           </div>
 
@@ -173,7 +173,7 @@ export default function App() {
           <div class="install-block">
             <div>
               <p class="install-label">Install from GitHub</p>
-              <p>Omarchy validates the clone and rebuilds protected app configs from the palette.</p>
+              <p>Install the base theme, then choose a wallpaper-matched edition.</p>
             </div>
             <div class="install-copy">
               <CopyCommand command={theme.install} label="Copy theme command" />
@@ -222,18 +222,18 @@ export default function App() {
         </section>
 
         <section class="closing" aria-labelledby="closing-title">
-          <p class="kicker">Built for Quattro</p>
-          <h2 id="closing-title">Useful first. Stylish on purpose.</h2>
+          <p class="kicker">Public source</p>
+          <h2 id="closing-title">Inspect before you install.</h2>
           <p>
-            Every entry points to a public repository, every install command is visible,
-            and every borrowed image links back to its source.
+            Commands are shown in full. Repositories and wallpaper attribution are linked
+            beside each entry.
           </p>
         </section>
       </main>
 
       <footer>
         <span>Omarchy Extras</span>
-        <span>Unofficial community catalog by Palash Deb</span>
+        <span>Public catalog by Palash Deb</span>
       </footer>
     </>
   );

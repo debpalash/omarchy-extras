@@ -10,12 +10,12 @@ export default function Document(props: ParentProps) {
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta
           name="description"
-          content="A curated catalog of Omarchy plugins and themes by Palash Deb."
+          content="Public Omarchy plugins and themes by Palash Deb."
         />
         <meta property="og:title" content="Omarchy Extras" />
         <meta
           property="og:description"
-          content="Useful detours for Omarchy, including Bootable and the GTA6 theme."
+          content="Bootable and the GTA6 theme collection for Omarchy."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://omarchy.palash.dev" />
