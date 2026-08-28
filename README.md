@@ -1,45 +1,29 @@
 # Omarchy Extras
 
-A curated catalog of public Omarchy extras by Palash Deb, served at [omarchy.palash.dev](https://omarchy.palash.dev).
+Public Omarchy plugins and themes by Palash Deb.
 
-The first catalog entries are:
+[Open the catalog](https://omarchy.palash.dev)
+
+## Included
 
 - [Bootable](https://github.com/debpalash/omarchy-bootable), an Omarchy bar plugin for safe image discovery and removable-media writing
 - [GTA6](https://github.com/debpalash/omarchy-gta6-theme), sixteen wallpaper-matched GTA VI fan editions and twenty-seven high-resolution backgrounds for Omarchy Quattro
 
-## Stack
-
-- Solid 2 release candidate
-- The official Solid Vite plugin in static start mode
-- Vite 8
-- Cloudflare Workers Static Assets
-
-## Local development
+## Develop
 
 ```bash
 npm install
 npm run dev
-```
-
-## Verify
-
-```bash
 npm run check
 npm run build
 ```
 
 ## Deploy
 
-Wrangler is configured to publish `dist/client` to the `omarchy.palash.dev` custom domain.
-
 ```bash
 npm run deploy
 ```
 
-## Catalog data
-
-Plugin and theme records live in `catalog/`. Install commands remain visible in data and on the site so visitors can inspect them before copying anything.
-
-Wallpaper previews came from the requested SFW [Wallhaven GTA VI search](https://wallhaven.cc/search?q=Grand+Theft+Auto+VI&categories=110&purity=100&sorting=relevance&order=desc). Full-resolution files and attribution live in the GTA6 theme repository.
+Built with Solid 2, Vite 8, and Cloudflare Workers Static Assets. Catalog records live in [`catalog/`](catalog/). Wallpaper attribution lives in the [GTA6 theme repository](https://github.com/debpalash/omarchy-gta6-theme/blob/main/ASSETS.md).
 
 Licensed under MIT. Third-party screenshots and background artwork retain their original ownership.
