@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
   <url>
     <loc>https://omarchy.palash.dev/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <image:image>
+      <image:loc>https://omarchy.palash.dev/wallpapers/1-vice-sunset-ultrawide.webp</image:loc>
+      <image:title>Vice Sunset GTA6 theme for Omarchy</image:title>
+      <image:caption>The default GTA6 Omarchy theme wallpaper with palms over a pink and orange sky.</image:caption>
+    </image:image>
   </url>
 </urlset>

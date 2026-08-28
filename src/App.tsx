@@ -1,4 +1,4 @@
-import { For, createSignal } from 'solid-js';
+import { For, createSignal, onCleanup } from 'solid-js';
 import plugins from '../catalog/plugins.json';
 import themes from '../catalog/themes.json';
 import './styles.css';
@@ -65,14 +65,36 @@ function Palette(props: { colors: string[] }) {
   );
 }
 
+function highQualitySource(src: string) {
+  return src.replace('/previews/', '/wallpapers/').replace(/\.jpg$/, '.webp');
+}
+
 export default function App() {
   const theme = themes[0];
   const plugin = plugins[0];
-  const [activePreview, setActivePreview] = createSignal(0);
+  const defaultPreviewIndex = Math.max(
+    theme.previews.findIndex((preview) => preview.edition === theme.editions[0].slug),
+    0,
+  );
+  const defaultPreview = theme.previews[defaultPreviewIndex];
+  const [activePreview, setActivePreview] = createSignal(defaultPreviewIndex);
+  const [highQualityGalleryReady, setHighQualityGalleryReady] = createSignal(false);
   const selectedEdition = () => (
     theme.editions.find((edition) => edition.slug === theme.previews[activePreview()].edition)
     ?? theme.editions[0]
   );
+
+  if (typeof window !== 'undefined') {
+    const enableHighQualityGallery = () => setHighQualityGalleryReady(true);
+
+    if (document.readyState === 'complete') {
+      const timeout = window.setTimeout(enableHighQualityGallery, 0);
+      onCleanup(() => window.clearTimeout(timeout));
+    } else {
+      window.addEventListener('load', enableHighQualityGallery, { once: true });
+      onCleanup(() => window.removeEventListener('load', enableHighQualityGallery));
+    }
+  }
 
   return (
     <>
@@ -82,8 +104,8 @@ export default function App() {
           <span>OMARCHY</span><b>/</b><span>EXTRAS</span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#themes">Theme</a>
-          <a href="#plugins">Plugin</a>
+          <a href="#themes">Themes</a>
+          <a href="#plugins">Plugins</a>
           <a href="https://github.com/debpalash/omarchy-extras">GitHub</a>
         </nav>
       </header>
@@ -91,24 +113,26 @@ export default function App() {
       <main id="main">
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <p class="kicker">By Palash Deb</p>
-            <h1 id="hero-title">Extras for <span>Omarchy.</span></h1>
+            <p class="kicker">Public catalog by Palash Deb</p>
+            <h1 id="hero-title">Omarchy plugins and <span>themes.</span></h1>
             <p class="lede">
-              Public plugins and themes with visible install commands, source links, and
-              wallpaper attribution.
+              Install Bootable or browse the GTA6 theme collection. Source, commands, and
+              wallpaper credits stay with each entry.
             </p>
             <div class="hero-actions">
-              <a class="primary-link" href="#themes">Browse GTA6</a>
-              <a class="text-link" href="#plugins">Open Bootable</a>
+              <a class="primary-link" href="#themes">GTA6 themes</a>
+              <a class="text-link" href="#plugins">Bootable plugin</a>
             </div>
           </div>
 
-          <div class="desktop-shot" aria-label="GTA6 theme preview">
+          <div class="desktop-shot" aria-label="Default GTA6 Omarchy theme preview">
             <img
-              src={theme.previews[0].src}
-              alt="Palm trees against a GTA VI inspired sunset"
-              width="432"
-              height="243"
+              src={highQualitySource(defaultPreview.src)}
+              alt="Vice Sunset, the default GTA6 Omarchy theme wallpaper with palms over a pink and orange sky"
+              width="1920"
+              height="810"
+              loading="eager"
+              decoding="async"
               fetchpriority="high"
             />
             <div class="desktop-bar" aria-hidden="true">
@@ -123,7 +147,7 @@ export default function App() {
         <section class="record theme-record" id="themes" aria-labelledby="theme-title">
           <div class="record-heading">
             <p class="record-number">EXTRA 01 / THEME</p>
-            <h2 id="theme-title">{theme.name}</h2>
+            <h2 id="theme-title">{theme.name} theme</h2>
             <p>{theme.summary}</p>
             <div class="edition-readout" aria-live="polite">
               <p class="edition-label">Palette match / {selectedEdition().mode}</p>
@@ -140,10 +164,12 @@ export default function App() {
               aria-label={`Open original resolution: ${theme.previews[activePreview()].label} wallpaper`}
             >
               <img
-                src={theme.previews[activePreview()].src}
+                src={highQualitySource(theme.previews[activePreview()].src)}
                 alt={`${theme.previews[activePreview()].label} wallpaper preview`}
-                width="432"
-                height="243"
+                width="1920"
+                height="1080"
+                loading={activePreview() === defaultPreviewIndex ? 'eager' : 'lazy'}
+                decoding="async"
               />
               <span>Open original resolution</span>
             </a>
@@ -158,11 +184,13 @@ export default function App() {
                     onClick={() => setActivePreview(index())}
                   >
                     <img
-                      src={preview.src}
+                      src={highQualityGalleryReady() ? highQualitySource(preview.src) : preview.src}
                       alt=""
-                      width="432"
-                      height="243"
+                      width="1920"
+                      height="1080"
                       loading="lazy"
+                      decoding="async"
+                      fetchpriority="low"
                     />
                   </button>
                 )}
@@ -170,24 +198,27 @@ export default function App() {
             </div>
           </div>
 
-          <div class="install-block">
-            <div>
-              <p class="install-label">Install from GitHub</p>
-              <p>Install the base theme, then choose a wallpaper-matched edition.</p>
-            </div>
-            <div class="install-copy">
-              <CopyCommand command={theme.install} label="Copy theme command" />
-              <div class="variant-install">
-                <p class="install-label">Selected edition / {selectedEdition().name}</p>
-                <CopyCommand command={selectedEdition().command} label="Copy edition command" />
+          <details class="install-block">
+            <summary>Install the GTA6 Omarchy theme</summary>
+            <div class="install-block-content">
+              <div>
+                <p class="install-label">Install from GitHub</p>
+                <p>Install the base theme, then choose a wallpaper-matched edition.</p>
               </div>
-              <div class="record-links">
-                <a href={theme.repository}>Open GTA6 source</a>
-                <a href={`${theme.repository}/blob/main/variants/README.md`}>Edition guide</a>
-                <a href={theme.previews[activePreview()].source}>Wallpaper source</a>
+              <div class="install-copy">
+                <CopyCommand command={theme.install} label="Copy theme command" />
+                <div class="variant-install">
+                  <p class="install-label">Selected edition / {selectedEdition().name}</p>
+                  <CopyCommand command={selectedEdition().command} label="Copy edition command" />
+                </div>
+                <div class="record-links">
+                  <a href={theme.repository}>Open GTA6 theme source</a>
+                  <a href={`${theme.repository}/blob/main/variants/README.md`}>Read the edition guide</a>
+                  <a href={theme.previews[activePreview()].source}>Open wallpaper source</a>
+                </div>
               </div>
             </div>
-          </div>
+          </details>
         </section>
 
         <section class="record plugin-record" id="plugins" aria-labelledby="plugin-title">
@@ -205,29 +236,25 @@ export default function App() {
 
           <div class="plugin-copy">
             <p class="record-number">EXTRA 02 / {plugin.kind}</p>
-            <h2 id="plugin-title">{plugin.name}</h2>
+            <h2 id="plugin-title">{plugin.name} plugin</h2>
             <p class="plugin-summary">{plugin.summary}</p>
             <ul class="requirement-list">
               <For each={plugin.requirements}>{(item) => <li>{item}</li>}</For>
             </ul>
-            <CopyCommand command={plugin.install} label="Copy plugin command" />
-            <p class="safety-note">
-              Omarchy plugins run as user code. Read the source and keep the installer confirmation enabled.
-            </p>
+            <details class="plugin-install">
+              <summary>Install the Bootable Omarchy plugin</summary>
+              <div class="plugin-install-content">
+                <CopyCommand command={plugin.install} label="Copy plugin command" />
+                <p class="safety-note">
+                  Omarchy plugins run as user code. Read the source and keep the installer confirmation enabled.
+                </p>
+              </div>
+            </details>
             <div class="record-links">
               <a href={plugin.repository}>Open Bootable source</a>
               <a href={plugin.project}>Visit Bootable</a>
             </div>
           </div>
-        </section>
-
-        <section class="closing" aria-labelledby="closing-title">
-          <p class="kicker">Public source</p>
-          <h2 id="closing-title">Inspect before you install.</h2>
-          <p>
-            Commands are shown in full. Repositories and wallpaper attribution are linked
-            beside each entry.
-          </p>
         </section>
       </main>
 

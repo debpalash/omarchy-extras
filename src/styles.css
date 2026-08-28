@@ -76,7 +76,7 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   width: min(1180px, calc(100% - 40px));
-  min-height: 80px;
+  min-height: 72px;
   margin: 0 auto;
   border-bottom: 1px solid var(--line);
 }
@@ -126,12 +126,11 @@ a:hover {
 }
 
 main {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .hero,
 .record,
-.closing,
 footer {
   width: min(1180px, calc(100% - 40px));
   margin-inline: auto;
@@ -139,11 +138,10 @@ footer {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(420px, 1.18fr);
-  gap: clamp(2.5rem, 7vw, 7rem);
+  grid-template-columns: minmax(280px, 0.82fr) minmax(420px, 1.18fr);
+  gap: clamp(2.5rem, 6vw, 5.5rem);
   align-items: center;
-  min-height: calc(100vh - 80px);
-  padding: 5rem 0 7rem;
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 7vw, 6rem);
 }
 
 .hero-copy {
@@ -170,8 +168,8 @@ h2 {
 }
 
 h1 {
-  max-width: 9ch;
-  font-size: clamp(3.6rem, 8vw, 7.4rem);
+  max-width: 11ch;
+  font-size: clamp(3.4rem, 5.8vw, 5.25rem);
 }
 
 h1 span {
@@ -179,15 +177,15 @@ h1 span {
 }
 
 h2 {
-  font-size: clamp(3.2rem, 7vw, 6.7rem);
+  font-size: clamp(2.8rem, 5.5vw, 5.2rem);
 }
 
 .lede {
   max-width: 36rem;
-  margin: 2rem 0 0;
+  margin: 1.4rem 0 0;
   color: var(--muted);
   font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .hero-actions,
@@ -196,7 +194,11 @@ h2 {
   flex-wrap: wrap;
   gap: 0.75rem 1.3rem;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1.4rem;
+}
+
+.hero-actions {
+  gap: 0.75rem 1rem;
 }
 
 .primary-link,
@@ -221,14 +223,27 @@ h2 {
   color: var(--ink);
 }
 
+.primary-link:active,
+.text-link:active,
+.record-links a:active,
+.copy-button:active,
+summary:active,
+.wallpaper-picker button:active {
+  transform: translateY(1px);
+}
+
+.primary-link:active {
+  transform: skew(-5deg) translateY(1px);
+}
+
 .desktop-shot {
   position: relative;
   min-width: 0;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 64 / 27;
   overflow: hidden;
   border: 1px solid #79617e;
   background: var(--surface);
-  box-shadow: 18px 22px 0 #211523;
+  box-shadow: 14px 16px 0 #211523;
 }
 
 .desktop-shot::after {
@@ -282,24 +297,23 @@ h2 {
 }
 
 .record {
-  padding: 8rem 0;
+  padding: clamp(4rem, 7vw, 6rem) 0;
   border-top: 1px solid var(--line);
 }
 
 .theme-record {
   display: grid;
   grid-template-columns: minmax(260px, 0.62fr) minmax(0, 1.38fr);
-  gap: 3rem clamp(3rem, 8vw, 8rem);
+  gap: 2.5rem clamp(3rem, 7vw, 6.5rem);
   align-items: start;
 }
 
 .record-heading {
-  position: sticky;
-  top: 2rem;
+  min-width: 0;
 }
 
 .record-heading > p:not(.record-number) {
-  margin: 1.6rem 0 0;
+  margin: 1.2rem 0 0;
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.65;
@@ -307,12 +321,12 @@ h2 {
 
 .palette {
   display: flex;
-  margin-top: 1.4rem;
+  margin-top: 1rem;
 }
 
 .palette span {
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.25rem;
+  height: 2.25rem;
   background: var(--swatch);
   border: 1px solid rgb(244 234 220 / 25%);
 }
@@ -322,8 +336,8 @@ h2 {
 }
 
 .edition-readout {
-  margin-top: 1.8rem;
-  padding-top: 1.2rem;
+  margin-top: 1.3rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--line);
 }
 
@@ -389,9 +403,14 @@ h2 {
 
 .wallpaper-picker {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-columns: 106px;
+  grid-auto-flow: column;
   gap: 0.55rem;
   margin-top: 0.7rem;
+  padding: 0 0 0.55rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--line) transparent;
 }
 
 .wallpaper-picker button {
@@ -420,13 +439,52 @@ h2 {
 
 .install-block {
   grid-column: 1 / -1;
+  margin-top: 0.25rem;
+  background: var(--raised);
+  border: 1px solid var(--line);
+}
+
+.install-block summary,
+.plugin-install summary {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.2rem;
+  color: var(--sand);
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+
+.install-block summary::-webkit-details-marker,
+.plugin-install summary::-webkit-details-marker {
+  display: none;
+}
+
+.install-block summary::after,
+.plugin-install summary::after {
+  color: var(--accent);
+  content: "+";
+  font: 900 1.35rem/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.install-block[open] summary::after,
+.plugin-install[open] summary::after {
+  content: "−";
+}
+
+.install-block-content {
   display: grid;
   grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
-  gap: 1.5rem 3rem;
-  margin-top: 1rem;
-  padding: 2rem;
-  background: var(--raised);
-  border-top: 4px solid var(--accent);
+  gap: 1.25rem 2.5rem;
+  padding: 0 1.2rem 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.install-block-content > div:first-child {
+  padding-top: 1.2rem;
 }
 
 .install-block p {
@@ -442,12 +500,13 @@ h2 {
 
 .install-copy {
   display: grid;
-  gap: 1.2rem;
+  gap: 0.9rem;
   min-width: 0;
+  padding-top: 1.2rem;
 }
 
 .variant-install {
-  padding-top: 1.1rem;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--line);
 }
 
@@ -500,21 +559,21 @@ h2 {
 
 .plugin-record {
   display: grid;
-  grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
-  gap: clamp(3rem, 9vw, 9rem);
+  grid-template-columns: minmax(220px, 0.58fr) minmax(0, 1.42fr);
+  gap: clamp(2.5rem, 7vw, 6rem);
   align-items: center;
 }
 
 .plugin-visual {
   display: grid;
   place-items: center;
-  min-height: 620px;
-  padding: 3rem 2rem;
+  min-height: 370px;
+  padding: 1.6rem;
   background: var(--aqua);
 }
 
 .plugin-frame {
-  width: min(100%, 330px);
+  width: min(100%, 230px);
   overflow: hidden;
   border: 7px solid var(--ink);
   background: var(--ink);
@@ -533,7 +592,7 @@ h2 {
 
 .plugin-summary {
   max-width: 42rem;
-  margin: 1.8rem 0 0;
+  margin: 1.2rem 0 0;
   color: var(--muted);
   font-size: 1.08rem;
   line-height: 1.7;
@@ -542,7 +601,7 @@ h2 {
 .requirement-list {
   display: grid;
   gap: 0.6rem;
-  margin: 1.8rem 0 2rem;
+  margin: 1.2rem 0 1.4rem;
   padding: 0;
   list-style: none;
 }
@@ -568,29 +627,27 @@ h2 {
   line-height: 1.55;
 }
 
-.closing {
-  padding: 8rem 0 9rem;
+.plugin-install {
+  background: var(--raised);
+  border: 1px solid var(--line);
+}
+
+.plugin-install-content {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.2rem;
   border-top: 1px solid var(--line);
 }
 
-.closing h2 {
-  max-width: 10ch;
-  font-size: clamp(3rem, 8vw, 7rem);
-}
-
-.closing > p:last-child {
-  max-width: 42rem;
-  margin: 2rem 0 0 auto;
-  color: var(--muted);
-  font-size: 1.1rem;
-  line-height: 1.7;
+.plugin-copy > .record-links {
+  margin-top: 1rem;
 }
 
 footer {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.6rem 0 2.5rem;
+  padding: 1.4rem 0 2rem;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.78rem;
@@ -599,8 +656,7 @@ footer {
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
-    min-height: auto;
-    padding-top: 5rem;
+    gap: 2.75rem;
   }
 
   .desktop-shot {
@@ -612,16 +668,12 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .record-heading {
-    position: static;
-  }
-
-  .install-block {
+  .install-block-content {
     grid-template-columns: 1fr;
   }
 
   .plugin-visual {
-    min-height: 520px;
+    min-height: 360px;
   }
 }
 
@@ -629,14 +681,13 @@ footer {
   .site-header,
   .hero,
   .record,
-  .closing,
   footer {
     width: min(100% - 28px, 1180px);
   }
 
   .site-header {
     align-items: flex-start;
-    min-height: 118px;
+    min-height: 98px;
     padding-top: 0.8rem;
   }
 
@@ -659,12 +710,12 @@ footer {
   }
 
   .hero {
-    gap: 3.5rem;
-    padding: 4rem 0 5.5rem;
+    gap: 2.25rem;
+    padding: 2.7rem 0 3.75rem;
   }
 
   h1 {
-    font-size: clamp(3.5rem, 17vw, 5.2rem);
+    font-size: clamp(3rem, 14vw, 4.5rem);
   }
 
   .desktop-shot {
@@ -672,15 +723,11 @@ footer {
   }
 
   .record {
-    padding: 5.5rem 0;
+    padding: 3.75rem 0;
   }
 
   .wallpaper-picker {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .install-block {
-    padding: 1.2rem;
+    grid-auto-columns: 92px;
   }
 
   .command-row {
@@ -694,11 +741,7 @@ footer {
 
   .plugin-visual {
     min-height: auto;
-    padding: 2rem 1.4rem;
-  }
-
-  .closing {
-    padding: 5.5rem 0 6rem;
+    padding: 1.4rem;
   }
 
   footer {
