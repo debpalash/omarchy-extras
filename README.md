@@ -5,7 +5,7 @@ A curated catalog of public Omarchy extras by Palash Deb, served at [omarchy.pal
 The first catalog entries are:
 
 - [Bootable](https://github.com/debpalash/omarchy-bootable), an Omarchy bar plugin for safe image discovery and removable-media writing
-- [Vice](https://github.com/debpalash/omarchy-vice-theme), an unofficial GTA VI fan theme for Omarchy Quattro
+- [GTA6](https://github.com/debpalash/omarchy-gta6-theme), an unofficial GTA VI fan theme for Omarchy Quattro
 
 ## Stack
 
@@ -40,6 +40,6 @@ npm run deploy
 
 Plugin and theme records live in `catalog/`. Install commands remain visible in data and on the site so visitors can inspect them before copying anything.
 
-Wallpaper previews came from the requested SFW [Wallhaven GTA VI search](https://wallhaven.cc/search?q=Grand+Theft+Auto+VI&categories=110&purity=100&sorting=relevance&order=desc). Full-resolution files and attribution live in the Vice theme repository.
+Wallpaper previews came from the requested SFW [Wallhaven GTA VI search](https://wallhaven.cc/search?q=Grand+Theft+Auto+VI&categories=110&purity=100&sorting=relevance&order=desc). Full-resolution files and attribution live in the GTA6 theme repository.
 
 Licensed under MIT. Third-party screenshots and background artwork retain their original ownership.

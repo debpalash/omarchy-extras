@@ -15,7 +15,7 @@ export default function Document(props: ParentProps) {
         <meta property="og:title" content="Omarchy Extras" />
         <meta
           property="og:description"
-          content="Useful detours for Omarchy, including Bootable and the Vice theme."
+          content="Useful detours for Omarchy, including Bootable and the GTA6 theme."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://omarchy.palash.dev" />

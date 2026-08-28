@@ -57,7 +57,7 @@ function CopyCommand(props: CopyCommandProps) {
 
 function Palette(props: { colors: string[] }) {
   return (
-    <div class="palette" aria-label="Vice color palette">
+    <div class="palette" aria-label="GTA6 color palette">
       <For each={props.colors}>
         {(color) => <span style={{ '--swatch': color }} title={color} />}
       </For>
@@ -94,12 +94,12 @@ export default function App() {
               one sun-soaked desktop theme, and direct Git installs.
             </p>
             <div class="hero-actions">
-              <a class="primary-link" href="#themes">Meet Vice</a>
+              <a class="primary-link" href="#themes">Meet GTA6</a>
               <a class="text-link" href="#plugins">See Bootable</a>
             </div>
           </div>
 
-          <div class="desktop-shot" aria-label="Vice theme preview">
+          <div class="desktop-shot" aria-label="GTA6 theme preview">
             <img
               src={theme.previews[0].src}
               alt="Palm trees against a GTA VI inspired sunset"
@@ -109,10 +109,10 @@ export default function App() {
             />
             <div class="desktop-bar" aria-hidden="true">
               <span>1</span>
-              <span class="desktop-title">VICE</span>
+              <span class="desktop-title">GTA6</span>
               <span>18:06</span>
             </div>
-            <div class="desktop-caption" aria-hidden="true">VICE / 01</div>
+            <div class="desktop-caption" aria-hidden="true">GTA6 / 01</div>
           </div>
         </section>
 
@@ -138,7 +138,7 @@ export default function App() {
               />
               <span>Open original resolution</span>
             </a>
-            <div class="wallpaper-picker" aria-label="Choose a Vice wallpaper preview">
+            <div class="wallpaper-picker" aria-label="Choose a GTA6 wallpaper preview">
               <For each={theme.previews}>
                 {(preview, index) => (
                   <button
@@ -168,7 +168,7 @@ export default function App() {
             </div>
             <CopyCommand command={theme.install} label="Copy theme command" />
             <div class="record-links">
-              <a href={theme.repository}>Open Vice source</a>
+              <a href={theme.repository}>Open GTA6 source</a>
               <a href={theme.previews[activePreview()].source}>Wallpaper source</a>
             </div>
           </div>
