@@ -2,46 +2,138 @@
   {
     "slug": "gta6",
     "name": "GTA6",
-    "summary": "Four restrained GTA VI palettes, from midnight plum to coastal daylight, with twelve original-resolution backgrounds.",
+    "summary": "Sixteen wallpaper-matched Omarchy editions with twenty-seven original-resolution GTA VI backgrounds.",
     "repository": "https://github.com/debpalash/omarchy-gta6-theme",
     "install": "omarchy theme install https://github.com/debpalash/omarchy-gta6-theme.git",
-    "wallpaperCount": 12,
-    "variants": [
+    "wallpaperCount": 27,
+    "editions": [
       {
         "slug": "vice-sunset",
         "name": "Vice Sunset",
         "mode": "Dark",
-        "description": "The default: charcoal plum with one clean flamingo-pink focus color.",
-        "accent": "#ff5c9a",
+        "description": "The default charcoal-plum palette with flamingo-pink focus.",
         "palette": ["#130f17", "#f4eadc", "#62cfc8", "#ff5c9a"],
         "command": "omarchy theme set gta6"
       },
       {
-        "slug": "ocean-drive",
-        "name": "Ocean Drive",
+        "slug": "all-stars",
+        "name": "All Stars",
         "mode": "Dark",
-        "description": "Blue-black night surfaces with pool-water cyan for focus and selection.",
-        "accent": "#62d5cf",
-        "palette": ["#08171d", "#f2ead9", "#ef9567", "#62d5cf"],
-        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh ocean-drive"
+        "description": "Ink-purple surfaces with the getaway car's electric cyan focus.",
+        "palette": ["#130f19", "#f1e8ee", "#d37dbd", "#55c6ee"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh all-stars"
       },
       {
-        "slug": "leonida-night",
-        "name": "Leonida Night",
+        "slug": "safehouse-glow",
+        "name": "Safehouse Glow",
         "mode": "Dark",
-        "description": "Midnight plum grounded by warm streetlight gold rather than loud neon.",
-        "accent": "#f3b85f",
-        "palette": ["#100b16", "#f5e7da", "#69ced0", "#f3b85f"],
-        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh leonida-night"
+        "description": "Bedroom plum with the window light's soft coral focus.",
+        "palette": ["#1b111b", "#f4e9e8", "#70c9cb", "#f2a6b2"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh safehouse-glow"
       },
       {
-        "slug": "biscayne-day",
-        "name": "Biscayne Day",
+        "slug": "leonida-blue",
+        "name": "Leonida Blue",
+        "mode": "Dark",
+        "description": "Deep-water navy with a clear tropical-cyan focus.",
+        "palette": ["#061a25", "#e7f4f5", "#599ccb", "#5bc8e3"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh leonida-blue"
+      },
+      {
+        "slug": "sunset-traffic",
+        "name": "Sunset Traffic",
+        "mode": "Dark",
+        "description": "Asphalt burgundy with the skyline's rose light.",
+        "palette": ["#1d0b12", "#f8e5e1", "#cf709b", "#f0a0b5"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh sunset-traffic"
+      },
+      {
+        "slug": "city-highway",
+        "name": "City Highway",
+        "mode": "Dark",
+        "description": "Storm-charcoal surfaces with sodium streetlight gold.",
+        "palette": ["#151412", "#eee9dc", "#79b6b0", "#e6b565"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh city-highway"
+      },
+      {
+        "slug": "coastal-rider",
+        "name": "Coastal Rider",
         "mode": "Light",
-        "description": "Low-glare sand surfaces with a deep coastal-teal focus color.",
-        "accent": "#146c72",
-        "palette": ["#f5efe3", "#241a24", "#ae552c", "#146c72"],
-        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh biscayne-day"
+        "description": "A light concrete palette keyed to the bike's deep green.",
+        "palette": ["#f1f1ed", "#171813", "#3f6294", "#285f2f"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh coastal-rider"
+      },
+      {
+        "slug": "skyway-sunset",
+        "name": "Skyway Sunset",
+        "mode": "Dark",
+        "description": "Near-black red with the highway sunset's coral focus.",
+        "palette": ["#200d14", "#f8e6e2", "#6bc4c2", "#f47b73"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh skyway-sunset"
+      },
+      {
+        "slug": "getaway-heat",
+        "name": "Getaway Heat",
+        "mode": "Dark",
+        "description": "Police-light violet with a softened rose focus.",
+        "palette": ["#161222", "#f4eaea", "#7e91ce", "#e6a0ae"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh getaway-heat"
+      },
+      {
+        "slug": "rooftop-pink",
+        "name": "Rooftop Pink",
+        "mode": "Dark",
+        "description": "Palm-shadow wine with a direct hot-pink focus.",
+        "palette": ["#20101a", "#f7e7ec", "#6cc1c2", "#ee77ae"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh rooftop-pink"
+      },
+      {
+        "slug": "jack-of-hearts",
+        "name": "Jack of Hearts",
+        "mode": "Dark",
+        "description": "Nightclub blue-grey with cool signage cyan.",
+        "palette": ["#10121a", "#e9edf0", "#748fbd", "#76c0ce"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh jack-of-hearts"
+      },
+      {
+        "slug": "pink-getaway",
+        "name": "Pink Getaway",
+        "mode": "Dark",
+        "description": "Black cherry surfaces drawn from the saturated cover art.",
+        "palette": ["#170b17", "#f6e5ee", "#68bcc0", "#f278b1"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh pink-getaway"
+      },
+      {
+        "slug": "bullet-sunset",
+        "name": "Bullet Sunset",
+        "mode": "Dark",
+        "description": "Twilight violet with the skyline's cool lavender light.",
+        "palette": ["#15111e", "#f3eaef", "#bd7eb8", "#abb6ff"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh bullet-sunset"
+      },
+      {
+        "slug": "dockside-duo",
+        "name": "Dockside Duo",
+        "mode": "Light",
+        "description": "A bright sea-glass palette with deep coastal blue focus.",
+        "palette": ["#edf3f1", "#182027", "#a9572e", "#245f76"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh dockside-duo"
+      },
+      {
+        "slug": "gas-station-run",
+        "name": "Gas Station Run",
+        "mode": "Dark",
+        "description": "Dusk violet with the cover art's pale lilac focus.",
+        "palette": ["#16121f", "#f2eaf2", "#70bdc3", "#c69de9"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh gas-station-run"
+      },
+      {
+        "slug": "beach-cover",
+        "name": "Beach Cover",
+        "mode": "Dark",
+        "description": "Warm plum surfaces with the evening sky's coral focus.",
+        "palette": ["#1c1118", "#f5e9e9", "#8494cd", "#f2a0aa"],
+        "command": "~/.config/omarchy/themes/gta6/scripts/create-variant.sh beach-cover"
       }
     ],
     "previews": [
@@ -49,73 +141,190 @@
         "src": "/previews/1-vice-sunset-ultrawide.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/1-vice-sunset-ultrawide.png",
         "label": "GTA6 sunset",
-        "source": "https://wallhaven.cc/w/7pmg8e"
+        "source": "https://wallhaven.cc/w/7pmg8e",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/2-six-at-sunset.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/2-six-at-sunset.jpg",
         "label": "Six at sunset",
-        "source": "https://wallhaven.cc/w/w5qz7r"
+        "source": "https://wallhaven.cc/w/w5qz7r",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/3-beach-reflections.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/3-beach-reflections.png",
         "label": "Beach reflections",
-        "source": "https://wallhaven.cc/w/je972m"
+        "source": "https://wallhaven.cc/w/je972m",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/4-monster-truck-sunset.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/4-monster-truck-sunset.png",
         "label": "Monster truck sunset",
-        "source": "https://wallhaven.cc/w/ly9p5q"
+        "source": "https://wallhaven.cc/w/ly9p5q",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/5-keys-motel.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/5-keys-motel.png",
         "label": "Keys motel",
-        "source": "https://wallhaven.cc/w/6lj6vl"
+        "source": "https://wallhaven.cc/w/6lj6vl",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/6-lifeguard-sunset.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/6-lifeguard-sunset.png",
         "label": "Lifeguard sunset",
-        "source": "https://wallhaven.cc/w/yq7o1d"
+        "source": "https://wallhaven.cc/w/yq7o1d",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/7-palm-gradient.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/7-palm-gradient.png",
         "label": "Palm gradient",
-        "source": "https://wallhaven.cc/w/gpv8e7"
+        "source": "https://wallhaven.cc/w/gpv8e7",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/8-coastal-bridge.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/8-coastal-bridge.jpg",
         "label": "Coastal bridge",
-        "source": "https://wallhaven.cc/w/7jleyy"
+        "source": "https://wallhaven.cc/w/7jleyy",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/9-nightlife.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/9-nightlife.jpg",
         "label": "Leonida nightlife",
-        "source": "https://wallhaven.cc/w/6ljr57"
+        "source": "https://wallhaven.cc/w/6ljr57",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/10-forest-drive.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/10-forest-drive.jpg",
         "label": "Forest drive",
-        "source": "https://wallhaven.cc/w/qrd96l"
+        "source": "https://wallhaven.cc/w/qrd96l",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/11-vice-sunset-8k.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/11-vice-sunset-8k.png",
         "label": "Vice sunset",
-        "source": "https://wallhaven.cc/w/o5w357"
+        "source": "https://wallhaven.cc/w/o5w357",
+        "edition": "vice-sunset"
       },
       {
         "src": "/previews/12-vice-city-postcard.jpg",
         "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/12-vice-city-postcard.jpg",
         "label": "Vice City postcard",
-        "source": "https://wallhaven.cc/w/8gx18o"
+        "source": "https://wallhaven.cc/w/8gx18o",
+        "edition": "vice-sunset"
+      },
+      {
+        "src": "/previews/13-all-stars-heist.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/13-all-stars-heist.jpg",
+        "label": "All Stars heist",
+        "source": "https://wallhaven.cc/w/je59gp",
+        "edition": "all-stars"
+      },
+      {
+        "src": "/previews/14-bedroom-light.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/14-bedroom-light.jpg",
+        "label": "Safehouse glow",
+        "source": "https://wallhaven.cc/w/yqjm57",
+        "edition": "safehouse-glow"
+      },
+      {
+        "src": "/previews/15-leonida-blue.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/15-leonida-blue.jpg",
+        "label": "Leonida blue",
+        "source": "https://wallhaven.cc/w/mlp319",
+        "edition": "leonida-blue"
+      },
+      {
+        "src": "/previews/16-sunset-traffic.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/16-sunset-traffic.jpg",
+        "label": "Sunset traffic",
+        "source": "https://wallhaven.cc/w/rrwdzw",
+        "edition": "sunset-traffic"
+      },
+      {
+        "src": "/previews/17-city-highway.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/17-city-highway.jpg",
+        "label": "City highway",
+        "source": "https://wallhaven.cc/w/rq31v1",
+        "edition": "city-highway"
+      },
+      {
+        "src": "/previews/18-coastal-rider.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/18-coastal-rider.jpg",
+        "label": "Coastal rider",
+        "source": "https://wallhaven.cc/w/w5okjr",
+        "edition": "coastal-rider"
+      },
+      {
+        "src": "/previews/19-highway-sunset-8k.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/19-highway-sunset-8k.png",
+        "label": "Skyway sunset",
+        "source": "https://wallhaven.cc/w/wewqeq",
+        "edition": "skyway-sunset"
+      },
+      {
+        "src": "/previews/20-getaway.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/20-getaway.jpg",
+        "label": "Getaway heat",
+        "source": "https://wallhaven.cc/w/yqxj7d",
+        "edition": "getaway-heat"
+      },
+      {
+        "src": "/previews/21-rooftop-celebration.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/21-rooftop-celebration.jpg",
+        "label": "Rooftop pink",
+        "source": "https://wallhaven.cc/w/qz72kq",
+        "edition": "rooftop-pink"
+      },
+      {
+        "src": "/previews/22-nightclub-priest.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/22-nightclub-priest.jpg",
+        "label": "Jack of Hearts",
+        "source": "https://wallhaven.cc/w/9o5x6k",
+        "edition": "jack-of-hearts"
+      },
+      {
+        "src": "/previews/23-pink-getaway.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/23-pink-getaway.jpg",
+        "label": "Pink getaway",
+        "source": "https://wallhaven.cc/w/6d7dp6",
+        "edition": "pink-getaway"
+      },
+      {
+        "src": "/previews/24-bullet-car-sunset.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/24-bullet-car-sunset.jpg",
+        "label": "Bullet sunset",
+        "source": "https://wallhaven.cc/w/2yje7m",
+        "edition": "bullet-sunset"
+      },
+      {
+        "src": "/previews/25-dockside-duo.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/25-dockside-duo.jpg",
+        "label": "Dockside duo",
+        "source": "https://wallhaven.cc/w/qr9qg7",
+        "edition": "dockside-duo"
+      },
+      {
+        "src": "/previews/26-convenience-run.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/26-convenience-run.jpg",
+        "label": "Gas station run",
+        "source": "https://wallhaven.cc/w/qroj95",
+        "edition": "gas-station-run"
+      },
+      {
+        "src": "/previews/27-beach-cover.jpg",
+        "full": "https://raw.githubusercontent.com/debpalash/omarchy-gta6-theme/main/backgrounds/27-beach-cover.png",
+        "label": "Beach cover",
+        "source": "https://wallhaven.cc/w/rqp39w",
+        "edition": "beach-cover"
       }
     ]
   }

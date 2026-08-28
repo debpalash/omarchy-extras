@@ -321,60 +321,32 @@ h2 {
   margin-left: -0.35rem;
 }
 
-.variant-picker {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
+.edition-readout {
   margin-top: 1.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
 }
 
-.variant-picker button {
-  display: grid;
-  grid-template-columns: 0.7rem minmax(0, 1fr);
-  gap: 0.65rem;
-  min-width: 0;
-  min-height: 54px;
-  align-items: center;
-  padding: 0.65rem 0.7rem;
-  border: 1px solid var(--line);
-  border-radius: 0;
-  background: var(--surface);
-  color: var(--sand);
-  text-align: left;
-  cursor: pointer;
-}
-
-.variant-picker button:hover,
-.variant-picker button.selected {
-  border-color: var(--variant-accent);
-  background: var(--raised);
-}
-
-.variant-picker button > span:first-child {
-  width: 0.7rem;
-  height: 2rem;
-  background: var(--variant-accent);
-}
-
-.variant-picker button > span:last-child {
-  min-width: 0;
-  font-size: 0.8rem;
-  font-weight: 780;
-  line-height: 1.15;
-}
-
-.variant-picker small {
-  display: block;
-  margin-top: 0.3rem;
-  color: var(--muted);
-  font-size: 0.64rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
+.edition-readout .edition-label {
+  margin: 0 0 0.7rem;
+  color: var(--aqua);
+  font-size: 0.7rem;
+  font-weight: 760;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
-.record-heading .variant-description {
-  margin-top: 1rem;
+.edition-readout h3 {
+  margin: 0;
+  color: var(--sand);
+  font-family: "Arial Black", "Arial Narrow", sans-serif;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.record-heading .edition-readout > p:not(.edition-label) {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.55;
 }
@@ -705,10 +677,6 @@ footer {
 
   .wallpaper-picker {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .variant-picker {
-    grid-template-columns: 1fr;
   }
 
   .install-block {

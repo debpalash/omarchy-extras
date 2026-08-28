@@ -69,8 +69,10 @@ export default function App() {
   const theme = themes[0];
   const plugin = plugins[0];
   const [activePreview, setActivePreview] = createSignal(0);
-  const [activeVariant, setActiveVariant] = createSignal(0);
-  const selectedVariant = () => theme.variants[activeVariant()];
+  const selectedEdition = () => (
+    theme.editions.find((edition) => edition.slug === theme.previews[activePreview()].edition)
+    ?? theme.editions[0]
+  );
 
   return (
     <>
@@ -93,7 +95,7 @@ export default function App() {
             <h1 id="hero-title">The side streets of <span>Omarchy.</span></h1>
             <p class="lede">
               A small catalog of extras that earn their place. One serious media writer,
-              four GTA6 palettes, twelve sun-soaked backgrounds, and direct Git installs.
+              sixteen wallpaper-matched GTA6 editions, twenty-seven backgrounds, and direct Git installs.
             </p>
             <div class="hero-actions">
               <a class="primary-link" href="#themes">Meet GTA6</a>
@@ -114,7 +116,7 @@ export default function App() {
               <span class="desktop-title">GTA6</span>
               <span>18:06</span>
             </div>
-            <div class="desktop-caption" aria-hidden="true">GTA6 / 12 WALLPAPERS</div>
+            <div class="desktop-caption" aria-hidden="true">GTA6 / 27 WALLPAPERS</div>
           </div>
         </section>
 
@@ -123,24 +125,12 @@ export default function App() {
             <p class="record-number">EXTRA 01 / THEME</p>
             <h2 id="theme-title">{theme.name}</h2>
             <p>{theme.summary}</p>
-            <div class="variant-picker" aria-label="Choose a GTA6 palette">
-              <For each={theme.variants}>
-                {(variant, index) => (
-                  <button
-                    type="button"
-                    class={activeVariant() === index() ? 'selected' : undefined}
-                    aria-pressed={activeVariant() === index() ? 'true' : 'false'}
-                    onClick={() => setActiveVariant(index())}
-                    style={{ '--variant-accent': variant.accent }}
-                  >
-                    <span aria-hidden="true" />
-                    <span>{variant.name}<small>{variant.mode}</small></span>
-                  </button>
-                )}
-              </For>
+            <div class="edition-readout" aria-live="polite">
+              <p class="edition-label">Palette match / {selectedEdition().mode}</p>
+              <h3>{selectedEdition().name}</h3>
+              <p>{selectedEdition().description}</p>
+              <Palette colors={selectedEdition().palette} />
             </div>
-            <p class="variant-description">{selectedVariant().description}</p>
-            <Palette colors={selectedVariant().palette} />
           </div>
 
           <div class="theme-stage">
@@ -188,12 +178,12 @@ export default function App() {
             <div class="install-copy">
               <CopyCommand command={theme.install} label="Copy theme command" />
               <div class="variant-install">
-                <p class="install-label">Selected palette / {selectedVariant().name}</p>
-                <CopyCommand command={selectedVariant().command} label="Copy palette command" />
+                <p class="install-label">Selected edition / {selectedEdition().name}</p>
+                <CopyCommand command={selectedEdition().command} label="Copy edition command" />
               </div>
               <div class="record-links">
                 <a href={theme.repository}>Open GTA6 source</a>
-                <a href={`${theme.repository}/blob/main/variants/README.md`}>Palette guide</a>
+                <a href={`${theme.repository}/blob/main/variants/README.md`}>Edition guide</a>
                 <a href={theme.previews[activePreview()].source}>Wallpaper source</a>
               </div>
             </div>
