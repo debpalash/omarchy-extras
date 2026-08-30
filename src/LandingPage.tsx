@@ -192,8 +192,9 @@ export default function LandingPage() {
       </header>
 
       <main id="main">
-        <section class="rd-hero" aria-labelledby="rd-hero-title">
-          <div class="rd-hero-copy">
+        <section class="rd-hero-shell" aria-labelledby="rd-hero-title">
+          <div class="rd-hero">
+            <div class="rd-hero-copy">
             <p class="rd-eyebrow">ARCH / HYPRLAND / QUICKSHELL</p>
             <h1 id="rd-hero-title">Beautiful, fun &amp; <span>opinionated</span> Linux.</h1>
             <p class="rd-lede">
@@ -206,24 +207,25 @@ export default function LandingPage() {
             <p class="rd-install-note">
               <span aria-hidden="true">[!]</span> Full-disk or free-space install. Encryption is on by default.
             </p>
-          </div>
-
-          <figure class="rd-hero-figure" data-reveal>
-            <div class="rd-screen-top" aria-hidden="true">
-              <span>OMARCHY / TOKYO NIGHT</span>
-              <span>SUPER + SPACE</span>
             </div>
-            <img
-              src="/screens/tokyo-night.webp"
-              alt="Omarchy Tokyo Night desktop with the application menu, terminal and system monitor"
-              width="1600"
-              height="900"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-            />
-            <figcaption>Default desktop / Tokyo Night</figcaption>
-          </figure>
+
+            <figure class="rd-hero-figure" data-reveal>
+              <div class="rd-screen-top" aria-hidden="true">
+                <span>OMARCHY / TOKYO NIGHT</span>
+                <span>SUPER + SPACE</span>
+              </div>
+              <img
+                src="/screens/tokyo-night.webp"
+                alt="Omarchy Tokyo Night desktop with the application menu, terminal and system monitor"
+                width="1600"
+                height="900"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+              <figcaption>Default desktop / Tokyo Night</figcaption>
+            </figure>
+          </div>
         </section>
 
         <section class="rd-system rd-section" id="system" aria-labelledby="rd-system-title">

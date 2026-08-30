@@ -218,6 +218,26 @@ body.omarchy-site,
   overflow: visible;
 }
 
+.rd-hero-shell {
+  position: relative;
+  isolation: isolate;
+  background: url("/images/silk.webp") center / cover no-repeat;
+}
+
+.rd-hero-shell::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgb(17 18 26 / 92%) 0%,
+    rgb(17 18 26 / 84%) 44%,
+    rgb(17 18 26 / 62%) 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
 .rd-hero,
 .rd-section,
 .omarchy-page .rd-footer {
@@ -226,6 +246,8 @@ body.omarchy-site,
 }
 
 .rd-hero {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(360px, 0.83fr) minmax(0, 1.17fr);
   gap: clamp(2.75rem, 5.5vw, 6.5rem);
@@ -944,6 +966,14 @@ body.omarchy-site,
 }
 
 @media (max-width: 760px) {
+  .rd-hero-shell {
+    background-position: 58% center;
+  }
+
+  .rd-hero-shell::before {
+    background: rgb(17 18 26 / 87%);
+  }
+
   .rd-announcement a,
   .rd-header,
   .rd-hero,

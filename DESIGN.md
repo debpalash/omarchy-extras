@@ -11,6 +11,7 @@ A beautiful system is a motivating system. The page treats aesthetics as part of
 ## Visual system
 
 - Tokyo Night colors connect the page to the default Omarchy desktop.
+- The user-provided silk texture is reserved for the hero, where a dark overlay keeps the text readable and separates the opening view from the system details below.
 - JetBrains Mono is the only face, making product UI and editorial copy feel related.
 - Thin rules organize the page. Real screenshots carry the visual weight.
 - Green marks action and keyboard state; blue marks the opinionated character of the system.
