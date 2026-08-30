@@ -24,7 +24,7 @@ The page lets Omarchy speak for itself. Marketing copy remains limited to the cu
 
 ## Layout
 
-- The first view is a fresh Omarchy login on workspace 1: one focused Omarchy window carries the official headline, while Terminal remains closed until requested so the message has a single focal point. Files waits on workspace 2 and Videos waits on workspace 3.
+- The first view is a maximized btop-inspired Home app on workspace 1. It keeps the official headline as the focal point, then reports only measurable browser-session health: event-loop delay, exposed JavaScript heap, connection details, platform facts, session uptime, and the real state of the OS apps. Terminal remains closed until requested, Files waits on workspace 2, and Videos waits on workspace 3.
 - A narrow, centered Omarchy launcher holds every official navigation label and destination. Its fixed top-left control remains the stable way back into the menu, while the ISO download sits at the opposite screen edge for direct access.
 - Both promo videos live inside a Videos app on workspace 3, so the product demonstration remains part of the desktop instead of becoming a separate marketing section.
 - Mobile turns the desktop into a one-window-at-a-time app switcher, stacks the videos in a scrollable window, and keeps every launcher target reachable through an internally scrolling panel.
@@ -34,6 +34,7 @@ The page lets Omarchy speak for itself. Marketing copy remains limited to the cu
 
 - The Three.js wallpaper responds only to direct pointer input and settles immediately. There is no idle animation.
 - The CSS wallpaper and usable desktop paint immediately. Three.js enhances the wallpaper after first paint, with no blocking splash screen or simulated boot delay.
+- Home samples live values only while its window is mounted and visible. The pause control stops monitoring, missing browser APIs say they are not exposed, and no CPU, memory, network, or process value is fabricated to imitate btop.
 - Windows can be focused, dragged, resized, minimized, maximized, closed, reopened, and moved between real workspaces through the app launcher.
 - The terminal accepts a small documented command set, while Files contains real site destinations.
 - Arrow keys move focused title bars, Shift plus arrow keys resize, Enter maximizes, Escape closes the launcher, and Alt plus 1 to 3 switches workspaces.

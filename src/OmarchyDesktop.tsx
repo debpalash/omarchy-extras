@@ -3,8 +3,10 @@ import * as stylex from '@stylexjs/stylex';
 import type * as Three from 'three';
 import { desktopStyles as styles } from './OmarchyDesktop.stylex';
 import { styles as landingStyles } from './landing.stylex';
+import BtopHome from './BtopHome';
+import type { HomeTaskId } from './BtopHome';
 
-type WindowId = 'about' | 'terminal' | 'files' | 'videos';
+type WindowId = HomeTaskId;
 type DragMode = 'move' | 'resize';
 
 type DesktopWindow = {
@@ -35,7 +37,7 @@ type DragState = {
 type ThreeModule = typeof Three;
 
 const initialWindows: DesktopWindow[] = [
-  { id: 'about', title: 'Omarchy', x: 96, y: 72, width: 760, height: 460, z: 4, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'about', title: 'Home', x: 96, y: 72, width: 1120, height: 520, z: 4, workspace: 1, open: true, minimized: false, maximized: true },
   { id: 'terminal', title: 'Terminal', x: 680, y: 245, width: 620, height: 340, z: 2, workspace: 1, open: false, minimized: false, maximized: false },
   { id: 'files', title: 'Files', x: 160, y: 105, width: 520, height: 390, z: 1, workspace: 2, open: true, minimized: false, maximized: false },
   { id: 'videos', title: 'Videos', x: 220, y: 140, width: 960, height: 360, z: 4, workspace: 3, open: true, minimized: false, maximized: false },
@@ -156,8 +158,13 @@ export default function OmarchyDesktop() {
 
   const openWindow = (id: WindowId) => {
     setLauncherOpen(false);
-    focusWindow(id);
-    setStatus(`${initialWindows.find((item) => item.id === id)?.title} opened`);
+    const target = windows().find((item) => item.id === id);
+    const destination = target?.open ? target.workspace : workspace();
+    if (destination !== workspace()) setWorkspace(destination);
+    zCounter += 1;
+    setFocusedId(id);
+    updateWindow(id, { z: zCounter, open: true, minimized: false, workspace: destination });
+    setStatus(`${initialWindows.find((item) => item.id === id)?.title} active`);
     if (id === 'terminal') queueMicrotask(() => terminalField?.focus());
   };
 
@@ -279,12 +286,10 @@ export default function OmarchyDesktop() {
   const renderWindowContent = (id: WindowId) => (
     <Switch>
       <Match when={id === 'about'}>
-        <div {...stylex.attrs(styles.aboutContent)}>
-          <h1 {...stylex.attrs(styles.heroTitle)} id="rd-hero-title">
-            Beautiful, Fun &amp; Opinionated Linux by{' '}
-            <a {...stylex.attrs(styles.heroLink, landingStyles.focusRing)} href="https://dhh.dk">DHH</a>
-          </h1>
-        </div>
+        <BtopHome
+          tasks={windows().map(({ id: taskId, title, workspace: taskWorkspace, open, minimized }) => ({ id: taskId, title, workspace: taskWorkspace, open, minimized }))}
+          onOpen={openWindow}
+        />
       </Match>
       <Match when={id === 'terminal'}>
         <div {...stylex.attrs(styles.terminal)}>
@@ -623,7 +628,7 @@ export default function OmarchyDesktop() {
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'terminal' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('terminal')}>Terminal</button>
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'files' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('files')}>Files</button>
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'videos' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('videos')}>Videos</button>
-        <button {...stylex.attrs(styles.dockButton, focusedId() === 'about' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('about')}>Omarchy</button>
+        <button {...stylex.attrs(styles.dockButton, focusedId() === 'about' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('about')}>Home</button>
       </nav>
 
       <span {...stylex.attrs(styles.srOnly)} role="status" aria-live="polite">{status()}</span>

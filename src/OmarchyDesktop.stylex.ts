@@ -231,35 +231,6 @@ export const desktopStyles = stylex.create({
     flexGrow: 1,
     overflow: 'auto',
   },
-  aboutContent: {
-    minHeight: '100%',
-    display: 'flex',
-    alignItems: 'flex-end',
-    padding: {
-      default: 'clamp(1.5rem, 4vw, 3.5rem)',
-      '@media (max-width: 720px)': '1.5rem',
-    },
-    backgroundImage: 'linear-gradient(135deg, rgba(122, 162, 247, 0.08), transparent 48%)',
-  },
-  heroTitle: {
-    minWidth: 0,
-    maxWidth: '11ch',
-    margin: 0,
-    color: tokens.ink,
-    fontSize: {
-      default: 'clamp(2.7rem, 5.5vw, 6.2rem)',
-      '@media (max-width: 720px)': 'clamp(2.3rem, 12vw, 4rem)',
-    },
-    fontWeight: 500,
-    letterSpacing: '-0.075em',
-    lineHeight: 0.94,
-    overflowWrap: 'anywhere',
-  },
-  heroLink: {
-    color: tokens.blue,
-    textDecorationThickness: '0.08em',
-    textUnderlineOffset: '0.12em',
-  },
   terminal: {
     height: '100%',
     minHeight: 0,
