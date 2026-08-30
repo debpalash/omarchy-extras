@@ -212,12 +212,12 @@ export const graphStyles = stylex.create({
     overflow: 'hidden',
     color: {
       default: '#d4ccca',
-      ':hover': '#0a0a0d',
+      ':hover': '#f2ece3',
       ':active': '#0a0a0d',
     },
     backgroundColor: {
       default: '#151218',
-      ':hover': tokens.green,
+      ':hover': '#201b22',
       ':active': tokens.green,
     },
     borderWidth: '1px',
@@ -231,10 +231,17 @@ export const graphStyles = stylex.create({
     font: 'inherit',
     textAlign: 'left',
     cursor: 'pointer',
-    transform: 'translate(-50%, -50%)',
-    transitionProperty: 'color, background-color, border-color',
-    transitionDuration: '100ms',
-    transitionTimingFunction: 'linear',
+    transform: {
+      default: 'translate(-50%, -50%)',
+      ':hover': 'translate(-50%, calc(-50% - 3px))',
+      ':active': 'translate(-50%, -50%)',
+    },
+    transitionProperty: 'color, background-color, border-color, transform',
+    transitionDuration: {
+      default: '130ms',
+      '@media (prefers-reduced-motion: reduce)': '0ms',
+    },
+    transitionTimingFunction: 'ease-out',
   },
   nodeCompact: {
     width: '43%',

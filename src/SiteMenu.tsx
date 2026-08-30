@@ -145,6 +145,12 @@ function SearchIcon() {
   );
 }
 
+function searchResultIcon(document: SiteSearchDocument): MenuIconName {
+  if (document.kind.toLowerCase() === 'news') return 'news';
+  if (document.kind.toLowerCase() === 'external') return 'github';
+  return 'manual';
+}
+
 export default function SiteMenu() {
   const [open, setOpen] = createSignal(false);
   const [activeIndex, setActiveIndex] = createSignal(0);
@@ -479,11 +485,12 @@ export default function SiteMenu() {
                                 onFocus={() => setActiveIndex(index())}
                                 onClick={() => void exploreDocument(document)}
                               >
-                                <span {...stylex.attrs(menuStyles.searchResultNumber)}>{String(index() + 1).padStart(2, '0')}</span>
-                                <span {...stylex.attrs(menuStyles.searchResultCopy)}>
-                                  <span {...stylex.attrs(menuStyles.searchResultTitle)}>{document.title}</span>
-                                  <span {...stylex.attrs(menuStyles.searchResultDetail)}>{document.kind} / {document.section}</span>
+                                <MenuIcon name={searchResultIcon(document)} />
+                                <span {...stylex.attrs(menuStyles.linkCopy)}>
+                                  <span {...stylex.attrs(menuStyles.linkLabel)}>{document.title}</span>
+                                  <span {...stylex.attrs(menuStyles.linkDetail)}>{document.kind} / {document.section}</span>
                                 </span>
+                                <span {...stylex.attrs(menuStyles.chevron)} aria-hidden="true" />
                               </button>
                             </li>
                           )}
