@@ -42,7 +42,7 @@ export default function Document(props: ParentProps) {
         <meta name="author" content="Palash Deb" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="canonical" href={siteUrl} />
-        <link rel="preload" as="image" type="image/webp" href="/screens/tokyo-night.webp" fetchpriority="high" />
+        <link rel="preload" as="image" type="image/webp" href="/images/silk.webp" fetchpriority="high" />
         <script type="module" src="/assets/js/script.js" />
         <meta name="description" content={description} />
         <meta property="og:title" content="Omarchy: Beautiful, Fun & Opinionated Linux by DHH" />

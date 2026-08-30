@@ -86,65 +86,6 @@ export const styles = stylex.create({
     flexShrink: 0,
     backgroundColor: tokens.black,
   },
-  heroShell: {
-    position: 'relative',
-    isolation: 'isolate',
-    minHeight: {
-      default: 'min(790px, calc(100svh - 110px))',
-      '@media (max-width: 980px)': 'auto',
-    },
-    backgroundImage: {
-      default: "linear-gradient(90deg, rgba(8, 8, 12, 0.95) 0%, rgba(8, 8, 12, 0.78) 43%, rgba(8, 8, 12, 0.42) 100%), linear-gradient(180deg, rgba(8, 8, 12, 0.1), rgba(8, 8, 12, 0.82)), url('/images/silk.webp')",
-      '@media (max-width: 980px)': "linear-gradient(180deg, rgba(8, 8, 12, 0.84), rgba(8, 8, 12, 0.66) 56%, rgba(8, 8, 12, 0.9)), url('/images/silk.webp')",
-    },
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: tokens.line,
-  },
-  hero: {
-    minHeight: 'inherit',
-    display: 'grid',
-    gridTemplateColumns: {
-      default: 'minmax(290px, 0.72fr) minmax(0, 1.28fr)',
-      '@media (max-width: 980px)': '1fr',
-    },
-    alignItems: 'center',
-    gap: {
-      default: 'clamp(2.5rem, 6vw, 6rem)',
-      '@media (max-width: 980px)': '3.6rem',
-      '@media (max-width: 720px)': '3rem',
-    },
-    paddingBlock: {
-      default: 'clamp(4rem, 8vw, 7rem)',
-      '@media (max-width: 720px)': '4rem 4.5rem',
-    },
-  },
-  heroTitle: {
-    maxWidth: {
-      default: '10ch',
-      '@media (max-width: 980px)': '12ch',
-    },
-    margin: 0,
-    color: tokens.ink,
-    fontSize: {
-      default: 'clamp(3.3rem, 6vw, 6.7rem)',
-      '@media (max-width: 720px)': 'clamp(2.85rem, 13vw, 5rem)',
-      '@media (max-width: 420px)': 'clamp(2.7rem, 14vw, 3.6rem)',
-    },
-    fontWeight: 500,
-    letterSpacing: {
-      default: '-0.075em',
-      '@media (max-width: 720px)': '-0.07em',
-    },
-    lineHeight: 0.95,
-  },
-  heroTitleLink: {
-    color: tokens.blue,
-    textDecorationThickness: '0.08em',
-    textUnderlineOffset: '0.12em',
-  },
   officialLinks: {
     width: {
       default: 'min(1000px, calc(100% - 48px))',

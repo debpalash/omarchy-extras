@@ -1,7 +1,7 @@
 import { For, Show, createSignal, onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './landing.stylex';
-import OmarchyComputer from './OmarchyComputer';
+import OmarchyDesktop from './OmarchyDesktop';
 import './landing.css';
 
 const OMARCHY_MARK = `                 ▄▄▄
@@ -119,15 +119,8 @@ export default function LandingPage() {
       </div>
 
       <main id="main">
-        <section {...stylex.attrs(styles.heroShell)} aria-labelledby="rd-hero-title">
-          <div {...stylex.attrs(styles.contentWidth, styles.hero)}>
-            <h1 {...stylex.attrs(styles.heroTitle)} id="rd-hero-title">
-              Beautiful, Fun &amp; Opinionated Linux by{' '}
-              <a {...stylex.attrs(styles.heroTitleLink, styles.focusRing)} href="https://dhh.dk">DHH</a>
-            </h1>
-
-            <OmarchyComputer />
-          </div>
+        <section aria-labelledby="rd-hero-title">
+          <OmarchyDesktop />
         </section>
 
         <nav {...stylex.attrs(styles.officialLinks)} aria-label="Omarchy links">
