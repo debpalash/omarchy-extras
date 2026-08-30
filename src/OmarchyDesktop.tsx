@@ -556,7 +556,7 @@ export default function OmarchyDesktop() {
       if (mobile && !isMobile()) setFocusedId('about');
       setIsMobile(mobile);
       if (!mobile) {
-        const gap = 4;
+        const gap = 8;
         const columnWidth = Math.max(300, (bounds.width - gap * 3) / 2);
         const rowHeight = Math.max(260, (bounds.height - 46 - gap * 3) / 2);
         setWindows((current) => current.map((item) => {

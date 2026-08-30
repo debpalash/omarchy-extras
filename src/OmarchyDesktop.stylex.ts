@@ -577,9 +577,9 @@ export const desktopStyles = stylex.create({
     overflowY: 'auto',
     display: 'grid',
     alignContent: 'start',
-    gap: '4px',
-    padding: '4px 4px 0.75rem',
-    scrollPaddingBlock: '4px 0.75rem',
+    gap: '8px',
+    padding: '8px 8px 0.75rem',
+    scrollPaddingBlock: '8px 0.75rem',
   },
   emptyWorkspace: {
     position: 'absolute',
