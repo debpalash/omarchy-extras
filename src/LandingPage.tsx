@@ -1,7 +1,8 @@
-import { For, Show, createSignal, onSettled } from 'solid-js';
+import { onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './landing.stylex';
 import OmarchyDesktop from './OmarchyDesktop';
+import SiteMenu from './SiteMenu';
 import './landing.css';
 
 const OMARCHY_MARK = `                 ▄▄▄
@@ -14,79 +15,6 @@ const OMARCHY_MARK = `                 ▄▄▄
 ███   ███  ███   ███   ███  ███   ███  ███   ███  ███   ███  ███   ███  ███   ███
  ▀█████▀    ▀█   ███   █▀   ███   █▀   ███   ███  ███████▀   ███   █▀    ▀█████▀
                                        ███   █▀`;
-
-const officialLinkGroups = [
-  [
-    { label: 'Manual', href: '/manual/' },
-    { label: 'ISO', href: 'https://iso.omarchy.org/omarchy-4.0.1.iso' },
-    { label: 'Plugins', href: 'https://omarchyplugins.com/' },
-    { label: 'GitHub', href: 'https://github.com/omacom/omarchy' },
-    { label: 'Security', href: '/security/' },
-  ],
-  [
-    { label: 'News', href: '/news/' },
-    { label: 'Teams', href: '/teams/' },
-    { label: 'Patrons', href: '/patrons/' },
-    { label: 'Sponsorships', href: '/sponsorships/' },
-    { label: 'AIR', href: '/air/' },
-  ],
-  [
-    { label: 'Discord', href: 'https://discord.gg/tXFUdasqhY' },
-    { label: 'Meetups', href: '/meetups/' },
-    { label: 'Workstations', href: '/workstations/' },
-    { label: 'Merch', href: 'https://supply.37signals.com/collections/omarchy' },
-  ],
-];
-
-type VideoFacadeProps = {
-  videoId: string;
-  title: string;
-  image: string;
-  alt: string;
-};
-
-function VideoFacade(props: VideoFacadeProps) {
-  const [playing, setPlaying] = createSignal(false);
-
-  return (
-    <div {...stylex.attrs(styles.videoFrame)}>
-      <Show
-        when={playing()}
-        fallback={
-          <button
-            {...stylex.attrs(styles.videoFill, styles.videoFacade, styles.focusRing)}
-            type="button"
-            onClick={() => setPlaying(true)}
-            aria-label={`Play ${props.title}`}
-          >
-            <img
-              {...stylex.attrs(styles.videoImage)}
-              src={props.image}
-              alt={props.alt}
-              width="1280"
-              height="720"
-              loading="lazy"
-              decoding="async"
-            />
-            <span {...stylex.attrs(styles.videoShade)} aria-hidden="true" />
-            <span {...stylex.attrs(styles.play)} aria-hidden="true">
-              <span {...stylex.attrs(styles.playIcon)} />
-            </span>
-          </button>
-        }
-      >
-        <iframe
-          {...stylex.attrs(styles.videoFill)}
-          src={`https://www.youtube-nocookie.com/embed/${props.videoId}?autoplay=1&rel=0`}
-          title={props.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        />
-      </Show>
-    </div>
-  );
-}
 
 export default function LandingPage() {
   onSettled(() => {
@@ -101,57 +29,25 @@ export default function LandingPage() {
   return (
     <div {...stylex.attrs(styles.page)}>
       <a {...stylex.attrs(styles.skipLink, styles.focusRing)} href="#main">Skip to content</a>
-
-      <aside {...stylex.attrs(styles.announcement)} aria-label="Project announcement">
-        <a
-          {...stylex.attrs(styles.announcementLink, styles.focusRing)}
-          href="/news/2026/08/omacom-foundation-launches-with-8-million/"
-        >
-          <span {...stylex.attrs(styles.liveDot)} aria-hidden="true" />
-          Omacom Foundation launches with <s>$8</s> $10 million
-        </a>
-      </aside>
+      <SiteMenu />
 
       <div class="pre">
         <a {...stylex.attrs(styles.focusRing)} href="/" aria-label="Omarchy">
           <pre>{OMARCHY_MARK}</pre>
         </a>
+        <aside {...stylex.attrs(styles.announcement)} aria-label="Project announcement">
+          <a
+            {...stylex.attrs(styles.announcementLink, styles.focusRing)}
+            href="/news/2026/08/omacom-foundation-launches-with-8-million/"
+          >
+            Omacom Foundation launches with $10 million
+          </a>
+        </aside>
       </div>
 
       <main id="main">
         <section aria-labelledby="rd-hero-title">
           <OmarchyDesktop />
-        </section>
-
-        <nav {...stylex.attrs(styles.officialLinks)} aria-label="Omarchy links">
-          <For each={officialLinkGroups}>
-            {(group) => (
-              <div {...stylex.attrs(styles.linkRow)}>
-                <For each={group}>
-                  {(link) => (
-                    <a {...stylex.attrs(styles.navLink, styles.focusRing)} href={link.href}>
-                      {link.label}
-                    </a>
-                  )}
-                </For>
-              </div>
-            )}
-          </For>
-        </nav>
-
-        <section {...stylex.attrs(styles.contentWidth, styles.videoGrid)} aria-label="Omarchy videos">
-          <VideoFacade
-            videoId="F7fe9pa8OeE"
-            title="Omarchy introduction video"
-            image="/screens/omarchy-quattro.webp"
-            alt="Omarchy Quattro by David Heinemeier Hansson"
-          />
-          <VideoFacade
-            videoId="9SDkU5VDQEQ"
-            title="You need to switch to Linux RIGHT NOW!! by NetworkChuck"
-            image="/screens/networkchuck.webp"
-            alt="You need to switch to Linux RIGHT NOW!! by NetworkChuck"
-          />
         </section>
       </main>
 

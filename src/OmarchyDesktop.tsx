@@ -4,7 +4,7 @@ import type * as Three from 'three';
 import { desktopStyles as styles } from './OmarchyDesktop.stylex';
 import { styles as landingStyles } from './landing.stylex';
 
-type WindowId = 'about' | 'terminal' | 'files';
+type WindowId = 'about' | 'terminal' | 'files' | 'videos';
 type DragMode = 'move' | 'resize';
 
 type DesktopWindow = {
@@ -38,6 +38,7 @@ const initialWindows: DesktopWindow[] = [
   { id: 'about', title: 'Omarchy', x: 72, y: 72, width: 670, height: 430, z: 2, workspace: 1, open: true, minimized: false, maximized: false },
   { id: 'terminal', title: 'Terminal', x: 680, y: 245, width: 620, height: 340, z: 3, workspace: 1, open: true, minimized: false, maximized: false },
   { id: 'files', title: 'Files', x: 160, y: 105, width: 520, height: 390, z: 1, workspace: 2, open: true, minimized: false, maximized: false },
+  { id: 'videos', title: 'Videos', x: 220, y: 140, width: 960, height: 360, z: 4, workspace: 3, open: true, minimized: false, maximized: false },
 ];
 
 const fileLinks = [
@@ -47,6 +48,64 @@ const fileLinks = [
   { label: 'Security', href: '/security/' },
   { label: 'GitHub', href: 'https://github.com/omacom/omarchy' },
 ] as const;
+
+const videos = [
+  {
+    videoId: 'F7fe9pa8OeE',
+    title: 'Omarchy introduction video',
+    image: '/screens/omarchy-quattro.webp',
+    alt: 'Omarchy Quattro by David Heinemeier Hansson',
+  },
+  {
+    videoId: '9SDkU5VDQEQ',
+    title: 'You need to switch to Linux RIGHT NOW!! by NetworkChuck',
+    image: '/screens/networkchuck.webp',
+    alt: 'You need to switch to Linux RIGHT NOW!! by NetworkChuck',
+  },
+] as const;
+
+function VideoFacade(props: typeof videos[number]) {
+  const [playing, setPlaying] = createSignal(false);
+
+  return (
+    <div {...stylex.attrs(styles.videoFrame)}>
+      <Show
+        when={playing()}
+        fallback={
+          <button
+            {...stylex.attrs(styles.videoFill, styles.videoFacade, landingStyles.focusRing)}
+            type="button"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play ${props.title}`}
+          >
+            <img
+              {...stylex.attrs(styles.videoImage)}
+              src={props.image}
+              alt={props.alt}
+              width="1280"
+              height="720"
+              loading="lazy"
+              decoding="async"
+            />
+            <span {...stylex.attrs(styles.videoShade)} aria-hidden="true" />
+            <span {...stylex.attrs(styles.play)} aria-hidden="true">
+              <span {...stylex.attrs(styles.playIcon)} />
+            </span>
+          </button>
+        }
+      >
+        <iframe
+          {...stylex.attrs(styles.videoFill)}
+          src={`https://www.youtube-nocookie.com/embed/${props.videoId}?autoplay=1&rel=0`}
+          title={props.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        />
+      </Show>
+    </div>
+  );
+}
 
 function WindowGlyph(props: { kind: 'minimize' | 'maximize' | 'close' }) {
   return (
@@ -81,7 +140,7 @@ export default function OmarchyDesktop() {
   let appsButton!: HTMLButtonElement;
   let launcherFirstButton!: HTMLButtonElement;
   let dragState: DragState | null = null;
-  let zCounter = 4;
+  let zCounter = 5;
   let setWallpaperPointer: (x: number, y: number) => void = () => undefined;
   let resetWallpaperPointer: () => void = () => undefined;
 
@@ -253,6 +312,11 @@ export default function OmarchyDesktop() {
             {(link) => <a {...stylex.attrs(styles.fileLink, landingStyles.focusRing)} href={link.href}>{link.label}</a>}
           </For>
         </nav>
+      </Match>
+      <Match when={id === 'videos'}>
+        <div {...stylex.attrs(styles.videos)}>
+          <For each={videos}>{(video) => <VideoFacade {...video} />}</For>
+        </div>
       </Match>
     </Switch>
   );
@@ -558,6 +622,7 @@ export default function OmarchyDesktop() {
         </button>
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'terminal' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('terminal')}>Terminal</button>
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'files' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('files')}>Files</button>
+        <button {...stylex.attrs(styles.dockButton, focusedId() === 'videos' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('videos')}>Videos</button>
         <button {...stylex.attrs(styles.dockButton, focusedId() === 'about' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('about')}>Omarchy</button>
       </nav>
 
