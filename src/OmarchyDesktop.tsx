@@ -8,6 +8,14 @@ import BtopMonitor from './BtopMonitor';
 import type { DesktopTaskId } from './BtopMonitor';
 
 type WindowId = DesktopTaskId;
+type ShellWidgetId = 'clock' | 'network' | 'date' | 'threads' | 'viewport' | 'uptime' | 'delay';
+
+type BrowserConnection = {
+  effectiveType?: string;
+  downlink?: number;
+  rtt?: number;
+  saveData?: boolean;
+};
 
 type DesktopWindow = {
   id: WindowId;
@@ -35,6 +43,21 @@ const initialWindows: DesktopWindow[] = [
 ];
 
 const homeWindowIds = new Set<WindowId>(['about', 'btop', 'dhh-video', 'network-video']);
+
+const shellWidgetOptions: { id: ShellWidgetId; label: string }[] = [
+  { id: 'clock', label: 'Clock' },
+  { id: 'network', label: 'Network' },
+  { id: 'date', label: 'Date' },
+  { id: 'threads', label: 'Threads' },
+  { id: 'viewport', label: 'Viewport' },
+  { id: 'uptime', label: 'Uptime' },
+  { id: 'delay', label: 'UI delay' },
+];
+
+const defaultShellWidgets: ShellWidgetId[] = ['clock', 'network'];
+const shellWidgetStorageKey = 'omarchy-shell-widgets';
+const shellTextSizeStorageKey = 'omarchy-shell-text-size';
+const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
 const fileLinks = [
   { label: 'Manual', href: '/manual/' },
@@ -134,6 +157,29 @@ function LauncherIcon(props: { kind: WindowId | 'manual' }) {
   );
 }
 
+function ShellWidgetIcon(props: { kind: ShellWidgetId }) {
+  return (
+    <svg {...stylex.attrs(styles.shellWidgetIcon)} aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+      <Switch>
+        <Match when={props.kind === 'clock'}><circle cx="10" cy="10" r="7" /><path d="M10 6v4l3 2" /></Match>
+        <Match when={props.kind === 'network'}><path d="M3 8.5a10 10 0 0 1 14 0M6 12a6 6 0 0 1 8 0M9 15.5a1.5 1.5 0 0 1 2 0" /></Match>
+        <Match when={props.kind === 'date'}><path d="M3 5h14v12H3V5ZM6 3v4M14 3v4M3 9h14" /></Match>
+        <Match when={props.kind === 'threads'}><path d="M6 6h8v8H6V6ZM2 7h4M2 10h4M2 13h4M14 7h4M14 10h4M14 13h4M7 2v4M10 2v4M13 2v4M7 14v4M10 14v4M13 14v4" /></Match>
+        <Match when={props.kind === 'viewport'}><path d="M2 4h16v11H2V4ZM7 18h6M10 15v3" /></Match>
+        <Match when={props.kind === 'uptime'}><path d="M5 3h10M5 17h10M6 3c0 4 2 5 4 7-2 2-4 3-4 7M14 3c0 4-2 5-4 7 2 2 4 3 4 7" /></Match>
+        <Match when={props.kind === 'delay'}><path d="M2 11h3l2-6 3 10 3-8 2 4h3" /></Match>
+      </Switch>
+    </svg>
+  );
+}
+
+const formatSessionUptime = (seconds: number) => {
+  const totalMinutes = Math.max(0, Math.floor(seconds / 60));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return hours > 0 ? `${hours}h ${String(minutes).padStart(2, '0')}m` : `${minutes}m`;
+};
+
 export default function OmarchyDesktop() {
   const [windows, setWindows] = createSignal(initialWindows);
   const [focusedId, setFocusedId] = createSignal<WindowId>('about');
@@ -142,6 +188,21 @@ export default function OmarchyDesktop() {
   const [isMobile, setIsMobile] = createSignal(false);
   const [webglReady, setWebglReady] = createSignal(false);
   const [clock, setClock] = createSignal('');
+  const [date, setDate] = createSignal('');
+  const [currentDate, setCurrentDate] = createSignal(new Date());
+  const [calendarMonth, setCalendarMonth] = createSignal(new Date());
+  const [online, setOnline] = createSignal<boolean | null>(null);
+  const [connection, setConnection] = createSignal<BrowserConnection | null>(null);
+  const [threads, setThreads] = createSignal<number | null>(null);
+  const [platform, setPlatform] = createSignal('Detecting');
+  const [viewport, setViewport] = createSignal('');
+  const [pixelRatio, setPixelRatio] = createSignal(1);
+  const [sessionUptime, setSessionUptime] = createSignal(0);
+  const [uiDelay, setUiDelay] = createSignal(0);
+  const [interfaceTextSize, setInterfaceTextSize] = createSignal(16);
+  const [shellWidgets, setShellWidgets] = createSignal<ShellWidgetId[]>(defaultShellWidgets);
+  const [widgetEditorOpen, setWidgetEditorOpen] = createSignal(false);
+  const [activeWidget, setActiveWidget] = createSignal<ShellWidgetId | null>(null);
   const [terminalInput, setTerminalInput] = createSignal('');
   const [terminalLines, setTerminalLines] = createSignal([
     'Omarchy terminal',
@@ -154,6 +215,9 @@ export default function OmarchyDesktop() {
   let terminalField!: HTMLInputElement;
   let appsButton!: HTMLButtonElement;
   let launcherFirstButton!: HTMLButtonElement;
+  let widgetEditorFirstButton!: HTMLButtonElement;
+  let shellPopoverClose!: HTMLButtonElement;
+  const shellWidgetButtons = new Map<ShellWidgetId, HTMLButtonElement>();
   let zCounter = 5;
   let setWallpaperPointer: (x: number, y: number) => void = () => undefined;
   let resetWallpaperPointer: () => void = () => undefined;
@@ -196,6 +260,7 @@ export default function OmarchyDesktop() {
   const switchWorkspace = (nextWorkspace: number) => {
     setWorkspace(nextWorkspace);
     setLauncherOpen(false);
+    setActiveWidget(null);
     const visible = windows()
       .filter((item) => item.workspace === nextWorkspace && item.open && !item.minimized)
       .sort((left, right) => right.z - left.z)[0];
@@ -206,11 +271,96 @@ export default function OmarchyDesktop() {
   const toggleLauncher = () => {
     const nextOpen = !launcherOpen();
     setLauncherOpen(nextOpen);
+    if (nextOpen) {
+      setActiveWidget(null);
+      setWidgetEditorOpen(false);
+    }
     if (nextOpen) queueMicrotask(() => launcherFirstButton?.focus());
   };
 
+  const setWidgetEditor = (open: boolean) => {
+    setWidgetEditorOpen(open);
+    if (open) {
+      setLauncherOpen(false);
+      setActiveWidget(null);
+      setStatus('Quickshell widget edit mode');
+      queueMicrotask(() => widgetEditorFirstButton?.focus());
+    } else {
+      setStatus('Quickshell widgets saved');
+    }
+  };
+
+  const toggleShellWidget = (id: ShellWidgetId) => {
+    setShellWidgets((current) => {
+      const next = current.includes(id) ? current.filter((widget) => widget !== id) : [...current, id];
+      localStorage.setItem(shellWidgetStorageKey, JSON.stringify(next));
+      if (!next.includes(id) && activeWidget() === id) setActiveWidget(null);
+      return next;
+    });
+  };
+
+  const closeShellWidget = (restoreFocus = true) => {
+    const current = activeWidget();
+    setActiveWidget(null);
+    setStatus('Widget closed');
+    if (restoreFocus && current) queueMicrotask(() => shellWidgetButtons.get(current)?.focus());
+  };
+
+  const openShellWidget = (id: ShellWidgetId) => {
+    if (activeWidget() === id) {
+      closeShellWidget();
+      return;
+    }
+    setActiveWidget(id);
+    setLauncherOpen(false);
+    setWidgetEditorOpen(false);
+    if (id === 'clock' || id === 'date') setCalendarMonth(currentDate());
+    setStatus(`${shellWidgetOptions.find((option) => option.id === id)?.label} widget open`);
+    queueMicrotask(() => shellPopoverClose?.focus());
+  };
+
+  const changeInterfaceTextSize = (size: number) => {
+    setInterfaceTextSize(size);
+    document.documentElement.style.fontSize = `${size}px`;
+    localStorage.setItem(shellTextSizeStorageKey, String(size));
+  };
+
+  const shellWidgetValue = (id: ShellWidgetId) => {
+    if (id === 'clock') return clock();
+    if (id === 'network') return online() === null ? 'checking' : online() ? 'online' : 'offline';
+    if (id === 'date') return date();
+    if (id === 'threads') return threads() === null ? 'n/a' : `${threads()} threads`;
+    if (id === 'viewport') return viewport();
+    if (id === 'uptime') return formatSessionUptime(sessionUptime());
+    return `${uiDelay().toFixed(1)} ms`;
+  };
+
+  const editWidgetsFromBar = (event: MouseEvent) => {
+    if ((event.target as HTMLElement).closest('button')) return;
+    setWidgetEditor(!widgetEditorOpen());
+  };
+
+  const calendarCells = () => {
+    const month = calendarMonth();
+    const first = new Date(month.getFullYear(), month.getMonth(), 1);
+    const start = new Date(month.getFullYear(), month.getMonth(), 1 - first.getDay());
+    return Array.from({ length: 42 }, (_, index) => {
+      const value = new Date(start.getFullYear(), start.getMonth(), start.getDate() + index);
+      return {
+        value,
+        currentMonth: value.getMonth() === month.getMonth(),
+        today: value.toDateString() === currentDate().toDateString(),
+      };
+    });
+  };
+
+  const moveCalendarMonth = (amount: number) => {
+    const month = calendarMonth();
+    setCalendarMonth(new Date(month.getFullYear(), month.getMonth() + amount, 1));
+  };
+
   const clampWindow = (item: DesktopWindow, update: Partial<DesktopWindow>) => {
-        const bounds = desktop.getBoundingClientRect();
+    const bounds = desktop.getBoundingClientRect();
     const width = Math.min(Math.max(update.width ?? item.width, 300), Math.max(300, bounds.width - 16));
     const height = Math.min(Math.max(update.height ?? item.height, 230), Math.max(230, bounds.height - 118));
     const x = Math.min(Math.max(update.x ?? item.x, 8), Math.max(8, bounds.width - width - 8));
@@ -307,10 +457,53 @@ export default function OmarchyDesktop() {
   onSettled(() => {
     let disposed = false;
     let cleanupThree = () => undefined;
+    let lastShellSample = performance.now();
 
-    const updateClock = () => setClock(new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date()));
-    updateClock();
-    const clockTimer = window.setInterval(updateClock, 30_000);
+    try {
+      const stored = JSON.parse(localStorage.getItem(shellWidgetStorageKey) ?? 'null');
+      if (Array.isArray(stored)) {
+        const valid = stored.filter((id): id is ShellWidgetId => shellWidgetOptions.some((option) => option.id === id));
+        setShellWidgets([...new Set(valid)]);
+      }
+    } catch {
+      setShellWidgets(defaultShellWidgets);
+    }
+
+    const storedTextSize = Number(localStorage.getItem(shellTextSizeStorageKey));
+    if ([14, 16, 18, 20].includes(storedTextSize)) {
+      setInterfaceTextSize(storedTextSize);
+      document.documentElement.style.fontSize = `${storedTextSize}px`;
+    }
+
+    const updateShell = () => {
+      const now = new Date();
+      const measuredAt = performance.now();
+      const browserNavigator = navigator as Navigator & {
+        connection?: BrowserConnection;
+        userAgentData?: { platform?: string };
+      };
+      const browserConnection = browserNavigator.connection;
+      if (!document.hidden) setUiDelay(Math.max(0, measuredAt - lastShellSample - 1000));
+      lastShellSample = measuredAt;
+      setCurrentDate(now);
+      setClock(new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(now));
+      setDate(new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric' }).format(now));
+      setOnline(navigator.onLine);
+      setConnection(browserConnection ? {
+        effectiveType: browserConnection.effectiveType,
+        downlink: browserConnection.downlink,
+        rtt: browserConnection.rtt,
+        saveData: browserConnection.saveData,
+      } : null);
+      setThreads(navigator.hardwareConcurrency || null);
+      setPlatform(browserNavigator.userAgentData?.platform || navigator.platform || 'Not exposed');
+      setViewport(`${window.innerWidth}×${window.innerHeight}`);
+      setPixelRatio(window.devicePixelRatio || 1);
+      setSessionUptime(performance.now() / 1000);
+    };
+    updateShell();
+    const clockTimer = window.setInterval(updateShell, 1000);
+    const resetShellSample = () => { lastShellSample = performance.now(); };
 
     const onPointerMove = (event: PointerEvent) => {
       const bounds = desktop.getBoundingClientRect();
@@ -330,8 +523,15 @@ export default function OmarchyDesktop() {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        if (activeWidget()) {
+          closeShellWidget();
+        }
         if (launcherOpen()) {
           setLauncherOpen(false);
+          queueMicrotask(() => appsButton?.focus());
+        }
+        if (widgetEditorOpen()) {
+          setWidgetEditor(false);
           queueMicrotask(() => appsButton?.focus());
         }
       }
@@ -346,6 +546,10 @@ export default function OmarchyDesktop() {
       if (event.altKey && event.key.toLowerCase() === 'f') {
         event.preventDefault();
         toggleMaximize(focusedId());
+      }
+      if (event.altKey && event.key.toLowerCase() === 'e') {
+        event.preventDefault();
+        setWidgetEditor(!widgetEditorOpen());
       }
     };
 
@@ -377,6 +581,9 @@ export default function OmarchyDesktop() {
 
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('online', updateShell);
+    window.addEventListener('offline', updateShell);
+    document.addEventListener('visibilitychange', resetShellSample);
     desktop.addEventListener('pointerleave', leaveDesktop);
 
     const layoutObserver = new ResizeObserver(resizeLayout);
@@ -501,6 +708,9 @@ export default function OmarchyDesktop() {
       layoutObserver.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('online', updateShell);
+      window.removeEventListener('offline', updateShell);
+      document.removeEventListener('visibilitychange', resetShellSample);
       desktop.removeEventListener('pointerleave', leaveDesktop);
       cleanupThree();
     };
@@ -514,7 +724,11 @@ export default function OmarchyDesktop() {
       <canvas ref={canvas} {...stylex.attrs(styles.canvas, webglReady() && styles.canvasReady)} aria-hidden="true" />
       <span {...stylex.attrs(styles.shade)} aria-hidden="true" />
 
-      <header {...stylex.attrs(styles.topbar)}>
+      <header
+        {...stylex.attrs(styles.topbar, widgetEditorOpen() && styles.topbarEditing)}
+        aria-label="Quickshell bar. Double-click to edit widgets."
+        onDblClick={editWidgetsFromBar}
+      >
         <div {...stylex.attrs(styles.shellStart)}>
           <button
             ref={appsButton}
@@ -543,14 +757,193 @@ export default function OmarchyDesktop() {
           </nav>
         </div>
         <span {...stylex.attrs(styles.activeApp)}>{focusedTitle()}</span>
-        <div {...stylex.attrs(styles.shellWidgets)}>
-          <span {...stylex.attrs(styles.shellState)}>QS</span>
-          <time {...stylex.attrs(styles.clock)}>{clock()}</time>
+        <div {...stylex.attrs(styles.shellWidgets)} aria-label="Active Quickshell widgets">
+          <Show when={shellWidgets().length > 0} fallback={<span {...stylex.attrs(styles.shellWidgetEmpty)}>add widgets</span>}>
+            <For each={shellWidgets()}>
+              {(widget) => (
+                <button
+                  ref={(element) => shellWidgetButtons.set(widget, element)}
+                  {...stylex.attrs(
+                    styles.shellWidget,
+                    activeWidget() === widget && styles.shellWidgetActive,
+                    widget === 'network' && online() === false && styles.shellWidgetAlert,
+                    landingStyles.focusRing,
+                  )}
+                  type="button"
+                  aria-label={`${shellWidgetOptions.find((option) => option.id === widget)?.label}: ${shellWidgetValue(widget)}`}
+                  aria-expanded={activeWidget() === widget ? 'true' : 'false'}
+                  aria-controls={`shell-widget-${widget}`}
+                  title={shellWidgetOptions.find((option) => option.id === widget)?.label}
+                  onClick={() => openShellWidget(widget)}
+                >
+                  <ShellWidgetIcon kind={widget} />
+                  <span>{shellWidgetValue(widget)}</span>
+                </button>
+              )}
+            </For>
+          </Show>
         </div>
       </header>
 
+      <Show when={activeWidget()} keyed>
+        {(widget) => (
+          <section
+            id={`shell-widget-${widget}`}
+            {...stylex.attrs(styles.shellPopover)}
+            role="dialog"
+            aria-label={`${shellWidgetOptions.find((option) => option.id === widget)?.label} widget details`}
+          >
+            <header {...stylex.attrs(styles.shellPopoverHeader)}>
+              <div {...stylex.attrs(styles.shellPopoverHeading)}>
+                <ShellWidgetIcon kind={widget} />
+                <h2 {...stylex.attrs(styles.shellPopoverTitle)}>{shellWidgetOptions.find((option) => option.id === widget)?.label}</h2>
+              </div>
+              <button
+                ref={shellPopoverClose}
+                {...stylex.attrs(styles.shellPopoverClose, landingStyles.focusRing)}
+                type="button"
+                aria-label={`Close ${shellWidgetOptions.find((option) => option.id === widget)?.label} widget`}
+                onClick={() => closeShellWidget()}
+              >
+                ×
+              </button>
+            </header>
+
+            <Show when={widget === 'clock' || widget === 'date'}>
+              <div {...stylex.attrs(styles.calendarLead)}>
+                <svg {...stylex.attrs(styles.calendarLeadIcon)} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square">
+                  <path d="M4 6h16v15H4V6ZM8 3v6M16 3v6M4 11h16" />
+                </svg>
+                <strong {...stylex.attrs(styles.calendarLeadDate)}>
+                  {new Intl.DateTimeFormat(undefined, { month: 'long', day: 'numeric' }).format(currentDate())}
+                </strong>
+              </div>
+              <p {...stylex.attrs(styles.calendarEvent)}>Nothing else today</p>
+              <div {...stylex.attrs(styles.calendarWeekdays)} aria-hidden="true">
+                <For each={weekDays}>{(day) => <span>{day}</span>}</For>
+              </div>
+              <div {...stylex.attrs(styles.calendarGrid)} aria-label="Calendar month">
+                <For each={calendarCells()}>
+                  {(cell) => (
+                    <span
+                      {...stylex.attrs(
+                        styles.calendarDay,
+                        !cell.currentMonth && styles.calendarDayOutside,
+                        cell.today && styles.calendarDayToday,
+                      )}
+                      aria-current={cell.today ? 'date' : undefined}
+                    >
+                      {cell.value.getDate()}
+                    </span>
+                  )}
+                </For>
+              </div>
+              <div {...stylex.attrs(styles.calendarMonthNav)}>
+                <button {...stylex.attrs(styles.calendarNavButton, landingStyles.focusRing)} type="button" aria-label="Previous month" onClick={() => moveCalendarMonth(-1)}>‹</button>
+                <strong {...stylex.attrs(styles.calendarMonthLabel)}>{new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' }).format(calendarMonth())}</strong>
+                <button {...stylex.attrs(styles.calendarNavButton, landingStyles.focusRing)} type="button" aria-label="Next month" onClick={() => moveCalendarMonth(1)}>›</button>
+              </div>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>Browser calendar is not connected.</p>
+            </Show>
+
+            <Show when={widget === 'network'}>
+              <p {...stylex.attrs(styles.shellMetric, !online() && styles.shellMetricAlert)}>{online() ? 'Online' : 'Offline'}</p>
+              <dl {...stylex.attrs(styles.shellDetails)}>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Connection</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{connection()?.effectiveType?.toUpperCase() ?? 'Not exposed'}</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Downlink</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{connection()?.downlink === undefined ? 'Not exposed' : `${connection()?.downlink} Mb/s`}</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Round trip</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{connection()?.rtt === undefined ? 'Not exposed' : `${connection()?.rtt} ms`}</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Data saver</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{connection()?.saveData === undefined ? 'Not exposed' : connection()?.saveData ? 'On' : 'Off'}</dd></div>
+              </dl>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>Values come from the browser Network Information API when available.</p>
+            </Show>
+
+            <Show when={widget === 'threads'}>
+              <p {...stylex.attrs(styles.shellMetric)}>{threads() ?? 'Not exposed'}</p>
+              <dl {...stylex.attrs(styles.shellDetails)}>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Platform</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{platform()}</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Logical threads</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{threads() ?? 'Not exposed'}</dd></div>
+              </dl>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>The browser reports logical processor capacity, not live CPU usage.</p>
+            </Show>
+
+            <Show when={widget === 'viewport'}>
+              <p {...stylex.attrs(styles.shellMetric)}>{viewport()}</p>
+              <dl {...stylex.attrs(styles.shellDetails)}>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Pixel ratio</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{pixelRatio().toFixed(2)}×</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Text size</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{interfaceTextSize()}px</dd></div>
+              </dl>
+              <h3 {...stylex.attrs(styles.shellControlLabel)}>Interface text size</h3>
+              <div {...stylex.attrs(styles.textSizeControls)}>
+                <For each={[14, 16, 18, 20]}>
+                  {(size) => (
+                    <button
+                      {...stylex.attrs(styles.textSizeButton, interfaceTextSize() === size && styles.textSizeButtonActive, landingStyles.focusRing)}
+                      type="button"
+                      aria-pressed={interfaceTextSize() === size ? 'true' : 'false'}
+                      onClick={() => changeInterfaceTextSize(size)}
+                    >
+                      {size}px
+                    </button>
+                  )}
+                </For>
+              </div>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>Display brightness and scale are not controllable from a webpage.</p>
+            </Show>
+
+            <Show when={widget === 'uptime'}>
+              <p {...stylex.attrs(styles.shellMetric)}>{formatSessionUptime(sessionUptime())}</p>
+              <dl {...stylex.attrs(styles.shellDetails)}>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Session seconds</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{Math.floor(sessionUptime()).toLocaleString()}</dd></div>
+              </dl>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>Uptime starts when this page session begins.</p>
+            </Show>
+
+            <Show when={widget === 'delay'}>
+              <p {...stylex.attrs(styles.shellMetric)}>{uiDelay().toFixed(1)} ms</p>
+              <dl {...stylex.attrs(styles.shellDetails)}>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>Sample interval</dt><dd {...stylex.attrs(styles.shellDetailValue)}>1 second</dd></div>
+                <div {...stylex.attrs(styles.shellDetailRow)}><dt {...stylex.attrs(styles.shellDetailTerm)}>State</dt><dd {...stylex.attrs(styles.shellDetailValue)}>{uiDelay() < 50 ? 'Responsive' : 'Busy'}</dd></div>
+              </dl>
+              <p {...stylex.attrs(styles.shellPopoverNote)}>This is event-loop delay for the page, not operating-system latency.</p>
+            </Show>
+          </section>
+        )}
+      </Show>
+
+      <Show when={widgetEditorOpen()}>
+        <section {...stylex.attrs(styles.widgetEditor)} role="dialog" aria-label="Edit Quickshell widgets">
+          <header {...stylex.attrs(styles.widgetEditorHeader)}>
+            <div>
+              <h2 {...stylex.attrs(styles.widgetEditorTitle)}>Quickshell widgets</h2>
+              <p {...stylex.attrs(styles.widgetEditorHint)}>Double-click the bar or press Alt+E to leave edit mode.</p>
+            </div>
+            <button {...stylex.attrs(styles.widgetEditorClose, landingStyles.focusRing)} type="button" onClick={() => setWidgetEditor(false)}>Done</button>
+          </header>
+          <div {...stylex.attrs(styles.widgetEditorList)}>
+            <For each={shellWidgetOptions}>
+              {(option, index) => {
+                const active = () => shellWidgets().includes(option.id);
+                return (
+                  <button
+                    ref={(element) => { if (index() === 0) widgetEditorFirstButton = element; }}
+                    {...stylex.attrs(styles.widgetOption, active() && styles.widgetOptionActive, landingStyles.focusRing)}
+                    type="button"
+                    aria-pressed={active() ? 'true' : 'false'}
+                    onClick={() => toggleShellWidget(option.id)}
+                  >
+                    <ShellWidgetIcon kind={option.id} />
+                    <span {...stylex.attrs(styles.widgetOptionLabel)}>{option.label}</span>
+                    <span {...stylex.attrs(styles.widgetOptionState)}>{active() ? 'Remove' : 'Add'}</span>
+                  </button>
+                );
+              }}
+            </For>
+          </div>
+        </section>
+      </Show>
+
       <div {...stylex.attrs(styles.windowsLayer, isMobile() && workspace() === 1 && styles.homeStackLayer)}>
-        <Show when={visibleWindows().length > 0} fallback={<p {...stylex.attrs(styles.emptyWorkspace)}>Empty workspace. Open an app from the dock.</p>}>
+        <Show when={visibleWindows().length > 0} fallback={<p {...stylex.attrs(styles.emptyWorkspace)}>Empty workspace. Open an app from the Omarchy menu.</p>}>
           <For each={visibleWindows()}>
             {(item) => {
               return (
