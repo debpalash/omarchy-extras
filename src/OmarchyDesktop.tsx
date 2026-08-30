@@ -102,6 +102,38 @@ function VideoFacade(props: typeof videos[number]) {
   );
 }
 
+function LauncherIcon(props: { kind: WindowId | 'manual' }) {
+  if (props.kind === 'about') {
+    return (
+      <svg {...stylex.attrs(styles.launcherIcon)} aria-hidden="true" viewBox="0 0 1200 1200">
+        <path fill="currentColor" fill-rule="evenodd" d="M1200 1200H720v-80h400V80H640v160H240v720h720V240h-80v-80h160v880H640v160H0V0h1200ZM80 1120h480v-80H160l.004-400H80Zm0-560h80.004V160h400V80H80Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...stylex.attrs(styles.launcherIcon)} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter">
+      <Switch>
+        <Match when={props.kind === 'btop'}>
+          <path d="M3 19V5h18v14H3Z" /><path d="m6 15 3-4 3 2 5-6 2 2" />
+        </Match>
+        <Match when={props.kind === 'dhh-video' || props.kind === 'network-video'}>
+          <path d="M3 5h18v14H3Z" /><path d="m10 9 5 3-5 3V9Z" />
+        </Match>
+        <Match when={props.kind === 'files'}>
+          <path d="M3 7h7l2 2h9v10H3V7Z" /><path d="M3 7V5h7l2 2" />
+        </Match>
+        <Match when={props.kind === 'terminal'}>
+          <path d="M3 5h18v14H3Z" /><path d="m7 9 3 3-3 3M12 15h5" />
+        </Match>
+        <Match when={props.kind === 'manual'}>
+          <path d="M5 3h10l4 4v14H5V3Z" /><path d="M15 3v5h4M8 12h8M8 16h8" />
+        </Match>
+      </Switch>
+    </svg>
+  );
+}
+
 export default function OmarchyDesktop() {
   const [windows, setWindows] = createSignal(initialWindows);
   const [focusedId, setFocusedId] = createSignal<WindowId>('about');
@@ -555,9 +587,17 @@ export default function OmarchyDesktop() {
       <Show when={launcherOpen()}>
         <div {...stylex.attrs(styles.launcher)} role="dialog" aria-label="Application launcher">
           <For each={initialWindows}>
-            {(item, index) => <button ref={(element) => { if (index() === 0) launcherFirstButton = element; }} {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => openWindow(item.id)}>{item.title}</button>}
+            {(item, index) => (
+              <button ref={(element) => { if (index() === 0) launcherFirstButton = element; }} {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => openWindow(item.id)}>
+                <LauncherIcon kind={item.id} />
+                <span>{item.title}</span>
+              </button>
+            )}
           </For>
-          <button {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => window.location.assign('/manual/')}>Manual</button>
+          <button {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => window.location.assign('/manual/')}>
+            <LauncherIcon kind="manual" />
+            <span>Manual</span>
+          </button>
         </div>
       </Show>
 

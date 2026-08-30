@@ -592,16 +592,13 @@ export const desktopStyles = stylex.create({
       '@media (max-width: 720px)': 'auto',
     },
     width: {
-      default: 'min(640px, calc(100% - 32px))',
+      default: 'min(430px, calc(100% - 32px))',
       '@media (max-width: 720px)': 'calc(100% - 16px)',
     },
     maxHeight: 'calc(100% - 64px)',
     overflowY: 'auto',
     display: 'grid',
-    gridTemplateColumns: {
-      default: 'repeat(2, minmax(0, 1fr))',
-      '@media (max-width: 420px)': '1fr',
-    },
+    gridTemplateColumns: '1fr',
     gap: '0.5rem',
     padding: '0.75rem',
     backgroundColor: '#11121a',
@@ -616,6 +613,9 @@ export const desktopStyles = stylex.create({
   },
   launcherButton: {
     minHeight: '52px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem',
     paddingInline: '0.85rem',
     color: {
       default: tokens.ink,
@@ -638,6 +638,12 @@ export const desktopStyles = stylex.create({
     fontSize: '0.75rem',
     textAlign: 'left',
     cursor: 'pointer',
+  },
+  launcherIcon: {
+    width: '22px',
+    height: '22px',
+    flexShrink: 0,
+    display: 'block',
   },
   srOnly: {
     position: 'absolute',
