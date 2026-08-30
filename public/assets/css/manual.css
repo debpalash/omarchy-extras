@@ -2,9 +2,10 @@
   display: grid;
   font-size: clamp(0.8125rem, 1.25vw, 1rem);
   gap: var(--space-x-large);
-  margin-inline: auto;
-  max-width: 50em;
-  padding-inline: var(--space-large);
+  margin-inline: 0;
+  max-width: none;
+  min-height: 100%;
+  padding-inline: clamp(var(--space-medium), 4vw, var(--space-xx-large));
   width: 100%;
 }
 
@@ -43,7 +44,10 @@
 
 .manual__content {
   color: var(--color-terminal-white);
+  margin-inline: auto;
+  max-width: 44em;
   min-width: 0;
+  width: 100%;
 }
 
 .manual__content h1 {
@@ -237,9 +241,9 @@
     display: grid;
     gap: var(--space-large);
     grid-template-rows: auto minmax(0, 1fr);
-    max-height: calc(100dvh - 2 * var(--space-large));
+    max-height: calc(100dvh - var(--content-masthead-height) - 2 * var(--space-large));
     position: sticky;
-    top: var(--space-large);
+    top: calc(var(--content-masthead-height) + var(--space-large));
   }
 
   .manual__toc {

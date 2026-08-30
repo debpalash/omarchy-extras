@@ -34,27 +34,28 @@ type DesktopWindow = {
 type ThreeModule = typeof Three;
 
 const initialWindows: DesktopWindow[] = [
-  { id: 'about', title: 'About Omarchy', x: 12, y: 12, width: 610, height: 330, z: 6, workspace: 1, open: true, minimized: false, maximized: false },
-  { id: 'btop', title: 'btop', x: 634, y: 12, width: 634, height: 330, z: 5, workspace: 1, open: true, minimized: false, maximized: false },
-  { id: 'dhh-video', title: 'DHH Demo', x: 12, y: 354, width: 610, height: 330, z: 4, workspace: 1, open: true, minimized: false, maximized: false },
-  { id: 'network-video', title: 'NetworkChuck Demo', x: 634, y: 354, width: 634, height: 330, z: 3, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'about', title: 'About Omarchy', x: 634, y: 354, width: 634, height: 330, z: 6, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'btop', title: 'btop', x: 12, y: 354, width: 610, height: 330, z: 5, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'dhh-video', title: 'DHH Demo', x: 12, y: 12, width: 610, height: 330, z: 4, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'network-video', title: 'NetworkChuck Demo', x: 634, y: 12, width: 634, height: 330, z: 3, workspace: 1, open: true, minimized: false, maximized: false },
   { id: 'files', title: 'Files', x: 160, y: 105, width: 620, height: 430, z: 2, workspace: 2, open: true, minimized: false, maximized: false },
   { id: 'terminal', title: 'Terminal', x: 330, y: 110, width: 720, height: 440, z: 1, workspace: 3, open: true, minimized: false, maximized: false },
 ];
 
 const homeWindowIds = new Set<WindowId>(['about', 'btop', 'dhh-video', 'network-video']);
 
-const shellWidgetOptions: { id: ShellWidgetId; label: string }[] = [
-  { id: 'clock', label: 'Clock' },
-  { id: 'network', label: 'Network' },
-  { id: 'date', label: 'Date' },
-  { id: 'threads', label: 'Threads' },
-  { id: 'viewport', label: 'Viewport' },
-  { id: 'uptime', label: 'Uptime' },
-  { id: 'delay', label: 'UI delay' },
+const shellWidgetOptions: { id: ShellWidgetId; label: string; shortLabel: string }[] = [
+  { id: 'clock', label: 'Clock', shortLabel: 'TIME' },
+  { id: 'network', label: 'Network', shortLabel: 'NET' },
+  { id: 'date', label: 'Date', shortLabel: 'DATE' },
+  { id: 'threads', label: 'Threads', shortLabel: 'CPU' },
+  { id: 'viewport', label: 'Viewport', shortLabel: 'VIEW' },
+  { id: 'uptime', label: 'Uptime', shortLabel: 'UP' },
+  { id: 'delay', label: 'UI delay', shortLabel: 'UI' },
 ];
 
-const defaultShellWidgets: ShellWidgetId[] = ['clock', 'network'];
+const defaultShellWidgets: ShellWidgetId[] = ['clock', 'date', 'network'];
+const centerShellWidgets = new Set<ShellWidgetId>(['clock', 'date']);
 const shellWidgetStorageKey = 'omarchy-shell-widgets';
 const shellTextSizeStorageKey = 'omarchy-shell-text-size';
 const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -125,7 +126,7 @@ function VideoFacade(props: typeof videos[number]) {
   );
 }
 
-function LauncherIcon(props: { kind: WindowId | 'manual' }) {
+function LauncherIcon(props: { kind: WindowId | 'manual' | 'claude' | 'codex' | 'plugins' }) {
   if (props.kind === 'about') {
     return (
       <svg {...stylex.attrs(styles.launcherIcon)} aria-hidden="true" viewBox="0 0 1200 1200">
@@ -151,6 +152,15 @@ function LauncherIcon(props: { kind: WindowId | 'manual' }) {
         </Match>
         <Match when={props.kind === 'manual'}>
           <path d="M5 3h10l4 4v14H5V3Z" /><path d="M15 3v5h4M8 12h8M8 16h8" />
+        </Match>
+        <Match when={props.kind === 'claude'}>
+          <path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M5 12h14" />
+        </Match>
+        <Match when={props.kind === 'codex'}>
+          <path d="m12 3 7.8 4.5v9L12 21l-7.8-4.5v-9L12 3Z" /><path d="m8.5 9 3.5-2 3.5 2v4L12 15l-3.5-2V9Z" />
+        </Match>
+        <Match when={props.kind === 'plugins'}>
+          <path d="M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-12 0V8Zm6 9v4" />
         </Match>
       </Switch>
     </svg>
@@ -334,6 +344,30 @@ export default function OmarchyDesktop() {
     if (id === 'uptime') return formatSessionUptime(sessionUptime());
     return `${uiDelay().toFixed(1)} ms`;
   };
+
+  const renderShellWidget = (widget: ShellWidgetId) => (
+    <button
+      ref={(element) => shellWidgetButtons.set(widget, element)}
+      {...stylex.attrs(
+        styles.shellWidget,
+        !centerShellWidgets.has(widget) && styles.shellWidgetIconOnly,
+        widget === 'date' && styles.shellWidgetMobileSecondary,
+        activeWidget() === widget && styles.shellWidgetActive,
+        widget === 'network' && online() === false && styles.shellWidgetAlert,
+        landingStyles.focusRing,
+      )}
+      type="button"
+      aria-label={`${shellWidgetOptions.find((option) => option.id === widget)?.label}: ${shellWidgetValue(widget)}`}
+      aria-expanded={activeWidget() === widget ? 'true' : 'false'}
+      aria-controls={`shell-widget-${widget}`}
+      title={`${shellWidgetOptions.find((option) => option.id === widget)?.label}: ${shellWidgetValue(widget)}`}
+      onClick={() => openShellWidget(widget)}
+    >
+      <ShellWidgetIcon kind={widget} />
+      <span {...stylex.attrs(styles.shellWidgetLabel, !centerShellWidgets.has(widget) && styles.shellWidgetTextHidden)}>{shellWidgetOptions.find((option) => option.id === widget)?.shortLabel}</span>
+      <span {...stylex.attrs(styles.shellWidgetValue, !centerShellWidgets.has(widget) && styles.shellWidgetTextHidden)}>{shellWidgetValue(widget)}</span>
+    </button>
+  );
 
   const editWidgetsFromBar = () => setWidgetEditor(!widgetEditorOpen());
 
@@ -558,7 +592,7 @@ export default function OmarchyDesktop() {
       if (!mobile) {
         const gap = 8;
         const columnWidth = Math.max(300, (bounds.width - gap * 3) / 2);
-        const rowHeight = Math.max(260, (bounds.height - 46 - gap * 3) / 2);
+        const rowHeight = Math.max(260, (bounds.height - 36 - gap * 3) / 2);
         setWindows((current) => current.map((item) => {
           if (homeWindowIds.has(item.id) && !item.maximized) {
             const right = item.id === 'btop' || item.id === 'network-video';
@@ -752,31 +786,17 @@ export default function OmarchyDesktop() {
               )}
             </For>
           </nav>
+          <span {...stylex.attrs(styles.activeApp)}>APP · {focusedTitle()}</span>
         </div>
-        <span {...stylex.attrs(styles.activeApp)}>{focusedTitle()}</span>
+        <div {...stylex.attrs(styles.shellCenter)} aria-label="Date and time widgets">
+          <For each={shellWidgets().filter((widget) => centerShellWidgets.has(widget))}>
+            {(widget) => renderShellWidget(widget)}
+          </For>
+        </div>
         <div {...stylex.attrs(styles.shellWidgets)} aria-label="Active Quickshell widgets">
-          <Show when={shellWidgets().length > 0} fallback={<span {...stylex.attrs(styles.shellWidgetEmpty)}>add widgets</span>}>
-            <For each={shellWidgets()}>
-              {(widget) => (
-                <button
-                  ref={(element) => shellWidgetButtons.set(widget, element)}
-                  {...stylex.attrs(
-                    styles.shellWidget,
-                    activeWidget() === widget && styles.shellWidgetActive,
-                    widget === 'network' && online() === false && styles.shellWidgetAlert,
-                    landingStyles.focusRing,
-                  )}
-                  type="button"
-                  aria-label={`${shellWidgetOptions.find((option) => option.id === widget)?.label}: ${shellWidgetValue(widget)}`}
-                  aria-expanded={activeWidget() === widget ? 'true' : 'false'}
-                  aria-controls={`shell-widget-${widget}`}
-                  title={shellWidgetOptions.find((option) => option.id === widget)?.label}
-                  onClick={() => openShellWidget(widget)}
-                >
-                  <ShellWidgetIcon kind={widget} />
-                  <span>{shellWidgetValue(widget)}</span>
-                </button>
-              )}
+          <Show when={shellWidgets().some((widget) => !centerShellWidgets.has(widget))} fallback={<span {...stylex.attrs(styles.shellWidgetEmpty)}>add widgets</span>}>
+            <For each={shellWidgets().filter((widget) => !centerShellWidgets.has(widget))}>
+              {(widget) => renderShellWidget(widget)}
             </For>
           </Show>
         </div>
@@ -786,7 +806,10 @@ export default function OmarchyDesktop() {
         {(widget) => (
           <section
             id={`shell-widget-${widget}`}
-            {...stylex.attrs(styles.shellPopover)}
+            {...stylex.attrs(
+              styles.shellPopover,
+              centerShellWidgets.has(widget) && styles.shellPopoverCentered,
+            )}
             role="dialog"
             aria-label={`${shellWidgetOptions.find((option) => option.id === widget)?.label} widget details`}
           >
@@ -975,18 +998,44 @@ export default function OmarchyDesktop() {
       </div>
 
       <Show when={launcherOpen()}>
+        <button
+          {...stylex.attrs(styles.launcherScrim)}
+          type="button"
+          aria-label="Close application launcher"
+          onClick={() => {
+            setLauncherOpen(false);
+            queueMicrotask(() => appsButton?.focus());
+          }}
+        />
         <div {...stylex.attrs(styles.launcher)} role="dialog" aria-label="Application launcher">
           <For each={initialWindows}>
             {(item, index) => (
               <button ref={(element) => { if (index() === 0) launcherFirstButton = element; }} {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => openWindow(item.id)}>
                 <LauncherIcon kind={item.id} />
                 <span>{item.title}</span>
+                <span {...stylex.attrs(styles.launcherChevron)} aria-hidden="true" />
               </button>
             )}
           </For>
+          <a {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">
+            <LauncherIcon kind="claude" />
+            <span>Claude</span>
+            <span {...stylex.attrs(styles.launcherChevron)} aria-hidden="true" />
+          </a>
+          <a {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} href="https://chatgpt.com/codex" target="_blank" rel="noopener noreferrer">
+            <LauncherIcon kind="codex" />
+            <span>Codex</span>
+            <span {...stylex.attrs(styles.launcherChevron)} aria-hidden="true" />
+          </a>
+          <a {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} href="https://omarchyplugins.com/" target="_blank" rel="noopener noreferrer">
+            <LauncherIcon kind="plugins" />
+            <span>Plugins</span>
+            <span {...stylex.attrs(styles.launcherChevron)} aria-hidden="true" />
+          </a>
           <button {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => window.location.assign('/manual/')}>
             <LauncherIcon kind="manual" />
             <span>Manual</span>
+            <span {...stylex.attrs(styles.launcherChevron)} aria-hidden="true" />
           </button>
         </div>
       </Show>

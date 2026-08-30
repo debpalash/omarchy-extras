@@ -1,30 +1,6 @@
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-  font-weight: 400 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-SemiBold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   color-scheme: dark;
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: #d7d7df;
   background: #0a0a0d;
   font-synthesis: none;
@@ -60,11 +36,11 @@ a {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
   display: grid;
-  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(1.25rem, 2.5vw, 2rem);
   border-bottom: 1px solid rgba(240, 238, 245, 0.2);
 }
 
-.pre a {
+.pre > a {
   max-width: 100%;
   position: relative;
   justify-self: center;
@@ -85,7 +61,7 @@ a {
   transition: color 140ms ease;
 }
 
-.pre a:hover pre {
+.pre > a:hover pre {
   color: #73daca;
 }
 
@@ -129,7 +105,7 @@ html.wte-home .pre.pre--static .pre__wte {
 @media (max-width: 720px) {
   .pre {
     width: min(1280px, calc(100% - 30px));
-    padding: 4.75rem 0 2rem;
+    padding: 4rem 0 1.5rem;
   }
 }
 

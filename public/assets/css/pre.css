@@ -115,3 +115,39 @@ html.wte-home .pre.pre--static .pre__wte {
 .pre--news pre {
   font-size: clamp(0.1417rem, 0.4167vw, 0.3333rem);
 }
+
+
+
+/* Compact masthead shared by the site's static content pages. Direct-child
+   selectors leave the nested error-page mark in its original presentation. */
+body > .pre {
+  align-items: center;
+  background-color: color-mix(in srgb, var(--color-black) 94%, transparent);
+  border-bottom: 1px solid var(--color-grey-dark);
+  margin-top: 0;
+  min-height: var(--content-masthead-height);
+  /* Keep the wordmark clear of the fixed 108px launcher and its 16px inset. */
+  padding-inline: clamp(var(--space-medium), 4vw, var(--space-xx-large));
+  padding-inline-start: max(140px, clamp(var(--space-medium), 4vw, var(--space-xx-large)));
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+body > .pre a {
+  display: none;
+  justify-self: start;
+}
+
+body > .pre pre,
+body > .pre--news pre {
+  font-size: clamp(0.16rem, 0.35vw, 0.22rem);
+}
+
+@media(min-width: 40em) {
+
+  body > .pre a {
+    display: block;
+  }
+
+}

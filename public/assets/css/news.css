@@ -36,10 +36,13 @@
 }
 
 .news-page {
+  flex: 1;
   margin-inline: auto;
   max-width: var(--news-measure);
+  min-height: calc(100dvh - var(--content-masthead-height));
   padding-block: var(--news-space);
   padding-inline: 1.1rem;
+  width: 100%;
 }
 
 /* header.css sizes itself in em; match the cover's basis so its spacing resolves

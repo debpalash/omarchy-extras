@@ -1,10 +1,16 @@
-/* Every page is masthead, then a one-line header, then content. The gap under
-   that header is the same everywhere; /security and /meetups each used to
-   correct it locally with identical values, so it lives here now. */
+:root {
+  --content-masthead-height: 4rem;
+}
+
+/* Static content pages use the full viewport while their page-specific
+   modules continue to own the centered reading measure. */
 .main {
   display: grid;
-  margin-bottom: var(--space-xx-large);
-  margin-top: calc(var(--space-large) * 1.2);
+  flex: 1;
+  margin-block: 0;
+  min-height: calc(100dvh - var(--content-masthead-height));
+  padding-block: var(--space-large) var(--space-xx-large);
+  width: 100%;
 }
 
 
@@ -19,8 +25,7 @@
 @media(min-width: 64em) {
 
   .main {
-    margin-bottom: var(--space-xxxx-large);
-    margin-top: calc(var(--space-x-large) * 1.2);
+    padding-block: var(--space-x-large) var(--space-xxxx-large);
   }
 
 }

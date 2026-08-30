@@ -1,5 +1,7 @@
 import { onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght-italic.css';
 import { styles } from './landing.stylex';
 import OmarchyDesktop from './OmarchyDesktop';
 import SiteMenu from './SiteMenu';
@@ -32,9 +34,6 @@ export default function LandingPage() {
       <SiteMenu />
 
       <div class="pre">
-        <a {...stylex.attrs(styles.focusRing)} href="/" aria-label="Omarchy">
-          <pre>{OMARCHY_MARK}</pre>
-        </a>
         <aside {...stylex.attrs(styles.announcement)} aria-label="Project announcement">
           <a
             {...stylex.attrs(styles.announcementLink, styles.focusRing)}
@@ -43,10 +42,23 @@ export default function LandingPage() {
             Omacom Foundation launches with $10 million
           </a>
         </aside>
+        <a {...stylex.attrs(styles.focusRing)} href="/" aria-label="Omarchy">
+          <pre>{OMARCHY_MARK}</pre>
+        </a>
+        <header {...stylex.attrs(styles.heroCopy)}>
+          <h1 {...stylex.attrs(styles.heroHeadline)} id="rd-hero-title">
+            Beautiful, Fun &amp; Opinionated Linux by{' '}
+            <a {...stylex.attrs(styles.heroDhhLink, styles.focusRing)} href="https://dhh.dk">DHH</a>
+          </h1>
+          <p {...stylex.attrs(styles.heroDescription)}>
+            The malleable OS for the age of agents. Where you can vibe your way through every alteration, tweak, and desire.{' '}
+            <a {...stylex.attrs(styles.heroOmarchLink, styles.focusRing)} href="https://omarchs.fyi/">Be the Omarch</a> and command your agent!
+          </p>
+        </header>
       </div>
 
       <main id="main">
-        <section aria-labelledby="rd-hero-title">
+        <section aria-label="Omarchy desktop preview">
           <OmarchyDesktop />
         </section>
       </main>
@@ -64,6 +76,10 @@ export default function LandingPage() {
         <p {...stylex.attrs(styles.footerParagraph)}>
           Sponsored hosting by{' '}
           <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://www.cloudflare.com/">Cloudflare</a>
+        </p>
+        <p {...stylex.attrs(styles.footerParagraph)}>
+          Redesign by{' '}
+          <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://palash.dev/">palash.dev</a>
         </p>
       </footer>
     </div>

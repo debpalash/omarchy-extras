@@ -8,6 +8,7 @@ type MenuIconName =
   | 'manual'
   | 'iso'
   | 'plugins'
+  | 'themes'
   | 'github'
   | 'security'
   | 'news'
@@ -31,6 +32,7 @@ const menuLinks: MenuDestination[] = [
   { label: 'Manual', href: '/manual/', icon: 'manual' },
   { label: 'ISO', href: 'https://iso.omarchy.org/omarchy-4.0.1.iso', icon: 'iso' },
   { label: 'Plugins', href: 'https://omarchyplugins.com/', icon: 'plugins' },
+  { label: 'Themes', href: '/themes/', icon: 'themes' },
   { label: 'GitHub', href: 'https://github.com/omacom/omarchy', icon: 'github' },
   {
     label: 'Awesome Omarchy',
@@ -58,6 +60,8 @@ function MenuIcon(props: { name: MenuIconName }) {
         return <><path d="M12 3v11m0 0 4-4m-4 4-4-4" /><path d="M5 16v3h14v-3" /></>;
       case 'plugins':
         return <><path d="M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-12 0V8Zm6 9v4" /></>;
+      case 'themes':
+        return <><path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 0-4H12a2 2 0 0 1 0-4h3a6 6 0 0 0 0-12h-3Z" /><path d="M7.5 9h.01M9.5 5.5h.01M15 5.5h.01" /></>;
       case 'github':
         return <><circle cx="12" cy="12" r="9" /><path d="M9 20v-3.2c-2.7.6-3.3-1.2-3.3-1.2M15 20v-3.8c0-1 .3-1.8.8-2.3 2.6-.3 5.2-1.3 5.2-5.2 0-1.1-.4-2.1-1.1-2.8.1-.4.5-1.7-.1-2.8 0 0-.9-.3-2.9 1.1a10 10 0 0 0-5.2 0C9.7 2.8 8.8 3.1 8.8 3.1c-.6 1.1-.2 2.4-.1 2.8A4 4 0 0 0 7.6 8.7c0 3.9 2.6 4.9 5.2 5.2" /></>;
       case 'security':

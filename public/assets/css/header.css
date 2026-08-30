@@ -11,10 +11,37 @@
 
 
 
+body > .header {
+  align-items: center;
+  height: var(--content-masthead-height);
+  margin-top: calc(-1 * var(--content-masthead-height));
+  min-height: var(--content-masthead-height);
+  padding-inline: clamp(var(--space-medium), 4vw, var(--space-xx-large));
+  pointer-events: none;
+  position: sticky;
+  top: 0;
+  z-index: 21;
+}
+
+body > .header h1 {
+  font-size: var(--font-size-small);
+  justify-self: center;
+}
+
+
+
 @media(min-width: 64em) {
 
   .header {
     padding-inline: var(--space-xx-large);
+  }
+
+}
+
+@media(min-width: 40em) {
+
+  body > .header h1 {
+    justify-self: end;
   }
 
 }
