@@ -1,6 +1,6 @@
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/redesign/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/redesign/fonts/JetBrainsMono-SemiBold.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-SemiBold.woff2") format("woff2");
   font-style: normal;
   font-weight: 600;
   font-display: swap;
@@ -16,13 +16,23 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/redesign/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
   font-display: swap;
 }
 
-body.redesign-route {
+html {
+  background: #11121a;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+}
+
+body.omarchy-site,
+.omarchy-page {
   --rd-night: #11121a;
   --rd-surface: #1a1b26;
   --rd-raised: #24283b;
@@ -43,7 +53,8 @@ body.redesign-route {
   font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
-.redesign-page {
+.omarchy-page {
+  box-sizing: border-box;
   min-height: 100vh;
   overflow: clip;
   background: var(--rd-night);
@@ -53,20 +64,26 @@ body.redesign-route {
   line-height: 1.6;
 }
 
-.redesign-page img {
+.omarchy-page *,
+.omarchy-page *::before,
+.omarchy-page *::after {
+  box-sizing: inherit;
+}
+
+.omarchy-page img {
   display: block;
   max-width: 100%;
 }
 
-.redesign-page a {
+.omarchy-page a {
   color: inherit;
 }
 
-.redesign-page a:hover {
+.omarchy-page a:hover {
   color: var(--rd-green);
 }
 
-.redesign-page :focus-visible {
+.omarchy-page :focus-visible {
   outline: 3px solid var(--rd-green);
   outline-offset: 4px;
 }
@@ -90,7 +107,7 @@ body.redesign-route {
 }
 
 .rd-announcement {
-  min-height: 38px;
+  min-height: 44px;
   border-bottom: 1px solid var(--rd-line);
   background: var(--rd-raised);
 }
@@ -98,7 +115,7 @@ body.redesign-route {
 .rd-announcement a {
   display: flex;
   width: min(1280px, calc(100% - 48px));
-  min-height: 38px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
@@ -197,13 +214,13 @@ body.redesign-route {
   display: none;
 }
 
-.redesign-page main {
+.omarchy-page main {
   overflow: visible;
 }
 
 .rd-hero,
 .rd-section,
-.redesign-page .rd-footer {
+.omarchy-page .rd-footer {
   width: min(1280px, calc(100% - 48px));
   margin-inline: auto;
 }
@@ -213,7 +230,7 @@ body.redesign-route {
   grid-template-columns: minmax(360px, 0.83fr) minmax(0, 1.17fr);
   gap: clamp(2.75rem, 5.5vw, 6.5rem);
   align-items: center;
-  min-height: calc(100svh - 114px);
+  min-height: calc(100svh - 120px);
   padding: clamp(4.5rem, 8vw, 8.5rem) 0;
 }
 
@@ -242,33 +259,33 @@ body.redesign-route {
   color: var(--rd-green);
 }
 
-.redesign-page h1,
-.redesign-page h2,
-.redesign-page h3 {
+.omarchy-page h1,
+.omarchy-page h2,
+.omarchy-page h3 {
   margin: 0;
   color: var(--rd-bright);
   font-family: "JetBrains Mono", ui-monospace, monospace;
   letter-spacing: -0.055em;
 }
 
-.redesign-page h1 {
+.omarchy-page h1 {
   max-width: 9.5ch;
-  font-size: clamp(3.65rem, 6.4vw, 7.25rem);
+  font-size: clamp(3.5rem, 5.8vw, 6.5rem);
   font-weight: 700;
   line-height: 0.91;
 }
 
-.redesign-page h1 span {
+.omarchy-page h1 span {
   color: var(--rd-blue);
 }
 
-.redesign-page h2 {
-  font-size: clamp(2.75rem, 5vw, 5.5rem);
+.omarchy-page h2 {
+  font-size: clamp(2.6rem, 4.5vw, 4.9rem);
   font-weight: 600;
   line-height: 0.96;
 }
 
-.redesign-page h2 span {
+.omarchy-page h2 span {
   color: var(--rd-muted);
 }
 
@@ -346,17 +363,6 @@ body.redesign-route {
   padding: 2.35rem 0 0;
   border: 1px solid var(--rd-line);
   background: var(--rd-surface);
-  box-shadow: 18px 18px 0 var(--rd-raised);
-}
-
-.rd-hero-figure::before,
-.rd-keyboard-media::before {
-  position: absolute;
-  z-index: 2;
-  inset: -1px auto -1px -1px;
-  width: 3px;
-  background: var(--rd-green);
-  content: "";
 }
 
 .rd-screen-top {
@@ -404,7 +410,7 @@ body.redesign-route {
 }
 
 .rd-section {
-  padding: clamp(5.5rem, 9vw, 9rem) 0;
+  padding: clamp(4.75rem, 7.5vw, 7.5rem) 0;
   border-top: 1px solid var(--rd-line);
 }
 
@@ -482,7 +488,6 @@ body.redesign-route {
   min-width: 0;
   border: 1px solid var(--rd-line);
   background: var(--rd-surface);
-  box-shadow: -18px 18px 0 var(--rd-raised);
 }
 
 .rd-keyboard-media img {
@@ -633,7 +638,6 @@ body.redesign-route {
   aspect-ratio: 16 / 9;
   border: 1px solid var(--rd-line);
   background: #07080c;
-  box-shadow: 10px 10px 0 var(--rd-raised);
 }
 
 .rd-video-frame iframe,
@@ -780,10 +784,6 @@ body.redesign-route {
   color: var(--rd-bright);
 }
 
-.rd-link-directory a > span:last-child {
-  color: var(--rd-green);
-}
-
 .rd-install {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(330px, 0.95fr);
@@ -799,7 +799,7 @@ body.redesign-route {
   line-height: 1.75;
 }
 
-.redesign-page .rd-footer {
+.omarchy-page .rd-footer {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 1.5rem;
@@ -822,6 +822,7 @@ body.redesign-route {
 }
 
 .rd-footer a {
+  min-width: 44px;
   min-height: 44px;
   align-items: center;
 }
@@ -829,26 +830,6 @@ body.redesign-route {
 .rd-footer > div a,
 .rd-footer p a {
   display: inline-flex;
-}
-
-.rd-concept-note {
-  position: fixed;
-  z-index: 30;
-  right: 0;
-  bottom: 0;
-  min-height: 31px;
-  padding: 0.42rem 0.65rem;
-  border-top: 1px solid var(--rd-line);
-  border-left: 1px solid var(--rd-line);
-  background: rgb(17 18 26 / 94%);
-  color: var(--rd-muted) !important;
-  font-size: 0.56rem;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-}
-
-.rd-concept-note:hover {
-  color: var(--rd-bright) !important;
 }
 
 @media (max-width: 1060px) {
@@ -940,7 +921,7 @@ body.redesign-route {
     min-height: auto;
   }
 
-  .redesign-page h1 {
+  .omarchy-page h1 {
     max-width: 11ch;
   }
 
@@ -967,7 +948,7 @@ body.redesign-route {
   .rd-header,
   .rd-hero,
   .rd-section,
-  .redesign-page .rd-footer {
+  .omarchy-page .rd-footer {
     width: min(100% - 30px, 1280px);
   }
 
@@ -986,27 +967,22 @@ body.redesign-route {
     padding: 4.5rem 0 5.5rem;
   }
 
-  .redesign-page h1 {
+  .omarchy-page h1 {
     font-size: clamp(3.35rem, 15vw, 5.5rem);
   }
 
-  .redesign-page h2 {
+  .omarchy-page h2 {
     font-size: clamp(2.55rem, 11vw, 4rem);
   }
 
   .rd-hero-figure,
   .rd-keyboard-media {
-    width: calc(100% - 10px);
+    width: 100%;
     justify-self: start;
-    box-shadow: 10px 10px 0 var(--rd-raised);
-  }
-
-  .rd-video-frame {
-    box-shadow: 8px 8px 0 var(--rd-raised);
   }
 
   .rd-section {
-    padding: 5.5rem 0;
+    padding: 4.5rem 0;
   }
 
   .rd-system,
@@ -1041,7 +1017,7 @@ body.redesign-route {
     margin-top: 3rem;
   }
 
-  .redesign-page .rd-footer {
+  .omarchy-page .rd-footer {
     grid-template-columns: 1fr;
     padding-bottom: 3rem;
   }
@@ -1054,9 +1030,6 @@ body.redesign-route {
     justify-self: start;
   }
 
-  .rd-concept-note {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1070,11 +1043,20 @@ body.redesign-route {
   }
 
   .rd-hero {
-    padding-top: 3.8rem;
+    gap: 2rem;
+    padding-top: 3rem;
+  }
+
+  .omarchy-page h1 {
+    font-size: clamp(3.05rem, 13.5vw, 4.5rem);
   }
 
   .rd-actions {
     display: grid;
+  }
+
+  .rd-install-note {
+    display: none;
   }
 
   .rd-button {
@@ -1116,18 +1098,18 @@ body.redesign-route {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .redesign-page {
+  .omarchy-page {
     scroll-behavior: auto;
   }
 
-  .redesign-page *,
-  .redesign-page *::before,
-  .redesign-page *::after {
+  .omarchy-page *,
+  .omarchy-page *::before,
+  .omarchy-page *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
 
-  .redesign-page [data-reveal] {
+  .omarchy-page [data-reveal] {
     opacity: 1;
     transform: none;
   }

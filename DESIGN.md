@@ -1,35 +1,30 @@
-# Omarchy Extras design direction
+# Omarchy homepage direction
 
-Reading this as: a curated Omarchy extras catalog for Linux power users and GTA fans, in a sun-faded Vice City editorial language, dial ENERGY 2 / RHYTHM 2 / MOTION 1.
+Reading: an official-site submission for design-conscious computer users, expressed through Omarchy's own quiet editorial and terminal language.
 
-## Identity
+Design dials: ENERGY 2 / RHYTHM 2 / MOTION 1.
 
-- Personality: composed, capable, sly, and fan-aware.
-- Mood: night asphalt under a Miami sunset, never a neon casino.
-- Audience: Omarchy users who read install commands, pair palettes to wallpaper art, and care how their desktop feels.
-- Motif: a single forward slash appears in the wordmark, record labels, and list markers.
+## Belief
 
-## Palette
+A beautiful system is a motivating system. The page treats aesthetics as part of the product, then shows how the shell, editor, browser, desktop, and themes work as one environment.
 
-- Ink `#0d0a10`: grounds the catalog and keeps the vivid artwork in charge.
-- Sand `#f4eadc`: borrows the warm highlights of the wallpapers and stays readable on ink.
-- Aqua `#62cfc8`: names metadata and secondary state with a clear coastal cue.
-- Flamingo `#ff5c9a`: marks the title, focus moments, and install action only.
+## Visual system
 
-## Typography
+- Tokyo Night colors connect the page to the default Omarchy desktop.
+- JetBrains Mono is the only face, making product UI and editorial copy feel related.
+- Thin rules organize the page. Real screenshots carry the visual weight.
+- Green marks action and keyboard state; blue marks the opinionated character of the system.
+- Square controls and tight technical labels retain Omarchy's terminal character.
 
-- Headlines use Arial Black as a widely available, blocky editorial face without copying the GTA wordmark.
-- Body copy uses the system sans stack for native desktop clarity.
-- Commands use the system monospace stack because the content is literal shell input.
+## Layout
 
-## Major decisions
+- The first view pairs one clear proposition with the actual default desktop.
+- System, keyboard, themes, video, community, and installation follow the product story.
+- Theme and video grids use equal cards because their contents are direct comparisons.
+- Mobile collapses to a single reading column with a native details menu and full-width actions.
 
-- Color: the pink accent is sparse so it lands as a fan cue instead of tinting the whole interface.
-- Layout: alternating editorial and product-led sections give two real catalog entries different weight.
-- Typography: heavy compact headlines supply character while body copy remains practical.
-- Spacing: large section breaks make each extra read like a record, with tighter spacing inside install actions.
-- Cards: only install commands and the Bootable screenshot receive framed surfaces because they are actionable artifacts.
-- Imagery: real Wallhaven selections and the real Bootable screenshot provide evidence instead of decorative illustration.
-- Overlay: the dark desktop bar and image caption ensure legibility while demonstrating the actual theme palette.
-- Wallpaper picker: selecting real artwork also reveals its paired palette and edition command, keeping image and color decisions together.
-- Motion: only hover and selection transitions are used because this catalog should feel settled, not cinematic.
+## Interaction
+
+- Motion is limited to short reveal and hover transitions, with a reduced-motion path.
+- Video thumbnails are real buttons and load privacy-enhanced YouTube embeds only after selection.
+- All primary controls meet a 44px minimum target and expose visible keyboard focus.

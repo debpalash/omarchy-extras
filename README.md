@@ -1,15 +1,16 @@
-# Omarchy Extras
+# Omarchy homepage submission
 
-Public Omarchy plugins and themes by Palash Deb.
+A compact homepage submission for the [Omarchy Design team call](https://omarchy.org). It presents Omarchy as a beautiful, minimalist computer for focused work.
 
-[Open the catalog](https://omarchy.palash.dev)
+[View the live submission](https://omarchy.palash.dev)
 
-[View the Omarchy homepage redesign](https://omarchy.palash.dev/redesign/), created for the Omarchy Design team call.
+## Direction
 
-## Included
-
-- [Bootable](https://github.com/debpalash/omarchy-bootable), an Omarchy bar plugin for safe image discovery and removable-media writing
-- [GTA6](https://github.com/debpalash/omarchy-gta6-theme), sixteen wallpaper-matched GTA VI fan editions and twenty-seven high-resolution backgrounds for Omarchy Quattro
+- Omarchy's Tokyo Night palette and JetBrains Mono type
+- Real desktop captures instead of decorative mockups
+- Keyboard navigation, unified themes, community, and installation in one clear path
+- Two lazy-loaded video facades that fetch YouTube only after interaction
+- Responsive layouts, visible focus states, reduced-motion support, and 44px touch targets
 
 ## Develop
 
@@ -20,12 +21,6 @@ npm run check
 npm run build
 ```
 
-## Deploy
+Built with Solid 2, Vite 8, and Cloudflare Workers Static Assets.
 
-```bash
-npm run deploy
-```
-
-Built with Solid 2, Vite 8, and Cloudflare Workers Static Assets. Catalog records live in [`catalog/`](catalog/). Wallpaper attribution lives in the [GTA6 theme repository](https://github.com/debpalash/omarchy-gta6-theme/blob/main/ASSETS.md).
-
-Licensed under MIT. Third-party screenshots and background artwork retain their original ownership.
+This is an independent design submission by [Palash Deb](https://palash.dev). Omarchy branding and product screenshots belong to their respective owners.

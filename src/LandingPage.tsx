@@ -1,5 +1,5 @@
 import { For, Show, createSignal, onSettled } from 'solid-js';
-import './redesign.css';
+import './landing.css';
 
 const OFFICIAL = 'https://omarchy.org';
 const ISO = 'https://iso.omarchy.org/omarchy-4.0.1.iso';
@@ -12,10 +12,10 @@ const shortcuts = [
 ];
 
 const themes = [
-  { name: 'Tokyo Night', image: '/redesign/screens/tokyo-night.webp', mode: 'dark' },
-  { name: 'Gruvbox', image: '/redesign/screens/gruvbox.webp', mode: 'dark' },
-  { name: 'Catppuccin', image: '/redesign/screens/catppuccin.webp', mode: 'dark' },
-  { name: 'Flexoki Light', image: '/redesign/screens/flexoki-light.webp', mode: 'light' },
+  { name: 'Tokyo Night', image: '/screens/tokyo-night.webp', mode: 'dark' },
+  { name: 'Gruvbox', image: '/screens/gruvbox.webp', mode: 'dark' },
+  { name: 'Catppuccin', image: '/screens/catppuccin.webp', mode: 'dark' },
+  { name: 'Flexoki Light', image: '/screens/flexoki-light.webp', mode: 'light' },
 ];
 
 const communityGroups = [
@@ -47,10 +47,6 @@ const communityGroups = [
     ],
   },
 ];
-
-function Arrow() {
-  return <span aria-hidden="true">↗</span>;
-}
 
 function SectionLabel(props: { number: string; children: string }) {
   return (
@@ -105,18 +101,7 @@ function VideoFacade(props: VideoFacadeProps) {
   );
 }
 
-function setMeta(selector: string, attribute: string, value: string) {
-  const element = document.querySelector(selector);
-  const previous = element?.getAttribute(attribute);
-  element?.setAttribute(attribute, value);
-  return () => {
-    if (!element) return;
-    if (typeof previous !== 'string') element.removeAttribute(attribute);
-    else element.setAttribute(attribute, previous);
-  };
-}
-
-export default function Redesign() {
+export default function LandingPage() {
   let mobileMenu: HTMLDetailsElement | undefined;
 
   const closeMenu = () => {
@@ -124,20 +109,10 @@ export default function Redesign() {
   };
 
   onSettled(() => {
-    const previousTitle = document.title;
-    document.title = 'Omarchy | Beautiful, Fun & Opinionated Linux';
-    document.body.classList.add('redesign-route');
-
-    const restoreMeta = [
-      setMeta('meta[name="description"]', 'content', 'Omarchy is a beautiful, fun and opinionated Linux distribution based on Arch, Hyprland and Quickshell.'),
-      setMeta('meta[name="theme-color"]', 'content', '#11121a'),
-      setMeta('meta[property="og:title"]', 'content', 'Omarchy | Beautiful, Fun & Opinionated Linux'),
-      setMeta('meta[property="og:description"]', 'content', 'A complete, keyboard-first Linux system based on Arch, Hyprland and Quickshell.'),
-      setMeta('meta[property="og:image"]', 'content', 'https://omarchy.palash.dev/redesign/screens/tokyo-night.webp'),
-      setMeta('meta[property="og:url"]', 'content', 'https://omarchy.palash.dev/redesign/'),
-      setMeta('link[rel="canonical"]', 'href', 'https://omarchy.palash.dev/redesign/'),
-      setMeta('link[rel="icon"]', 'href', '/redesign/favicon.png'),
-    ];
+    if (window.location.pathname.replace(/\/+$/, '') === '/redesign') {
+      window.history.replaceState(null, '', '/');
+    }
+    document.body.classList.add('omarchy-site');
 
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape' || !mobileMenu?.open) return;
@@ -167,29 +142,26 @@ export default function Redesign() {
     }
 
     return () => {
-      document.title = previousTitle;
-      document.body.classList.remove('redesign-route');
+      document.body.classList.remove('omarchy-site');
       document.removeEventListener('keydown', closeOnEscape);
       observer?.disconnect();
-      restoreMeta.forEach((restore) => restore());
     };
   });
 
   return (
-    <div class="redesign-page">
-      <a class="rd-skip-link" href="#redesign-main">Skip to content</a>
+    <div class="omarchy-page">
+      <a class="rd-skip-link" href="#main">Skip to content</a>
 
       <aside class="rd-announcement" aria-label="Project announcement">
         <a href={`${OFFICIAL}/news/2026/08/omacom-foundation-launches-with-8-million`}>
           <span class="rd-live-dot" aria-hidden="true" />
           Omacom Foundation launches with <s>$8</s> $10 million
-          <Arrow />
         </a>
       </aside>
 
       <header class="rd-header">
         <a class="rd-brand" href={`${OFFICIAL}/`} aria-label="Omarchy home">
-          <img src="/redesign/favicon.png" width="28" height="28" alt="" />
+          <img src="/favicon.png" width="28" height="28" alt="" />
           <span>OMARCHY</span>
         </a>
 
@@ -219,17 +191,17 @@ export default function Redesign() {
         </details>
       </header>
 
-      <main id="redesign-main">
+      <main id="main">
         <section class="rd-hero" aria-labelledby="rd-hero-title">
           <div class="rd-hero-copy">
             <p class="rd-eyebrow">ARCH / HYPRLAND / QUICKSHELL</p>
             <h1 id="rd-hero-title">Beautiful, fun &amp; <span>opinionated</span> Linux.</h1>
             <p class="rd-lede">
-              Omarchy is an omakase Linux distribution by DHH. A complete system tuned for aesthetics, focus, and getting real work done.
+              Omarchy is an omakase Linux distribution by DHH. The shell, tiling desktop, editor, and browser feel like they belong together.
             </p>
             <div class="rd-actions">
               <a class="rd-button rd-button-primary" href={ISO}>Download the ISO <span aria-hidden="true">↓</span></a>
-              <a class="rd-button rd-button-secondary" href={`${OFFICIAL}/manual/`}>Read the manual <Arrow /></a>
+              <a class="rd-button rd-button-secondary" href={`${OFFICIAL}/manual/`}>Read the manual</a>
             </div>
             <p class="rd-install-note">
               <span aria-hidden="true">[!]</span> Full-disk or free-space install. Encryption is on by default.
@@ -242,7 +214,7 @@ export default function Redesign() {
               <span>SUPER + SPACE</span>
             </div>
             <img
-              src="/redesign/screens/tokyo-night.webp"
+              src="/screens/tokyo-night.webp"
               alt="Omarchy Tokyo Night desktop with the application menu, terminal and system monitor"
               width="1600"
               height="900"
@@ -257,11 +229,11 @@ export default function Redesign() {
         <section class="rd-system rd-section" id="system" aria-labelledby="rd-system-title">
           <div class="rd-section-intro">
             <SectionLabel number="01">THE SYSTEM</SectionLabel>
-            <h2 id="rd-system-title">A complete system.<br /><span>Not a starter kit.</span></h2>
+            <h2 id="rd-system-title">A beautiful system is a <span>motivating system.</span></h2>
           </div>
           <div class="rd-system-copy">
             <p class="rd-large-copy">
-              Omarchy ships as one considered environment. The shell, editor, browser, creative tools, and desktop all arrive ready to use and styled as one.
+              Omarchy treats aesthetics as part of the work. The shell, editor, browser, and desktop arrive as one considered environment.
             </p>
             <dl class="rd-tool-list">
               <div><dt>Build</dt><dd>Neovim · Terminal · Git</dd></div>
@@ -269,14 +241,14 @@ export default function Redesign() {
               <div><dt>Create</dt><dd>Kdenlive · OBS Studio · GIMP</dd></div>
               <div><dt>Enjoy</dt><dd>Spotify · Retro music player · Games</dd></div>
             </dl>
-            <a class="rd-inline-link" href={`${OFFICIAL}/manual/`}>See what ships with Omarchy <Arrow /></a>
+            <a class="rd-inline-link" href={`${OFFICIAL}/manual/`}>See what ships with Omarchy</a>
           </div>
         </section>
 
         <section class="rd-keyboard rd-section" aria-labelledby="rd-keyboard-title">
           <div class="rd-keyboard-media" data-reveal>
             <img
-              src="/redesign/screens/keyboard-navigation.webp"
+              src="/screens/keyboard-navigation.webp"
               alt="Four tiled applications on the Omarchy desktop"
               width="1600"
               height="900"
@@ -301,7 +273,7 @@ export default function Redesign() {
                 )}
               </For>
             </ul>
-            <a class="rd-inline-link" href={`${OFFICIAL}/manual/navigation/`}>Learn the navigation model <Arrow /></a>
+            <a class="rd-inline-link" href={`${OFFICIAL}/manual/navigation/`}>Learn the navigation model</a>
           </div>
         </section>
 
@@ -309,7 +281,7 @@ export default function Redesign() {
           <div class="rd-theme-heading">
             <div>
               <SectionLabel number="03">THEME DELIGHTED</SectionLabel>
-              <h2 id="rd-themes-title">One switch.<br />The whole system follows.</h2>
+              <h2 id="rd-themes-title">One theme reaches the whole system.</h2>
             </div>
             <p>
               A theme styles the desktop, terminal, Neovim, system monitor, Chromium, and shell together. Pick a mood without rebuilding your setup.
@@ -336,7 +308,7 @@ export default function Redesign() {
               )}
             </For>
           </div>
-          <a class="rd-inline-link rd-theme-link" href={`${OFFICIAL}/manual/themes/`}>Explore themes and wallpapers <Arrow /></a>
+          <a class="rd-inline-link rd-theme-link" href={`${OFFICIAL}/manual/themes/`}>Explore themes and wallpapers</a>
         </section>
 
         <section class="rd-watch rd-section" aria-labelledby="rd-watch-title">
@@ -352,7 +324,7 @@ export default function Redesign() {
               <VideoFacade
                 videoId="F7fe9pa8OeE"
                 title="Omarchy introduction by David Heinemeier Hansson"
-                image="/redesign/screens/omarchy-quattro.webp"
+                image="/screens/omarchy-quattro.webp"
                 alt="Omarchy Quattro introduction video thumbnail showing DHH and a rally car at sunset"
               />
               <div class="rd-video-meta">
@@ -364,7 +336,7 @@ export default function Redesign() {
               <VideoFacade
                 videoId="9SDkU5VDQEQ"
                 title="You need to switch to Linux right now by NetworkChuck"
-                image="/redesign/screens/networkchuck.webp"
+                image="/screens/networkchuck.webp"
                 alt="NetworkChuck holding a laptop running Omarchy in the Linux video thumbnail"
               />
               <div class="rd-video-meta">
@@ -387,7 +359,7 @@ export default function Redesign() {
                 <section aria-labelledby={`group-${group.label.replaceAll(' ', '-').toLowerCase()}`}>
                   <h3 id={`group-${group.label.replaceAll(' ', '-').toLowerCase()}`}>{group.label}</h3>
                   <For each={group.links}>
-                    {(link) => <a href={link.href}><span>{link.label}</span><Arrow /></a>}
+                    {(link) => <a href={link.href}>{link.label}</a>}
                   </For>
                 </section>
               )}
@@ -398,13 +370,13 @@ export default function Redesign() {
         <section class="rd-install rd-section" aria-labelledby="rd-install-title">
           <div>
             <SectionLabel number="06">READY WHEN YOU ARE</SectionLabel>
-            <h2 id="rd-install-title">Take the whole thing for a spin.</h2>
+            <h2 id="rd-install-title">Install Omarchy from one ISO.</h2>
           </div>
           <div class="rd-install-copy">
             <p>Install to a full disk or unallocated free space. Back up first, then turn off Secure Boot or TPM before starting the installer.</p>
             <div class="rd-actions">
               <a class="rd-button rd-button-primary" href={ISO}>Download Omarchy 4.0.1 <span aria-hidden="true">↓</span></a>
-              <a class="rd-button rd-button-secondary" href={`${OFFICIAL}/manual/getting-started/`}>Installation guide <Arrow /></a>
+              <a class="rd-button rd-button-secondary" href={`${OFFICIAL}/manual/getting-started/`}>Installation guide</a>
             </div>
           </div>
         </section>
@@ -412,7 +384,7 @@ export default function Redesign() {
 
       <footer class="rd-footer">
         <a class="rd-brand" href={`${OFFICIAL}/`} aria-label="Omarchy home">
-          <img src="/redesign/favicon.png" width="24" height="24" alt="" />
+          <img src="/favicon.png" width="24" height="24" alt="" />
           <span>OMARCHY</span>
         </a>
         <p>Incubated at <a href="https://37signals.com">37signals</a>. Hosted by <a href="https://cloudflare.com">Cloudflare</a>.</p>
@@ -422,9 +394,6 @@ export default function Redesign() {
         </div>
       </footer>
 
-      <a class="rd-concept-note" href="/" aria-label="Return to Omarchy Extras">
-        DESIGN CONCEPT / PALASH DEB
-      </a>
     </div>
   );
 }

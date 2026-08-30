@@ -5,11 +5,11 @@
 >
   <url>
     <loc>https://omarchy.palash.dev/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <image:image>
-      <image:loc>https://omarchy.palash.dev/wallpapers/1-vice-sunset-ultrawide.webp</image:loc>
-      <image:title>Vice Sunset GTA6 theme for Omarchy</image:title>
-      <image:caption>The default GTA6 Omarchy theme wallpaper with palms over a pink and orange sky.</image:caption>
+      <image:loc>https://omarchy.palash.dev/screens/tokyo-night.webp</image:loc>
+      <image:title>Omarchy Tokyo Night desktop</image:title>
+      <image:caption>Omarchy running the default Tokyo Night theme with the application menu, terminal, and system monitor.</image:caption>
     </image:image>
   </url>
 </urlset>

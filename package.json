@@ -1,9 +1,9 @@
 {
-  "name": "omarchy-extras",
-  "version": "0.1.0",
+  "name": "omarchy-site-submission",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Public Omarchy plugins and themes by Palash Deb",
+  "description": "Omarchy homepage submission by Palash Deb",
   "engines": {
     "node": ">=22.12.0"
   },
