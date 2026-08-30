@@ -2,11 +2,11 @@ import type { ParentProps } from 'solid-js';
 
 const siteUrl = 'https://omarchy.palash.dev/';
 const socialImage = `${siteUrl}screens/tokyo-night.webp`;
-const description = 'Omarchy is a beautiful, fun and opinionated Linux distribution based on Arch, Hyprland and Quickshell.';
+const description = 'Beautiful, Fun & Opinionated Linux by DHH';
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Omarchy homepage submission',
+  name: 'Omarchy',
   url: siteUrl,
   description,
   image: socialImage,
@@ -39,7 +39,7 @@ export default function Document(props: ParentProps) {
         <link rel="canonical" href={siteUrl} />
         <link rel="preload" as="image" type="image/webp" href="/screens/tokyo-night.webp" fetchpriority="high" />
         <meta name="description" content={description} />
-        <meta property="og:title" content="Omarchy | Beautiful, Fun & Opinionated Linux" />
+        <meta property="og:title" content="Omarchy — Beautiful, Fun & Opinionated Linux by DHH" />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
@@ -51,12 +51,12 @@ export default function Document(props: ParentProps) {
         <meta property="og:image:height" content="900" />
         <meta property="og:image:alt" content="Omarchy desktop running the Tokyo Night theme" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Omarchy | Beautiful, Fun & Opinionated Linux" />
+        <meta name="twitter:title" content="Omarchy — Beautiful, Fun & Opinionated Linux by DHH" />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImage} />
         <meta name="twitter:image:alt" content="Omarchy desktop running the Tokyo Night theme" />
         <script type="application/ld+json" innerHTML={JSON.stringify(structuredData)} />
-        <title>Omarchy | Beautiful, Fun &amp; Opinionated Linux</title>
+        <title>Omarchy — Beautiful, Fun &amp; Opinionated Linux by DHH</title>
       </head>
       <body>{props.children}</body>
     </html>
