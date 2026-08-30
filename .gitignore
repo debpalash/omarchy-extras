@@ -2,3 +2,4 @@ node_modules/
 dist/
 .wrangler/
 *.log
+public/site-search-index.json

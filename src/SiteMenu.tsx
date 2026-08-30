@@ -1,6 +1,8 @@
-import { For, Show, createMemo, createSignal, onSettled } from 'solid-js';
+import { For, Show, createSignal, onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
 import { menuStyles } from './SiteMenu.stylex';
+import ContentGraph from './ContentGraph';
+import { preloadSiteSearch, relatedSiteDocuments, searchSite, type SiteSearchDocument } from './siteSearch';
 
 type MenuIconName =
   | 'manual'
@@ -18,11 +20,23 @@ type MenuIconName =
   | 'workstations'
   | 'merch';
 
-const menuLinks: Array<{ label: string; href: string; icon: MenuIconName }> = [
+type MenuDestination = {
+  label: string;
+  href: string;
+  icon: MenuIconName;
+  detail?: string;
+};
+
+const menuLinks: MenuDestination[] = [
   { label: 'Manual', href: '/manual/', icon: 'manual' },
   { label: 'ISO', href: 'https://iso.omarchy.org/omarchy-4.0.1.iso', icon: 'iso' },
   { label: 'Plugins', href: 'https://omarchyplugins.com/', icon: 'plugins' },
   { label: 'GitHub', href: 'https://github.com/omacom/omarchy', icon: 'github' },
+  {
+    label: 'Awesome Omarchy',
+    href: 'https://github.com/aorumbayev/awesome-omarchy',
+    icon: 'github',
+  },
   { label: 'Security', href: '/security/', icon: 'security' },
   { label: 'News', href: '/news/', icon: 'news' },
   { label: 'Teams', href: '/teams/', icon: 'teams' },
@@ -85,28 +99,85 @@ function MenuIcon(props: { name: MenuIconName }) {
   );
 }
 
+function ToggleIcon(props: { open: boolean }) {
+  return (
+    <svg
+      {...stylex.attrs(menuStyles.toggleIcon)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+      aria-hidden="true"
+    >
+      <Show
+        when={props.open}
+        fallback={
+          <>
+            <path d="M4 8h16" />
+            <path d="M4 16h16" />
+          </>
+        }
+      >
+        <path d="M5 5l14 14" />
+        <path d="M19 5 5 19" />
+      </Show>
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg
+      {...stylex.attrs(menuStyles.toggleIcon)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+      aria-hidden="true"
+    >
+      <circle cx="10.5" cy="10.5" r="5.5" />
+      <path d="m14.5 14.5 5 5" />
+    </svg>
+  );
+}
+
 export default function SiteMenu() {
   const [open, setOpen] = createSignal(false);
   const [activeIndex, setActiveIndex] = createSignal(0);
   const [query, setQuery] = createSignal('');
+  const [searchDocuments, setSearchDocuments] = createSignal<SiteSearchDocument[]>([]);
+  const [graphRoot, setGraphRoot] = createSignal<SiteSearchDocument | null>(null);
+  const [graphTrail, setGraphTrail] = createSignal<SiteSearchDocument[]>([]);
+  const [searchState, setSearchState] = createSignal<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [shortcutLabel, setShortcutLabel] = createSignal('Ctrl K');
   const [toggleHidden, setToggleHidden] = createSignal(false);
-  const filteredLinks = createMemo(() => {
-    const normalizedQuery = query().trim().toLocaleLowerCase();
-    if (!normalizedQuery) return menuLinks;
-    return menuLinks.filter((link) => link.label.toLocaleLowerCase().includes(normalizedQuery));
-  });
   let controls: HTMLDivElement | undefined;
   let toggleButton: HTMLButtonElement | undefined;
-  let searchInput: HTMLInputElement | undefined;
   let panel: HTMLElement | undefined;
   let scrollEndTimer: number | undefined;
+  let searchSequence = 0;
 
   const focusToggle = () => queueMicrotask(() => toggleButton?.focus({ preventScroll: true }));
+  const getSearchInput = () => document.querySelector<HTMLInputElement>('#site-menu-search');
+  const focusSearchInput = (select = false) => {
+    const input = getSearchInput();
+    input?.focus({ preventScroll: true });
+    if (select) input?.select();
+  };
 
   const closeMenu = (restoreFocus = false) => {
     if (!open()) return;
     setOpen(false);
+    searchSequence += 1;
     setQuery('');
+    setSearchDocuments([]);
+    setGraphRoot(null);
+    setGraphTrail([]);
+    setSearchState('idle');
     setActiveIndex(0);
     if (restoreFocus) focusToggle();
   };
@@ -114,11 +185,76 @@ export default function SiteMenu() {
   const openMenu = () => {
     setToggleHidden(false);
     setOpen(true);
-    window.setTimeout(() => searchInput?.focus({ preventScroll: true }), 30);
+    void preloadSiteSearch().catch(() => undefined);
+    window.setTimeout(() => focusSearchInput(), 180);
   };
 
-  const moveActive = (nextIndex: number) => {
-    const visibleLinks = Array.from(panel?.querySelectorAll<HTMLAnchorElement>('[data-menu-link]') ?? []);
+  const focusSearch = () => {
+    setToggleHidden(false);
+
+    if (open()) {
+      focusSearchInput(true);
+    } else {
+      openMenu();
+    }
+  };
+
+  const runSearch = async (value: string) => {
+    const normalizedQuery = value.trim();
+    const sequence = ++searchSequence;
+    setQuery(value);
+    setActiveIndex(0);
+
+    if (!normalizedQuery) {
+      setSearchDocuments([]);
+      setGraphRoot(null);
+      setGraphTrail([]);
+      setSearchState('idle');
+      return;
+    }
+
+    setSearchDocuments([]);
+    setGraphRoot(null);
+    setGraphTrail([]);
+    setSearchState('loading');
+
+    try {
+      const documents = await searchSite(normalizedQuery);
+      if (sequence !== searchSequence) return;
+      setSearchDocuments(documents.slice(0, 7));
+      setSearchState('ready');
+    } catch {
+      if (sequence !== searchSequence) return;
+      setSearchDocuments([]);
+      setSearchState('error');
+    }
+  };
+
+  const exploreDocument = async (document: SiteSearchDocument) => {
+    const sequence = ++searchSequence;
+    const nextTrail = [...graphTrail().filter((item) => item.id !== document.id), document].slice(-8);
+    setGraphRoot(document);
+    setGraphTrail(nextTrail);
+    setActiveIndex(0);
+    setSearchState('loading');
+
+    try {
+      const related = await relatedSiteDocuments(document, nextTrail.slice(0, -1).map((item) => item.id));
+      if (sequence !== searchSequence) return;
+      setSearchDocuments(related);
+      setSearchState('ready');
+      queueMicrotask(() => panel?.querySelector<HTMLButtonElement>('[data-graph-node]')?.focus({ preventScroll: true }));
+    } catch {
+      if (sequence !== searchSequence) return;
+      setSearchDocuments([]);
+      setSearchState('error');
+    }
+  };
+
+  const resetGraph = () => void runSearch(query());
+
+  const moveActive = (nextIndex: number, selector: string) => {
+    const visibleLinks = Array.from(panel?.querySelectorAll<HTMLElement>(selector) ?? []);
     if (!visibleLinks.length) return;
     const wrappedIndex = (nextIndex + visibleLinks.length) % visibleLinks.length;
     setActiveIndex(wrappedIndex);
@@ -127,28 +263,34 @@ export default function SiteMenu() {
 
   const handlePanelKeyDown = (event: KeyboardEvent) => {
     if (!open()) return;
-    const targetIsSearch = event.target === searchInput;
-    const resultCount = filteredLinks().length;
+    const targetIsSearch = event.target === getSearchInput();
+    const targetIsGraphNode = (event.target as HTMLElement).hasAttribute('data-graph-node');
+    const resultCount = query().trim() ? searchDocuments().length : menuLinks.length;
+    const activeSelector = query().trim()
+      ? targetIsGraphNode ? '[data-graph-node]' : '[data-search-result]'
+      : '[data-menu-link]';
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      moveActive(targetIsSearch ? 0 : activeIndex() + 1);
+      moveActive(targetIsSearch ? 0 : activeIndex() + 1, activeSelector);
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
-      moveActive(targetIsSearch ? resultCount - 1 : activeIndex() - 1);
+      moveActive(targetIsSearch ? resultCount - 1 : activeIndex() - 1, activeSelector);
     } else if (event.key === 'Home' && !targetIsSearch) {
       event.preventDefault();
-      moveActive(0);
+      moveActive(0, activeSelector);
     } else if (event.key === 'End' && !targetIsSearch) {
       event.preventDefault();
-      moveActive(resultCount - 1);
+      moveActive(resultCount - 1, activeSelector);
     } else if (event.key === 'Enter' && targetIsSearch && resultCount) {
       event.preventDefault();
-      panel?.querySelector<HTMLAnchorElement>('[data-menu-link]')?.click();
+      panel?.querySelector<HTMLElement>(query().trim() ? '[data-search-result]' : '[data-menu-link]')?.click();
     }
   };
 
   onSettled(() => {
+    if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent)) setShortcutLabel('⌘ K');
+
     const handleScroll = () => {
       const focusIsInsideMenu = panel?.contains(document.activeElement) ?? false;
       const focusIsInsideControls = controls?.contains(document.activeElement) ?? false;
@@ -163,6 +305,12 @@ export default function SiteMenu() {
     };
 
     const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && !event.altKey && event.key.toLocaleLowerCase() === 'k') {
+        event.preventDefault();
+        focusSearch();
+        return;
+      }
+
       if (event.key === 'Escape' && open()) {
         event.preventDefault();
         closeMenu(true);
@@ -192,19 +340,33 @@ export default function SiteMenu() {
           {...stylex.attrs(menuStyles.toggle, open() && menuStyles.toggleOpen, menuStyles.focusRing)}
           onClick={() => (open() ? closeMenu(false) : openMenu())}
         >
-          <span {...stylex.attrs(menuStyles.toggleMark)} aria-hidden="true">
-            <span {...stylex.attrs(menuStyles.toggleMarkLine, open() && menuStyles.toggleMarkLineTopOpen)} />
-            <span {...stylex.attrs(menuStyles.toggleMarkLine, open() && menuStyles.toggleMarkLineBottomOpen)} />
-          </span>
+          <ToggleIcon open={open()} />
           <span>{open() ? 'Close' : 'Menu'}</span>
         </button>
 
-        <a
-          href="https://iso.omarchy.org/omarchy-4.0.1.iso"
-          {...stylex.attrs(menuStyles.download, menuStyles.focusRing)}
-        >
-          Download
-        </a>
+        <div {...stylex.attrs(menuStyles.rightActions)}>
+          <button
+            type="button"
+            aria-label="Search site"
+            aria-keyshortcuts="Control+K Meta+K"
+            aria-controls="site-menu"
+            aria-expanded={open() ? 'true' : 'false'}
+            title={`Search site (${shortcutLabel()})`}
+            {...stylex.attrs(menuStyles.searchAction, menuStyles.focusRing)}
+            onPointerDown={(event) => event.preventDefault()}
+            onClick={focusSearch}
+          >
+            <SearchIcon />
+          </button>
+
+          <a
+            href="https://iso.omarchy.org/omarchy-4.0.1.iso"
+            {...stylex.attrs(menuStyles.download, menuStyles.focusRing)}
+          >
+            <MenuIcon name="iso" />
+            <span>Download ISO</span>
+          </a>
+        </div>
       </div>
 
       <div
@@ -218,55 +380,135 @@ export default function SiteMenu() {
         id="site-menu"
         aria-label="Omarchy destinations"
         aria-hidden={open() ? 'false' : 'true'}
-        {...stylex.attrs(menuStyles.panel, open() && menuStyles.panelOpen)}
+        {...stylex.attrs(menuStyles.panel, Boolean(query().trim()) && menuStyles.panelGraph, open() && menuStyles.panelOpen)}
         onKeyDown={handlePanelKeyDown}
       >
         <label for="site-menu-search" {...stylex.attrs(menuStyles.prompt)}>Go...</label>
-        <input
-          ref={searchInput}
-          id="site-menu-search"
-          type="search"
-          value={query()}
-          placeholder="Search destinations"
-          autocomplete="off"
-          spellcheck={false}
-          aria-controls="site-menu-results"
-          {...stylex.attrs(menuStyles.search, menuStyles.focusRing)}
-          onInput={(event) => {
-            setQuery(event.currentTarget.value);
-            setActiveIndex(0);
-          }}
-        />
-        <ul id="site-menu-results" {...stylex.attrs(menuStyles.list)}>
-          <Show
-            when={filteredLinks().length > 0}
-            fallback={<li role="status" {...stylex.attrs(menuStyles.empty)}>No matches. Try Manual or GitHub.</li>}
+        <div {...stylex.attrs(menuStyles.searchField)}>
+          <input
+            id="site-menu-search"
+            type="search"
+            role="combobox"
+            value={query()}
+            placeholder="Search the site"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck={false}
+            aria-label="Go, search the Omarchy site"
+            aria-controls="site-menu-results"
+            aria-expanded={open() ? 'true' : 'false'}
+            aria-autocomplete="list"
+            tabindex={open() ? 0 : -1}
+            {...stylex.attrs(menuStyles.search, menuStyles.focusRing)}
+            onInput={(event) => void runSearch(event.currentTarget.value)}
+          />
+          <kbd
+            aria-hidden="true"
+            {...stylex.attrs(menuStyles.searchShortcut, query().length > 0 && menuStyles.searchShortcutHidden)}
           >
-            <For each={filteredLinks()}>
-              {(link, index) => (
-                <li {...stylex.attrs(menuStyles.listItem)}>
-                  <a
-                    data-menu-link
-                    href={link.href}
-                    tabindex={open() ? 0 : -1}
-                    {...stylex.attrs(
-                      menuStyles.menuLink,
-                      activeIndex() === index() && menuStyles.menuLinkActive,
-                      menuStyles.focusRing,
-                    )}
-                    onMouseEnter={() => setActiveIndex(index())}
-                    onFocus={() => setActiveIndex(index())}
-                    onClick={() => closeMenu(false)}
-                  >
-                    <MenuIcon name={link.icon} />
-                    <span {...stylex.attrs(menuStyles.linkLabel)}>{link.label}</span>
-                    <span {...stylex.attrs(menuStyles.chevron)} aria-hidden="true" />
-                  </a>
-                </li>
-              )}
-            </For>
+            {shortcutLabel()}
+          </kbd>
+        </div>
+        <div id="site-menu-results">
+          <Show when={!query().trim()}>
+            {(_showMenu) => (
+              <ul {...stylex.attrs(menuStyles.list)}>
+                <For each={menuLinks}>
+                  {(link, index) => (
+                    <li {...stylex.attrs(menuStyles.listItem)}>
+                      <a
+                        data-menu-link
+                        href={link.href}
+                        tabindex={open() ? 0 : -1}
+                        {...stylex.attrs(
+                          menuStyles.menuLink,
+                          activeIndex() === index() && menuStyles.menuLinkActive,
+                          menuStyles.focusRing,
+                        )}
+                        onMouseEnter={() => setActiveIndex(index())}
+                        onFocus={() => setActiveIndex(index())}
+                        onClick={() => closeMenu(false)}
+                      >
+                        <MenuIcon name={link.icon} />
+                        <span {...stylex.attrs(menuStyles.linkCopy)}>
+                          <span {...stylex.attrs(menuStyles.linkLabel)}>{link.label}</span>
+                          <Show when={link.detail}>
+                            <span {...stylex.attrs(menuStyles.linkDetail)}>{link.detail}</span>
+                          </Show>
+                        </span>
+                        <span {...stylex.attrs(menuStyles.chevron)} aria-hidden="true" />
+                      </a>
+                    </li>
+                  )}
+                </For>
+              </ul>
+            )}
           </Show>
-        </ul>
+          <Show when={query().trim()}>
+            {(normalizedQuery) => (
+              <div {...stylex.attrs(menuStyles.searchWorkspace)}>
+                <section {...stylex.attrs(menuStyles.searchResultsPane)} aria-label="Orama search results">
+                  <header {...stylex.attrs(menuStyles.searchResultsHeader)}>
+                    <span>Orama results</span>
+                    <span>{searchDocuments().length}</span>
+                  </header>
+                  <Show
+                    when={searchDocuments().length > 0}
+                    fallback={
+                      <p role="status" aria-live="polite" {...stylex.attrs(menuStyles.searchResultsState)}>
+                        {searchState() === 'loading' ? 'Searching...' : searchState() === 'error' ? 'Search unavailable.' : 'No results.'}
+                      </p>
+                    }
+                  >
+                    {(_hasResults) => (
+                      <ol {...stylex.attrs(menuStyles.searchResultsList)}>
+                        <For each={searchDocuments()}>
+                          {(document, index) => (
+                            <li {...stylex.attrs(menuStyles.searchResultItem)}>
+                              <button
+                                data-search-result
+                                type="button"
+                                aria-label={`Explore result ${document.title}`}
+                                title={document.title}
+                                {...stylex.attrs(
+                                  menuStyles.searchResult,
+                                  activeIndex() === index() && menuStyles.searchResultActive,
+                                  menuStyles.focusRing,
+                                )}
+                                onMouseEnter={() => setActiveIndex(index())}
+                                onFocus={() => setActiveIndex(index())}
+                                onClick={() => void exploreDocument(document)}
+                              >
+                                <span {...stylex.attrs(menuStyles.searchResultNumber)}>{String(index() + 1).padStart(2, '0')}</span>
+                                <span {...stylex.attrs(menuStyles.searchResultCopy)}>
+                                  <span {...stylex.attrs(menuStyles.searchResultTitle)}>{document.title}</span>
+                                  <span {...stylex.attrs(menuStyles.searchResultDetail)}>{document.kind} / {document.section}</span>
+                                </span>
+                              </button>
+                            </li>
+                          )}
+                        </For>
+                      </ol>
+                    )}
+                  </Show>
+                </section>
+
+                <ContentGraph
+                  query={normalizedQuery()}
+                  root={graphRoot()}
+                  documents={searchDocuments()}
+                  trail={graphTrail()}
+                  loading={searchState() === 'loading'}
+                  error={searchState() === 'error'}
+                  activeIndex={activeIndex()}
+                  onActiveIndex={setActiveIndex}
+                  onExplore={(document) => void exploreDocument(document)}
+                  onReset={resetGraph}
+                />
+              </div>
+            )}
+          </Show>
+        </div>
       </nav>
     </>
   );

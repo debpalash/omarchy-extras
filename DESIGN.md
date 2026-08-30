@@ -40,7 +40,7 @@ The page lets Omarchy speak for itself. Marketing copy remains limited to the cu
 - Arrow keys move focused title bars, Shift plus arrow keys resize, Enter maximizes, Escape closes the launcher, and Alt plus 1 to 3 switches workspaces.
 - Mobile uses one full-screen focused window at a time with the dock as the app switcher. Reduced motion and WebGL failure keep every operating-system interaction available over the CSS wallpaper.
 - Video thumbnails are real buttons and load privacy-enhanced YouTube embeds only after selection. Closing the Videos window or leaving its workspace stops playback by unmounting the player.
-- The site launcher opens from its fixed top-left control, focuses a live destination search, closes on Escape, backdrop selection, or page scroll, and supports arrow, Home, End, and Enter key navigation. Its control hides only while scrolling, then returns.
+- The site launcher opens from its fixed top-left control or Ctrl/Cmd plus K, focuses site search, closes on Escape, backdrop selection, or page scroll, and supports arrow, Home, End, and Enter key navigation. Its blank state shows the destination list. Typing places Orama results on the left and a related-content graph on the right across manuals, news, static pages, and external destinations; narrower screens stack a horizontally scrollable result rail above the graph. Selecting a result or node recenters the graph and finds the next useful documents. Open page follows the selected result, while Search results returns to the original query. Its control hides only while scrolling, then returns.
 - All primary controls meet a 44px minimum target and expose visible keyboard focus.
 
 ## Implementation
@@ -48,5 +48,6 @@ The page lets Omarchy speak for itself. Marketing copy remains limited to the cu
 - Solid 2 owns the redesigned homepage.
 - StyleX owns component, responsive, state, and token styling for that homepage.
 - Three.js owns the lazy-loaded WebGL 2 wallpaper compositor. Solid supplies the accessible window layer, renderer work happens on demand, device pixel ratio is capped, and scene resources are disposed with the component.
+- Orama is lazy-loaded when the launcher opens. A repeatable predev and prebuild step generates its document corpus from the real manual index, static HTML pages, and verified external destinations. Solid owns accessible graph nodes and progressive exploration. Three.js draws their relationships on demand without a render loop; the native controls remain complete when WebGL is unavailable.
 - A small global stylesheet supplies font faces, the document reset, and the upstream TTFX canvas fallback contract.
 - Official static routes and shared assets are preserved from `omacom/omarchy-site` revision `31a5ecd`.
