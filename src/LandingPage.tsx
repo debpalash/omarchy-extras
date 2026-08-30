@@ -1,6 +1,7 @@
 import { For, Show, createSignal, onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './landing.stylex';
+import OmarchyComputer from './OmarchyComputer';
 import './landing.css';
 
 const OMARCHY_MARK = `                 ▄▄▄
@@ -119,25 +120,13 @@ export default function LandingPage() {
 
       <main id="main">
         <section {...stylex.attrs(styles.heroShell)} aria-labelledby="rd-hero-title">
-          <span {...stylex.attrs(styles.heroGridOverlay)} aria-hidden="true" />
           <div {...stylex.attrs(styles.contentWidth, styles.hero)}>
             <h1 {...stylex.attrs(styles.heroTitle)} id="rd-hero-title">
               Beautiful, Fun &amp; Opinionated Linux by{' '}
               <a {...stylex.attrs(styles.heroTitleLink, styles.focusRing)} href="https://dhh.dk">DHH</a>
             </h1>
 
-            <figure {...stylex.attrs(styles.heroFigure)}>
-              <img
-                {...stylex.attrs(styles.heroImage)}
-                src="/screens/tokyo-night.webp"
-                alt="Omarchy Tokyo Night desktop with the application menu, terminal and system monitor"
-                width="1600"
-                height="900"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-              />
-            </figure>
+            <OmarchyComputer />
           </div>
         </section>
 

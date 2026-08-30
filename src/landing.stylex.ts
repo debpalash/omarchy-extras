@@ -104,16 +104,6 @@ export const styles = stylex.create({
     borderBottomStyle: 'solid',
     borderBottomColor: tokens.line,
   },
-  heroGridOverlay: {
-    position: 'absolute',
-    zIndex: -1,
-    inset: 0,
-    opacity: 0.2,
-    pointerEvents: 'none',
-    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px)',
-    backgroundSize: '48px 48px',
-    maskImage: 'linear-gradient(to bottom, transparent, #000 28%, #000 72%, transparent)',
-  },
   hero: {
     minHeight: 'inherit',
     display: 'grid',
@@ -155,31 +145,6 @@ export const styles = stylex.create({
     color: tokens.blue,
     textDecorationThickness: '0.08em',
     textUnderlineOffset: '0.12em',
-  },
-  heroFigure: {
-    position: 'relative',
-    minWidth: 0,
-    width: {
-      default: '100%',
-      '@media (max-width: 980px)': 'min(100%, 760px)',
-    },
-    margin: 0,
-    justifySelf: {
-      default: 'stretch',
-      '@media (max-width: 980px)': 'end',
-    },
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: tokens.lineStrong,
-    backgroundColor: tokens.panel,
-    boxShadow: '0 2.2rem 6rem rgba(0, 0, 0, 0.45), -14px 14px 0 -13px rgba(122, 162, 247, 0.3)',
-  },
-  heroImage: {
-    display: 'block',
-    width: '100%',
-    height: 'auto',
-    aspectRatio: '16 / 9',
-    objectFit: 'cover',
   },
   officialLinks: {
     width: {
