@@ -1,11 +1,11 @@
 import { For, Show, createMemo, createSignal, onSettled } from 'solid-js';
 import * as stylex from '@stylexjs/stylex';
-import { btopStyles as styles } from './BtopHome.stylex';
+import { btopStyles as styles } from './BtopMonitor.stylex';
 
-export type HomeTaskId = 'about' | 'terminal' | 'files' | 'videos';
+export type DesktopTaskId = 'about' | 'btop' | 'dhh-video' | 'network-video' | 'terminal' | 'files';
 
 type HomeTask = {
-  id: HomeTaskId;
+  id: DesktopTaskId;
   title: string;
   workspace: number;
   open: boolean;
@@ -32,16 +32,18 @@ type ConnectionSnapshot = {
   saveData?: boolean;
 };
 
-type BtopHomeProps = {
+type BtopMonitorProps = {
   tasks: HomeTask[];
-  onOpen: (id: HomeTaskId) => void;
+  onOpen: (id: DesktopTaskId) => void;
 };
 
-const taskLabels: Record<HomeTaskId, string> = {
-  about: 'Home',
+const taskLabels: Record<DesktopTaskId, string> = {
+  about: 'About',
+  btop: 'btop',
+  'dhh-video': 'DHH Demo',
+  'network-video': 'NetworkChuck Demo',
   terminal: 'Terminal',
   files: 'Files',
-  videos: 'Videos',
 };
 
 const formatBytes = (bytes: number) => {
@@ -63,7 +65,7 @@ const formatUptime = (seconds: number) => {
   return [hours, minutes, remainingSeconds].map((value) => String(value).padStart(2, '0')).join(':');
 };
 
-export default function BtopHome(props: BtopHomeProps) {
+export default function BtopMonitor(props: BtopMonitorProps) {
   const [paused, setPaused] = createSignal(false);
   const [lagHistory, setLagHistory] = createSignal<number[]>([]);
   const [memory, setMemory] = createSignal<BrowserMemory | null>(null);
@@ -155,16 +157,14 @@ export default function BtopHome(props: BtopHomeProps) {
   });
 
   return (
-    <div {...stylex.attrs(styles.home)}>
+    <div {...stylex.attrs(styles.home)} aria-label="Browser session monitor">
       <header {...stylex.attrs(styles.header)}>
         <div {...stylex.attrs(styles.identity)}>
-          <p {...stylex.attrs(styles.kicker)}>OMARCHY / HOME</p>
-          <h1 {...stylex.attrs(styles.title)} id="rd-hero-title">
-            Beautiful, Fun &amp; Opinionated Linux by <a {...stylex.attrs(styles.titleLink, styles.focusRing)} href="https://dhh.dk">DHH</a>
-          </h1>
+          <p {...stylex.attrs(styles.kicker)}>1 cpu</p>
+          <h2 {...stylex.attrs(styles.title)}>Browser session monitor</h2>
         </div>
         <div {...stylex.attrs(styles.session)}>
-          <span {...stylex.attrs(styles.sessionLabel)}>SESSION</span>
+          <span {...stylex.attrs(styles.sessionLabel)}>UP</span>
           <strong {...stylex.attrs(styles.sessionValue)}>{formatUptime(uptime())}</strong>
           <button
             {...stylex.attrs(styles.pauseButton, styles.focusRing)}

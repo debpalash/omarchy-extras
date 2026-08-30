@@ -7,12 +7,12 @@ export const desktopStyles = stylex.create({
     overflow: 'hidden',
     width: '100%',
     height: {
-      default: 'clamp(640px, 78svh, 840px)',
-      '@media (max-width: 720px)': 'min(720px, calc(100svh - 34px))',
+      default: 'clamp(820px, 92svh, 980px)',
+      '@media (max-width: 720px)': 'min(820px, calc(100svh - 18px))',
     },
     minHeight: {
-      default: '640px',
-      '@media (max-width: 720px)': '620px',
+      default: '820px',
+      '@media (max-width: 720px)': '680px',
     },
     isolation: 'isolate',
     color: tokens.ink,
@@ -83,13 +83,37 @@ export const desktopStyles = stylex.create({
     fontWeight: 700,
     letterSpacing: '0.06em',
   },
+  shellStart: {
+    minWidth: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: {
+      default: '0.75rem',
+      '@media (max-width: 540px)': '0.25rem',
+    },
+  },
+  shellMenu: {
+    width: '44px',
+    height: '44px',
+    display: 'grid',
+    placeItems: 'center',
+    padding: '7px',
+    color: tokens.ink,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    cursor: 'pointer',
+  },
+  shellMenuActive: {
+    backgroundColor: 'rgba(240, 238, 245, 0.08)',
+  },
+  shellLogo: {
+    width: '28px',
+    height: '28px',
+    display: 'block',
+  },
   workspaces: {
     display: 'flex',
     justifyContent: 'center',
-    justifySelf: {
-      default: 'center',
-      '@media (max-width: 540px)': 'start',
-    },
     gap: '0.3rem',
   },
   workspace: {
@@ -112,18 +136,54 @@ export const desktopStyles = stylex.create({
     borderColor: tokens.green,
   },
   clock: {
-    justifySelf: 'end',
     color: tokens.ink,
     fontVariantNumeric: 'tabular-nums',
     whiteSpace: 'nowrap',
+  },
+  activeApp: {
+    display: {
+      default: 'inline',
+      '@media (max-width: 540px)': 'none',
+    },
+    maxWidth: {
+      default: '28ch',
+      '@media (max-width: 540px)': '14ch',
+    },
+    overflow: 'hidden',
+    color: tokens.muted,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  shellWidgets: {
+    justifySelf: 'end',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.65rem',
+  },
+  shellState: {
+    display: {
+      default: 'inline',
+      '@media (max-width: 540px)': 'none',
+    },
+    color: tokens.green,
+    fontWeight: 700,
   },
   windowsLayer: {
     position: 'absolute',
     zIndex: 10,
     inset: {
-      default: '46px 0 64px',
-      '@media (max-width: 720px)': '46px 0 118px',
+      default: '46px 0 0',
+      '@media (max-width: 720px)': '46px 0 0',
     },
+  },
+  homeStackLayer: {
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    display: 'grid',
+    alignContent: 'start',
+    gap: '4px',
+    padding: '4px 4px 0.75rem',
+    scrollPaddingBlock: '4px 0.75rem',
   },
   emptyWorkspace: {
     position: 'absolute',
@@ -167,6 +227,24 @@ export const desktopStyles = stylex.create({
     height: 'auto',
     minWidth: 0,
     minHeight: 0,
+  },
+  homeStackWindow: {
+    position: 'relative',
+    inset: 'auto',
+    width: '100%',
+    height: 'auto',
+    minWidth: 0,
+    minHeight: 0,
+    boxShadow: '0 0.7rem 1.8rem rgba(0, 0, 0, 0.34)',
+  },
+  homeAboutWindow: {
+    minHeight: '660px',
+  },
+  homeBtopWindow: {
+    minHeight: '760px',
+  },
+  homeVideoWindow: {
+    aspectRatio: '16 / 10',
   },
   hidden: {
     display: 'none',
@@ -334,10 +412,18 @@ export const desktopStyles = stylex.create({
     },
     backgroundColor: '#0a0a0d',
   },
+  videoWindow: {
+    width: '100%',
+    height: '100%',
+    minHeight: 0,
+    padding: '0.45rem',
+    backgroundColor: '#0a0a0d',
+  },
   videoFrame: {
     position: 'relative',
     overflow: 'hidden',
-    aspectRatio: '16 / 9',
+    width: '100%',
+    height: '100%',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: tokens.lineStrong,
@@ -414,39 +500,58 @@ export const desktopStyles = stylex.create({
   dock: {
     position: 'absolute',
     zIndex: 90,
-    left: '50%',
+    left: {
+      default: '8px',
+      '@media (max-width: 720px)': '50%',
+    },
+    top: {
+      default: '50%',
+      '@media (max-width: 720px)': 'auto',
+    },
     bottom: {
-      default: '10px',
+      default: 'auto',
       '@media (max-width: 720px)': 'max(8px, env(safe-area-inset-bottom))',
     },
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: {
+      default: 'column',
+      '@media (max-width: 720px)': 'row',
+    },
     justifyContent: 'center',
     gap: '0.5rem',
     width: {
-      default: 'auto',
+      default: '44px',
       '@media (max-width: 720px)': 'calc(100% - 16px)',
     },
     maxWidth: 'calc(100% - 16px)',
-    padding: '0.4rem',
-    backgroundColor: 'rgba(8, 9, 13, 0.94)',
+    padding: 0,
+    backgroundColor: '#0a0a0d',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: tokens.lineStrong,
-    transform: 'translateX(-50%)',
+    transform: {
+      default: 'translateY(-50%)',
+      '@media (max-width: 720px)': 'translateX(-50%)',
+    },
   },
   dockButton: {
     minWidth: {
-      default: '88px',
-      '@media (max-width: 540px)': 'auto',
+      default: '44px',
+      '@media (max-width: 540px)': 0,
     },
-    minHeight: '46px',
+    width: {
+      default: '44px',
+      '@media (max-width: 720px)': 'auto',
+    },
+    height: '44px',
+    minHeight: '44px',
+    flexGrow: {
+      default: 0,
+      '@media (max-width: 720px)': 1,
+    },
     display: 'grid',
     placeItems: 'center',
-    paddingInline: {
-      default: '0.8rem',
-      '@media (max-width: 540px)': '0.45rem',
-    },
+    paddingInline: 0,
     color: {
       default: tokens.muted,
       ':hover': tokens.ink,
@@ -480,20 +585,23 @@ export const desktopStyles = stylex.create({
   launcher: {
     position: 'absolute',
     zIndex: 100,
-    left: {
-      default: '50%',
-      '@media (max-width: 720px)': '8px',
-    },
+    left: '50%',
+    top: '50%',
     bottom: {
-      default: '70px',
-      '@media (max-width: 720px)': '126px',
+      default: 'auto',
+      '@media (max-width: 720px)': 'auto',
     },
     width: {
-      default: 'min(430px, calc(100% - 32px))',
+      default: 'min(640px, calc(100% - 32px))',
       '@media (max-width: 720px)': 'calc(100% - 16px)',
     },
+    maxHeight: 'calc(100% - 64px)',
+    overflowY: 'auto',
     display: 'grid',
-    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    gridTemplateColumns: {
+      default: 'repeat(2, minmax(0, 1fr))',
+      '@media (max-width: 420px)': '1fr',
+    },
     gap: '0.5rem',
     padding: '0.75rem',
     backgroundColor: '#11121a',
@@ -502,8 +610,8 @@ export const desktopStyles = stylex.create({
     borderColor: tokens.green,
     boxShadow: '0 1.5rem 4rem rgba(0, 0, 0, 0.52)',
     transform: {
-      default: 'translateX(-50%)',
-      '@media (max-width: 720px)': 'none',
+      default: 'translate(-50%, -50%)',
+      '@media (max-width: 720px)': 'translate(-50%, -50%)',
     },
   },
   launcherButton: {

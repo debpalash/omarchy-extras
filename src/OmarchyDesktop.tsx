@@ -3,11 +3,11 @@ import * as stylex from '@stylexjs/stylex';
 import type * as Three from 'three';
 import { desktopStyles as styles } from './OmarchyDesktop.stylex';
 import { styles as landingStyles } from './landing.stylex';
-import BtopHome from './BtopHome';
-import type { HomeTaskId } from './BtopHome';
+import AboutHome from './AboutHome';
+import BtopMonitor from './BtopMonitor';
+import type { DesktopTaskId } from './BtopMonitor';
 
-type WindowId = HomeTaskId;
-type DragMode = 'move' | 'resize';
+type WindowId = DesktopTaskId;
 
 type DesktopWindow = {
   id: WindowId;
@@ -23,25 +23,18 @@ type DesktopWindow = {
   maximized: boolean;
 };
 
-type DragState = {
-  id: WindowId;
-  mode: DragMode;
-  pointerX: number;
-  pointerY: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
 type ThreeModule = typeof Three;
 
 const initialWindows: DesktopWindow[] = [
-  { id: 'about', title: 'Home', x: 96, y: 72, width: 1120, height: 520, z: 4, workspace: 1, open: true, minimized: false, maximized: true },
-  { id: 'terminal', title: 'Terminal', x: 680, y: 245, width: 620, height: 340, z: 2, workspace: 1, open: false, minimized: false, maximized: false },
-  { id: 'files', title: 'Files', x: 160, y: 105, width: 520, height: 390, z: 1, workspace: 2, open: true, minimized: false, maximized: false },
-  { id: 'videos', title: 'Videos', x: 220, y: 140, width: 960, height: 360, z: 4, workspace: 3, open: true, minimized: false, maximized: false },
+  { id: 'about', title: 'About Omarchy', x: 12, y: 12, width: 610, height: 330, z: 6, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'btop', title: 'btop', x: 634, y: 12, width: 634, height: 330, z: 5, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'dhh-video', title: 'DHH Demo', x: 12, y: 354, width: 610, height: 330, z: 4, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'network-video', title: 'NetworkChuck Demo', x: 634, y: 354, width: 634, height: 330, z: 3, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'files', title: 'Files', x: 160, y: 105, width: 620, height: 430, z: 2, workspace: 2, open: true, minimized: false, maximized: false },
+  { id: 'terminal', title: 'Terminal', x: 330, y: 110, width: 720, height: 440, z: 1, workspace: 3, open: true, minimized: false, maximized: false },
 ];
+
+const homeWindowIds = new Set<WindowId>(['about', 'btop', 'dhh-video', 'network-video']);
 
 const fileLinks = [
   { label: 'Manual', href: '/manual/' },
@@ -109,18 +102,6 @@ function VideoFacade(props: typeof videos[number]) {
   );
 }
 
-function WindowGlyph(props: { kind: 'minimize' | 'maximize' | 'close' }) {
-  return (
-    <span aria-hidden="true">
-      <Switch>
-        <Match when={props.kind === 'minimize'}>−</Match>
-        <Match when={props.kind === 'maximize'}>□</Match>
-        <Match when={props.kind === 'close'}>×</Match>
-      </Switch>
-    </span>
-  );
-}
-
 export default function OmarchyDesktop() {
   const [windows, setWindows] = createSignal(initialWindows);
   const [focusedId, setFocusedId] = createSignal<WindowId>('about');
@@ -141,7 +122,6 @@ export default function OmarchyDesktop() {
   let terminalField!: HTMLInputElement;
   let appsButton!: HTMLButtonElement;
   let launcherFirstButton!: HTMLButtonElement;
-  let dragState: DragState | null = null;
   let zCounter = 5;
   let setWallpaperPointer: (x: number, y: number) => void = () => undefined;
   let resetWallpaperPointer: () => void = () => undefined;
@@ -166,11 +146,6 @@ export default function OmarchyDesktop() {
     updateWindow(id, { z: zCounter, open: true, minimized: false, workspace: destination });
     setStatus(`${initialWindows.find((item) => item.id === id)?.title} active`);
     if (id === 'terminal') queueMicrotask(() => terminalField?.focus());
-  };
-
-  const minimizeWindow = (id: WindowId) => {
-    updateWindow(id, { minimized: true });
-    setStatus(`${initialWindows.find((item) => item.id === id)?.title} minimized`);
   };
 
   const closeWindow = (id: WindowId) => {
@@ -203,7 +178,7 @@ export default function OmarchyDesktop() {
   };
 
   const clampWindow = (item: DesktopWindow, update: Partial<DesktopWindow>) => {
-    const bounds = desktop.getBoundingClientRect();
+        const bounds = desktop.getBoundingClientRect();
     const width = Math.min(Math.max(update.width ?? item.width, 300), Math.max(300, bounds.width - 16));
     const height = Math.min(Math.max(update.height ?? item.height, 230), Math.max(230, bounds.height - 118));
     const x = Math.min(Math.max(update.x ?? item.x, 8), Math.max(8, bounds.width - width - 8));
@@ -211,49 +186,12 @@ export default function OmarchyDesktop() {
     return { x, y, width, height };
   };
 
-  const beginDrag = (event: PointerEvent, id: WindowId, mode: DragMode) => {
-    if (isMobile()) return;
-    const item = windows().find((candidate) => candidate.id === id);
-    if (!item || item.maximized) return;
-    event.preventDefault();
-    focusWindow(id);
-    dragState = {
-      id,
-      mode,
-      pointerX: event.clientX,
-      pointerY: event.clientY,
-      x: item.x,
-      y: item.y,
-      width: item.width,
-      height: item.height,
-    };
-    setStatus(`${item.title} ${mode === 'move' ? 'moving' : 'resizing'}`);
-  };
-
   const focusFromWindow = (event: PointerEvent, id: WindowId) => {
     const target = event.target as HTMLElement;
-    if (target.closest('button, a, input, [data-window-drag]')) {
+    if (target.closest('button, a, input')) {
       setFocusedId(id);
       return;
     }
-    focusWindow(id);
-  };
-
-  const moveByKeyboard = (event: KeyboardEvent, id: WindowId, mode: DragMode) => {
-    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-      if (event.key === 'Enter' && mode === 'move') toggleMaximize(id);
-      return;
-    }
-    event.preventDefault();
-    const item = windows().find((candidate) => candidate.id === id);
-    if (!item || item.maximized || isMobile()) return;
-    const amount = event.shiftKey ? 48 : 24;
-    const horizontal = event.key === 'ArrowLeft' ? -amount : event.key === 'ArrowRight' ? amount : 0;
-    const vertical = event.key === 'ArrowUp' ? -amount : event.key === 'ArrowDown' ? amount : 0;
-    const next = mode === 'move'
-      ? clampWindow(item, { x: item.x + horizontal, y: item.y + vertical })
-      : clampWindow(item, { width: item.width + horizontal, height: item.height + vertical });
-    updateWindow(id, next);
     focusWindow(id);
   };
 
@@ -286,7 +224,10 @@ export default function OmarchyDesktop() {
   const renderWindowContent = (id: WindowId) => (
     <Switch>
       <Match when={id === 'about'}>
-        <BtopHome
+        <AboutHome />
+      </Match>
+      <Match when={id === 'btop'}>
+        <BtopMonitor
           tasks={windows().map(({ id: taskId, title, workspace: taskWorkspace, open, minimized }) => ({ id: taskId, title, workspace: taskWorkspace, open, minimized }))}
           onOpen={openWindow}
         />
@@ -318,9 +259,14 @@ export default function OmarchyDesktop() {
           </For>
         </nav>
       </Match>
-      <Match when={id === 'videos'}>
-        <div {...stylex.attrs(styles.videos)}>
-          <For each={videos}>{(video) => <VideoFacade {...video} />}</For>
+      <Match when={id === 'dhh-video'}>
+        <div {...stylex.attrs(styles.videoWindow)}>
+          <VideoFacade {...videos[0]} />
+        </div>
+      </Match>
+      <Match when={id === 'network-video'}>
+        <div {...stylex.attrs(styles.videoWindow)}>
+          <VideoFacade {...videos[1]} />
         </div>
       </Match>
     </Switch>
@@ -346,20 +292,6 @@ export default function OmarchyDesktop() {
         setWallpaperPointer(normalizedX, normalizedY);
       }
 
-      if (!dragState) return;
-      const item = windows().find((candidate) => candidate.id === dragState?.id);
-      if (!item) return;
-      const deltaX = event.clientX - dragState.pointerX;
-      const deltaY = event.clientY - dragState.pointerY;
-      const update = dragState.mode === 'move'
-        ? { x: dragState.x + deltaX, y: dragState.y + deltaY }
-        : { width: dragState.width + deltaX, height: dragState.height + deltaY };
-      updateWindow(item.id, clampWindow(item, update));
-    };
-
-    const endDrag = () => {
-      if (dragState) setStatus(`${initialWindows.find((item) => item.id === dragState?.id)?.title} placed`);
-      dragState = null;
     };
 
     const leaveDesktop = () => resetWallpaperPointer();
@@ -370,11 +302,18 @@ export default function OmarchyDesktop() {
           setLauncherOpen(false);
           queueMicrotask(() => appsButton?.focus());
         }
-        endDrag();
       }
       if (event.altKey && ['1', '2', '3'].includes(event.key)) {
         event.preventDefault();
         switchWorkspace(Number(event.key));
+      }
+      if (event.altKey && event.key.toLowerCase() === 'q') {
+        event.preventDefault();
+        closeWindow(focusedId());
+      }
+      if (event.altKey && event.key.toLowerCase() === 'f') {
+        event.preventDefault();
+        toggleMaximize(focusedId());
       }
     };
 
@@ -384,13 +323,27 @@ export default function OmarchyDesktop() {
       if (mobile && !isMobile()) setFocusedId('about');
       setIsMobile(mobile);
       if (!mobile) {
-        setWindows((current) => current.map((item) => ({ ...item, ...clampWindow(item, {}) })));
+        const gap = 4;
+        const columnWidth = Math.max(300, (bounds.width - gap * 3) / 2);
+        const rowHeight = Math.max(260, (bounds.height - 46 - gap * 3) / 2);
+        setWindows((current) => current.map((item) => {
+          if (homeWindowIds.has(item.id) && !item.maximized) {
+            const right = item.id === 'btop' || item.id === 'network-video';
+            const bottom = item.id === 'dhh-video' || item.id === 'network-video';
+            return {
+              ...item,
+              x: right ? gap * 2 + columnWidth : gap,
+              y: bottom ? gap * 2 + rowHeight : gap,
+              width: columnWidth,
+              height: rowHeight,
+            };
+          }
+          return { ...item, ...clampWindow(item, {}) };
+        }));
       }
     };
 
     window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', endDrag);
-    window.addEventListener('pointercancel', endDrag);
     window.addEventListener('keydown', onKeyDown);
     desktop.addEventListener('pointerleave', leaveDesktop);
 
@@ -515,8 +468,6 @@ export default function OmarchyDesktop() {
       window.clearInterval(clockTimer);
       layoutObserver.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', endDrag);
-      window.removeEventListener('pointercancel', endDrag);
       window.removeEventListener('keydown', onKeyDown);
       desktop.removeEventListener('pointerleave', leaveDesktop);
       cleanupThree();
@@ -524,6 +475,7 @@ export default function OmarchyDesktop() {
   });
 
   const visibleWindows = () => windows().filter((item) => item.workspace === workspace() && item.open && !item.minimized);
+  const focusedTitle = () => windows().find((item) => item.id === focusedId())?.title ?? 'Desktop';
 
   return (
     <div ref={desktop} {...stylex.attrs(styles.desktop)} aria-label="Interactive Omarchy desktop">
@@ -531,26 +483,41 @@ export default function OmarchyDesktop() {
       <span {...stylex.attrs(styles.shade)} aria-hidden="true" />
 
       <header {...stylex.attrs(styles.topbar)}>
-        <span {...stylex.attrs(styles.brand)}>OMARCHY</span>
-        <nav {...stylex.attrs(styles.workspaces)} aria-label="Workspaces">
-          <For each={[1, 2, 3]}>
-            {(number) => (
-              <button
-                {...stylex.attrs(styles.workspace, workspace() === number && styles.workspaceActive, landingStyles.focusRing)}
-                type="button"
-                aria-label={`Workspace ${number}`}
-                aria-pressed={workspace() === number ? 'true' : 'false'}
-                onClick={() => switchWorkspace(number)}
-              >
-                {number}
-              </button>
-            )}
-          </For>
-        </nav>
-        <time {...stylex.attrs(styles.clock)}>{clock()}</time>
+        <div {...stylex.attrs(styles.shellStart)}>
+          <button
+            ref={appsButton}
+            {...stylex.attrs(styles.shellMenu, launcherOpen() && styles.shellMenuActive, landingStyles.focusRing)}
+            type="button"
+            aria-label="Open application launcher"
+            aria-expanded={launcherOpen() ? 'true' : 'false'}
+            onClick={toggleLauncher}
+          >
+            <img {...stylex.attrs(styles.shellLogo)} src="/icon.svg" alt="" width="28" height="28" />
+          </button>
+          <nav {...stylex.attrs(styles.workspaces)} aria-label="Workspaces">
+            <For each={[1, 2, 3]}>
+              {(number) => (
+                <button
+                  {...stylex.attrs(styles.workspace, workspace() === number && styles.workspaceActive, landingStyles.focusRing)}
+                  type="button"
+                  aria-label={`Workspace ${number}`}
+                  aria-pressed={workspace() === number ? 'true' : 'false'}
+                  onClick={() => switchWorkspace(number)}
+                >
+                  {number}
+                </button>
+              )}
+            </For>
+          </nav>
+        </div>
+        <span {...stylex.attrs(styles.activeApp)}>{focusedTitle()}</span>
+        <div {...stylex.attrs(styles.shellWidgets)}>
+          <span {...stylex.attrs(styles.shellState)}>QS</span>
+          <time {...stylex.attrs(styles.clock)}>{clock()}</time>
+        </div>
       </header>
 
-      <div {...stylex.attrs(styles.windowsLayer)}>
+      <div {...stylex.attrs(styles.windowsLayer, isMobile() && workspace() === 1 && styles.homeStackLayer)}>
         <Show when={visibleWindows().length > 0} fallback={<p {...stylex.attrs(styles.emptyWorkspace)}>Empty workspace. Open an app from the dock.</p>}>
           <For each={visibleWindows()}>
             {(item) => {
@@ -560,8 +527,12 @@ export default function OmarchyDesktop() {
                     styles.window,
                     focusedId() === item.id && styles.windowFocused,
                     item.maximized && styles.windowMaximized,
-                    isMobile() && styles.windowMobile,
-                    isMobile() && focusedId() !== item.id && styles.hidden,
+                    isMobile() && workspace() !== 1 && styles.windowMobile,
+                    isMobile() && workspace() === 1 && homeWindowIds.has(item.id) && !item.maximized && styles.homeStackWindow,
+                    isMobile() && workspace() === 1 && item.id === 'about' && !item.maximized && styles.homeAboutWindow,
+                    isMobile() && workspace() === 1 && item.id === 'btop' && !item.maximized && styles.homeBtopWindow,
+                    isMobile() && workspace() === 1 && (item.id === 'dhh-video' || item.id === 'network-video') && !item.maximized && styles.homeVideoWindow,
+                    isMobile() && workspace() !== 1 && focusedId() !== item.id && styles.hidden,
                   )}
                   style={item.maximized || isMobile() ? { 'z-index': item.z } : {
                     left: `${item.x}px`,
@@ -573,32 +544,7 @@ export default function OmarchyDesktop() {
                   aria-label={`${item.title} window`}
                   onPointerDown={(event) => focusFromWindow(event, item.id)}
                 >
-                  <div
-                    {...stylex.attrs(styles.titlebar, landingStyles.focusRing)}
-                    role="group"
-                    data-window-drag
-                    tabindex="0"
-                    aria-label={`${item.title} window title bar. Arrow keys move. Shift and arrow keys resize. Enter maximizes.`}
-                    onPointerDown={(event) => beginDrag(event, item.id, 'move')}
-                    onKeyDown={(event) => moveByKeyboard(event, item.id, event.shiftKey ? 'resize' : 'move')}
-                  >
-                    <span {...stylex.attrs(styles.title)}>{item.title}</span>
-                    <div {...stylex.attrs(styles.windowControls)}>
-                      <button {...stylex.attrs(styles.windowControl, landingStyles.focusRing)} type="button" aria-label={`Minimize ${item.title}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => minimizeWindow(item.id)}><WindowGlyph kind="minimize" /></button>
-                      <button {...stylex.attrs(styles.windowControl, landingStyles.focusRing)} type="button" aria-label={`${item.maximized ? 'Restore' : 'Maximize'} ${item.title}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => toggleMaximize(item.id)}><WindowGlyph kind="maximize" /></button>
-                      <button {...stylex.attrs(styles.windowControl, landingStyles.focusRing)} type="button" aria-label={`Close ${item.title}`} onPointerDown={(event) => event.stopPropagation()} onClick={() => closeWindow(item.id)}><WindowGlyph kind="close" /></button>
-                    </div>
-                  </div>
                   <div {...stylex.attrs(styles.windowContent)}>{renderWindowContent(item.id)}</div>
-                  <Show when={!item.maximized && !isMobile()}>
-                    <button
-                      {...stylex.attrs(styles.resizeHandle, landingStyles.focusRing)}
-                      type="button"
-                      aria-label={`Resize ${item.title}. Use arrow keys.`}
-                      onPointerDown={(event) => beginDrag(event, item.id, 'resize')}
-                      onKeyDown={(event) => moveByKeyboard(event, item.id, 'resize')}
-                    />
-                  </Show>
                 </section>
               );
             }}
@@ -614,22 +560,6 @@ export default function OmarchyDesktop() {
           <button {...stylex.attrs(styles.launcherButton, landingStyles.focusRing)} type="button" onClick={() => window.location.assign('/manual/')}>Manual</button>
         </div>
       </Show>
-
-      <nav {...stylex.attrs(styles.dock)} aria-label="Desktop applications">
-        <button
-          ref={appsButton}
-          {...stylex.attrs(styles.dockButton, launcherOpen() && styles.dockButtonActive, landingStyles.focusRing)}
-          type="button"
-          aria-expanded={launcherOpen() ? 'true' : 'false'}
-          onClick={toggleLauncher}
-        >
-          Apps
-        </button>
-        <button {...stylex.attrs(styles.dockButton, focusedId() === 'terminal' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('terminal')}>Terminal</button>
-        <button {...stylex.attrs(styles.dockButton, focusedId() === 'files' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('files')}>Files</button>
-        <button {...stylex.attrs(styles.dockButton, focusedId() === 'videos' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('videos')}>Videos</button>
-        <button {...stylex.attrs(styles.dockButton, focusedId() === 'about' && styles.dockButtonActive, landingStyles.focusRing)} type="button" onClick={() => openWindow('about')}>Home</button>
-      </nav>
 
       <span {...stylex.attrs(styles.srOnly)} role="status" aria-live="polite">{status()}</span>
     </div>
