@@ -26,7 +26,7 @@ An open-source Linux homepage for curious developers and power users, using Omar
 3. What ships with the system
 4. Keyboard-first workflow
 5. Built-in themes
-6. Official introduction video
+6. Two official homepage promo videos
 7. Community and project links
 8. Install reminder and footer
 

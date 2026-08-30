@@ -60,7 +60,14 @@ function SectionLabel(props: { number: string; children: string }) {
   );
 }
 
-function VideoFacade() {
+type VideoFacadeProps = {
+  videoId: string;
+  title: string;
+  image: string;
+  alt: string;
+};
+
+function VideoFacade(props: VideoFacadeProps) {
   const [playing, setPlaying] = createSignal(false);
 
   return (
@@ -72,11 +79,11 @@ function VideoFacade() {
             class="rd-video-facade"
             type="button"
             onClick={() => setPlaying(true)}
-            aria-label="Play the Omarchy introduction video by David Heinemeier Hansson"
+            aria-label={`Play ${props.title}`}
           >
             <img
-              src="/redesign/screens/omarchy-quattro.webp"
-              alt="Omarchy Quattro introduction video thumbnail showing DHH and a rally car at sunset"
+              src={props.image}
+              alt={props.alt}
               width="1280"
               height="720"
               loading="lazy"
@@ -87,8 +94,8 @@ function VideoFacade() {
         }
       >
         <iframe
-          src="https://www.youtube-nocookie.com/embed/F7fe9pa8OeE?autoplay=1&rel=0"
-          title="Omarchy introduction video by David Heinemeier Hansson"
+          src={`https://www.youtube-nocookie.com/embed/${props.videoId}?autoplay=1&rel=0`}
+          title={props.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
           allowfullscreen
@@ -333,13 +340,39 @@ export default function Redesign() {
         </section>
 
         <section class="rd-watch rd-section" aria-labelledby="rd-watch-title">
-          <div class="rd-watch-copy">
-            <SectionLabel number="04">SEE IT MOVE</SectionLabel>
-            <h2 id="rd-watch-title">Meet Omarchy Quattro.</h2>
-            <p>DHH walks through the system, its workflow, and the thinking behind an opinionated Linux setup.</p>
-            <p class="rd-runtime">Official introduction / YouTube</p>
+          <div class="rd-watch-heading">
+            <div>
+              <SectionLabel number="04">SEE IT MOVE</SectionLabel>
+              <h2 id="rd-watch-title">Watch it work.</h2>
+            </div>
+            <p>Two ways into Omarchy: DHH's official Quattro introduction and NetworkChuck's tour of the system.</p>
           </div>
-          <VideoFacade />
+          <div class="rd-video-grid">
+            <article>
+              <VideoFacade
+                videoId="F7fe9pa8OeE"
+                title="Omarchy introduction by David Heinemeier Hansson"
+                image="/redesign/screens/omarchy-quattro.webp"
+                alt="Omarchy Quattro introduction video thumbnail showing DHH and a rally car at sunset"
+              />
+              <div class="rd-video-meta">
+                <h3>Omarchy Quattro</h3>
+                <p>DHH / Official introduction</p>
+              </div>
+            </article>
+            <article>
+              <VideoFacade
+                videoId="9SDkU5VDQEQ"
+                title="You need to switch to Linux right now by NetworkChuck"
+                image="/redesign/screens/networkchuck.webp"
+                alt="NetworkChuck holding a laptop running Omarchy in the Linux video thumbnail"
+              />
+              <div class="rd-video-meta">
+                <h3>Switch to Linux right now</h3>
+                <p>NetworkChuck / Omarchy walkthrough</p>
+              </div>
+            </article>
+          </div>
         </section>
 
         <section class="rd-community rd-section" id="community" aria-labelledby="rd-community-title">
