@@ -77,25 +77,25 @@ export default function AboutHome() {
 
   return (
     <div {...stylex.attrs(styles.about)}>
-      <div {...stylex.attrs(styles.markWrap)} aria-hidden="true">
-        <img {...stylex.attrs(styles.mark)} src="/icon.svg" alt="" width="1200" height="1200" />
+      <div {...stylex.attrs(styles.markWrap)}>
+        <img {...stylex.attrs(styles.mark)} src="/icon.svg" alt="" width="1200" height="1200" aria-hidden="true" />
+        <p {...stylex.attrs(styles.markCaption)}><span>OMARCHY</span><span>WEB PREVIEW</span></p>
       </div>
 
       <div {...stylex.attrs(styles.readout)}>
-        <header {...stylex.attrs(styles.identity)}>
-          <p {...stylex.attrs(styles.product)}>OMARCHY</p>
-          <h1 {...stylex.attrs(styles.headline)} id="rd-hero-title">
-            Beautiful, Fun &amp; Opinionated Linux by <a {...stylex.attrs(styles.link, styles.focusRing)} href="https://dhh.dk">DHH</a>
-          </h1>
+        <header {...stylex.attrs(styles.host)}>
+          <h2 {...stylex.attrs(styles.hostName)}><span {...stylex.attrs(styles.hostAccent)}>omarchy</span>@web</h2>
+          <span {...stylex.attrs(styles.hostRule)} aria-hidden="true" />
         </header>
 
         <section {...stylex.attrs(styles.group, styles.hardware)} aria-labelledby="about-hardware">
           <h2 {...stylex.attrs(styles.legend)} id="about-hardware">Hardware</h2>
           <dl {...stylex.attrs(styles.list)}>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>PC</dt><dd {...stylex.attrs(styles.value)}>{platform()}</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>CPU</dt><dd {...stylex.attrs(styles.value)}>{threads() ? `${threads()} browser-exposed threads` : 'Not exposed'}</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Display</dt><dd {...stylex.attrs(styles.value)}>{viewport()}</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Memory</dt><dd {...stylex.attrs(styles.value)}>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>▣ PC</dt><dd {...stylex.attrs(styles.value)}>{platform()}</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>◉ CPU</dt><dd {...stylex.attrs(styles.value)}>{threads() ? `${threads()} logical threads` : 'Not exposed'}</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>▤ GPU</dt><dd {...stylex.attrs(styles.value)}>WebGL 2 graphics adapter</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>▧ Display</dt><dd {...stylex.attrs(styles.value)}>{viewport()}</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>▱ Memory</dt><dd {...stylex.attrs(styles.value)}>
               <Show when={memory()} fallback="Not exposed by this browser">
                 {(current) => `${formatBytes(current().usedJSHeapSize)} / ${formatBytes(current().jsHeapSizeLimit)} JS heap`}
               </Show>
@@ -106,20 +106,21 @@ export default function AboutHome() {
         <section {...stylex.attrs(styles.group, styles.software)} aria-labelledby="about-software">
           <h2 {...stylex.attrs(styles.legend)} id="about-software">Software</h2>
           <dl {...stylex.attrs(styles.list)}>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>OS</dt><dd {...stylex.attrs(styles.value)}>Omarchy web preview</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>UI</dt><dd {...stylex.attrs(styles.value)}>Solid 2 + StyleX</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>WM</dt><dd {...stylex.attrs(styles.value)}>Interactive browser windows</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Render</dt><dd {...stylex.attrs(styles.value)}>Three.js / WebGL 2</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Shell</dt><dd {...stylex.attrs(styles.value)}>JetBrains Mono</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>▣ OS</dt><dd {...stylex.attrs(styles.value)}>Omarchy web preview</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>◉ Browser</dt><dd {...stylex.attrs(styles.value)}>{browser()}</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>◆ UI</dt><dd {...stylex.attrs(styles.value)}>Solid 2 + StyleX</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>▦ WM</dt><dd {...stylex.attrs(styles.value)}>Interactive browser windows</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>⌨ Font</dt><dd {...stylex.attrs(styles.value)}>JetBrains Mono</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.softwareKey)}>A Palette</dt><dd {...stylex.attrs(styles.swatches)} aria-label="Tokyo Night color palette"><i {...stylex.attrs(styles.swatch)} style={{ background: '#7aa2f7' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#bb9af7' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#7dcfff' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#73daca' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#9ece6a' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#e0af68' }} /><i {...stylex.attrs(styles.swatch)} style={{ background: '#f7768e' }} /></dd></div>
           </dl>
         </section>
 
         <section {...stylex.attrs(styles.group, styles.session)} aria-labelledby="about-session">
-          <h2 {...stylex.attrs(styles.legend)} id="about-session">Session</h2>
-          <dl {...stylex.attrs(styles.sessionList)}>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Browser</dt><dd {...stylex.attrs(styles.value)}>{browser()}</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Network</dt><dd {...stylex.attrs(styles.value)}>{online() === null ? 'Checking' : online() ? 'Online' : 'Offline'}</dd></div>
-            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.key)}>Uptime</dt><dd {...stylex.attrs(styles.value)}>{formatUptime(uptime())}</dd></div>
+          <h2 {...stylex.attrs(styles.legend)} id="about-session">Age / Uptime / Network</h2>
+          <dl {...stylex.attrs(styles.list)}>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.sessionKey)}>◇ OS Age</dt><dd {...stylex.attrs(styles.value)}>Omarchy 3.0</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.sessionKey)}>◴ Uptime</dt><dd {...stylex.attrs(styles.value)}>{formatUptime(uptime())}</dd></div>
+            <div {...stylex.attrs(styles.row)}><dt {...stylex.attrs(styles.sessionKey)}>◇ Network</dt><dd {...stylex.attrs(styles.value)}>{online() === null ? 'Checking' : online() ? 'Online' : 'Offline'}</dd></div>
           </dl>
         </section>
       </div>

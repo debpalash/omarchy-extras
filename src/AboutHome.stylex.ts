@@ -1,93 +1,109 @@
 import * as stylex from '@stylexjs/stylex';
-import { tokens } from './landing.stylex';
 
 export const aboutStyles = stylex.create({
   about: {
-    minHeight: '100%',
+    height: '100%',
+    minHeight: 0,
     display: 'grid',
     gridTemplateColumns: {
-      default: 'minmax(190px, 0.82fr) minmax(320px, 1.18fr)',
+      default: 'minmax(230px, 0.88fr) minmax(360px, 1.12fr)',
       '@media (max-width: 1100px)': '1fr',
     },
     alignItems: 'center',
+    overflowY: 'auto',
+    scrollbarWidth: 'thin',
     gap: {
-      default: 'clamp(1rem, 3vw, 3rem)',
-      '@media (max-width: 1100px)': '0.75rem',
+      default: 'clamp(1.5rem, 3vw, 3rem)',
+      '@media (max-width: 1100px)': '1rem',
     },
     padding: {
-      default: 'clamp(1rem, 3vw, 2.5rem)',
+      default: 'clamp(0.85rem, 2vw, 1.5rem)',
       '@media (max-width: 1100px)': '0.75rem',
     },
     color: '#d7d0c7',
     backgroundColor: 'rgba(10, 8, 13, 0.97)',
-    fontSize: 'clamp(0.68rem, 1vw, 0.84rem)',
+    fontSize: 'clamp(0.72rem, 1.05vw, 0.92rem)',
     lineHeight: 1.45,
   },
   markWrap: {
     minWidth: 0,
     display: 'grid',
+    alignContent: 'center',
+    gap: '0.9rem',
     placeItems: 'center',
     padding: {
-      default: '1rem',
-      '@media (max-width: 1100px)': '0.1rem',
+      default: 'clamp(0.75rem, 1.5vw, 1.25rem)',
+      '@media (max-width: 1100px)': '0.35rem',
     },
   },
   mark: {
     width: {
-      default: 'min(100%, 360px)',
-      '@media (max-width: 1100px)': 'min(32vw, 112px)',
+      default: 'min(86%, 280px)',
+      '@media (max-height: 800px)': 'min(72%, 220px)',
+      '@media (max-width: 1100px)': 'min(34vw, 120px)',
     },
     height: 'auto',
     display: 'block',
     color: '#7dc79f',
     fill: 'currentColor',
   },
+  markCaption: {
+    width: 'min(86%, 280px)',
+    margin: 0,
+    paddingTop: '0.65rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '0.75rem',
+    color: '#957a99',
+    borderTopWidth: '1px',
+    borderTopStyle: 'solid',
+    borderTopColor: '#6c586d',
+    fontSize: '0.64rem',
+    letterSpacing: '0.09em',
+  },
   readout: {
     minWidth: 0,
     display: 'grid',
-    gap: '0.8rem',
+    gap: 'clamp(0.9rem, 1.6vw, 1.35rem)',
   },
-  identity: {
+  host: {
     minWidth: 0,
-    marginBottom: '0.15rem',
+    display: 'grid',
+    gap: '0.4rem',
   },
-  product: {
-    margin: '0 0 0.25rem',
-    color: '#7dc79f',
-    fontWeight: 700,
-    letterSpacing: '0.06em',
-  },
-  headline: {
-    maxWidth: '38ch',
+  hostName: {
     margin: 0,
-    color: '#e2ddd6',
-    fontSize: 'clamp(0.9rem, 1.55vw, 1.3rem)',
-    fontWeight: 500,
-    letterSpacing: '-0.035em',
-    lineHeight: 1.2,
-    textWrap: 'balance',
+    color: '#d7d0c7',
+    fontSize: '1rem',
+    fontWeight: 600,
+    letterSpacing: '0.025em',
   },
-  link: {
-    color: '#b67ac7',
-    textDecorationThickness: '1px',
-    textUnderlineOffset: '0.18em',
+  hostRule: {
+    width: '100%',
+    height: '1px',
+    display: 'block',
+    backgroundColor: '#6c586d',
+  },
+  hostAccent: {
+    color: '#7dc79f',
   },
   group: {
     position: 'relative',
     minWidth: 0,
-    padding: '0.85rem 0.9rem 0.7rem',
+    padding: '1.05rem 1.1rem 0.9rem',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: '#6c586d',
+    backgroundColor: 'rgba(255, 255, 255, 0.012)',
   },
   hardware: {
-    borderLeftColor: '#7dc79f',
+    borderColor: 'rgba(125, 199, 159, 0.58)',
   },
   software: {
-    borderLeftColor: '#7892c8',
+    borderColor: 'rgba(120, 146, 200, 0.58)',
   },
   session: {
-    borderLeftColor: '#b67ac7',
+    borderColor: 'rgba(182, 122, 199, 0.58)',
   },
   legend: {
     position: 'absolute',
@@ -95,7 +111,7 @@ export const aboutStyles = stylex.create({
     left: '50%',
     margin: 0,
     paddingInline: '0.45rem',
-    color: '#957a99',
+    color: 'inherit',
     backgroundColor: '#0a080d',
     fontSize: '0.76rem',
     fontWeight: 500,
@@ -106,27 +122,25 @@ export const aboutStyles = stylex.create({
     minWidth: 0,
     margin: 0,
     display: 'grid',
-    gap: '0.22rem',
-  },
-  sessionList: {
-    minWidth: 0,
-    margin: 0,
-    display: 'grid',
-    gridTemplateColumns: {
-      default: 'repeat(3, minmax(0, 1fr))',
-      '@media (max-width: 420px)': '1fr',
-    },
-    gap: '0.25rem 0.8rem',
+    gap: '0.34rem',
   },
   row: {
     minWidth: 0,
     display: 'grid',
-    gridTemplateColumns: 'minmax(4.8rem, auto) minmax(0, 1fr)',
-    gap: '0.45rem',
+    gridTemplateColumns: 'minmax(7rem, auto) minmax(0, 1fr)',
+    gap: '0.8rem',
   },
   key: {
     color: '#7dc79f',
     fontWeight: 600,
+  },
+  softwareKey: {
+    color: '#7892c8',
+    fontWeight: 700,
+  },
+  sessionKey: {
+    color: '#b67ac7',
+    fontWeight: 700,
   },
   value: {
     minWidth: 0,
@@ -135,14 +149,19 @@ export const aboutStyles = stylex.create({
     color: '#d7d0c7',
     fontVariantNumeric: 'tabular-nums',
   },
-  focusRing: {
-    outline: {
-      default: 'none',
-      ':focus-visible': `2px solid ${tokens.green}`,
-    },
-    outlineOffset: {
-      default: 0,
-      ':focus-visible': '3px',
-    },
+  swatches: {
+    minWidth: 0,
+    minHeight: '1em',
+    margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.12rem',
+  },
+  swatch: {
+    width: '0.78em',
+    height: '0.78em',
+    display: 'block',
+    flex: '0 0 auto',
+    borderRadius: '50%',
   },
 });
