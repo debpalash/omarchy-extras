@@ -35,7 +35,7 @@ export const graphStyles = stylex.create({
   },
   eyebrow: {
     color: tokens.green,
-    fontSize: '0.62rem',
+    fontSize: '0.7rem',
     letterSpacing: '0.09em',
     textTransform: 'uppercase',
   },
@@ -43,7 +43,7 @@ export const graphStyles = stylex.create({
     margin: 0,
     overflow: 'hidden',
     color: '#f2ece3',
-    fontSize: '0.82rem',
+    fontSize: '0.92rem',
     fontWeight: 500,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -74,7 +74,7 @@ export const graphStyles = stylex.create({
     borderColor: 'rgba(242, 236, 227, 0.38)',
     borderRadius: 0,
     font: 'inherit',
-    fontSize: '0.68rem',
+    fontSize: '0.74rem',
     textDecorationLine: 'none',
     cursor: 'pointer',
   },
@@ -89,7 +89,7 @@ export const graphStyles = stylex.create({
   trailLabel: {
     flexShrink: 0,
     color: '#948d88',
-    fontSize: '0.62rem',
+    fontSize: '0.7rem',
   },
   trailButton: {
     minHeight: '44px',
@@ -112,7 +112,7 @@ export const graphStyles = stylex.create({
     borderColor: 'rgba(242, 236, 227, 0.22)',
     borderRadius: 0,
     font: 'inherit',
-    fontSize: '0.64rem',
+    fontSize: '0.72rem',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     cursor: 'pointer',
@@ -161,7 +161,7 @@ export const graphStyles = stylex.create({
       '@media (max-width: 620px)': '13%',
     },
     width: {
-      default: 'min(220px, 30%)',
+      default: 'min(240px, 34%)',
       '@media (max-width: 620px)': 'min(240px, calc(100% - 32px))',
     },
     minHeight: '82px',
@@ -184,13 +184,13 @@ export const graphStyles = stylex.create({
   },
   rootKind: {
     color: tokens.green,
-    fontSize: '0.6rem',
+    fontSize: '0.68rem',
     letterSpacing: '0.09em',
     textTransform: 'uppercase',
   },
   rootTitle: {
     overflowWrap: 'anywhere',
-    fontSize: '0.78rem',
+    fontSize: '0.9rem',
     fontWeight: 600,
     lineHeight: 1.35,
   },
@@ -198,11 +198,11 @@ export const graphStyles = stylex.create({
     position: 'absolute',
     zIndex: 2,
     width: {
-      default: 'min(176px, 23%)',
+      default: 'min(190px, 26%)',
       '@media (max-width: 620px)': '43%',
     },
     minHeight: {
-      default: '72px',
+      default: '78px',
       '@media (max-width: 620px)': '82px',
     },
     display: 'grid',
@@ -245,7 +245,7 @@ export const graphStyles = stylex.create({
   },
   nodeCompact: {
     width: '43%',
-    minHeight: '82px',
+    minHeight: '88px',
   },
   nodeActive: {
     color: '#ff75ad',
@@ -254,7 +254,7 @@ export const graphStyles = stylex.create({
   },
   nodeKind: {
     overflow: 'hidden',
-    fontSize: '0.58rem',
+    fontSize: '0.64rem',
     letterSpacing: '0.06em',
     opacity: 0.72,
     textOverflow: 'ellipsis',
@@ -266,8 +266,8 @@ export const graphStyles = stylex.create({
     overflow: 'hidden',
     overflowWrap: 'anywhere',
     fontSize: {
-      default: '0.7rem',
-      '@media (max-width: 620px)': '0.68rem',
+      default: '0.82rem',
+      '@media (max-width: 620px)': '0.78rem',
     },
     fontWeight: 600,
     lineHeight: 1.35,
@@ -282,7 +282,7 @@ export const graphStyles = stylex.create({
     padding: '0.35rem 0.5rem',
     color: '#b7afb0',
     backgroundColor: 'rgba(11, 10, 14, 0.88)',
-    fontSize: '0.62rem',
+    fontSize: '0.72rem',
     lineHeight: 1.4,
     textAlign: 'center',
     transform: 'translateX(-50%)',
@@ -290,7 +290,7 @@ export const graphStyles = stylex.create({
   footer: {
     margin: 0,
     color: '#948d88',
-    fontSize: '0.64rem',
+    fontSize: '0.72rem',
     lineHeight: 1.5,
   },
 });

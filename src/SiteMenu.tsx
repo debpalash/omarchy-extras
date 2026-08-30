@@ -486,9 +486,9 @@ export default function SiteMenu() {
                                 onClick={() => void exploreDocument(document)}
                               >
                                 <MenuIcon name={searchResultIcon(document)} />
-                                <span {...stylex.attrs(menuStyles.linkCopy)}>
-                                  <span {...stylex.attrs(menuStyles.linkLabel)}>{document.title}</span>
-                                  <span {...stylex.attrs(menuStyles.linkDetail)}>{document.kind} / {document.section}</span>
+                                <span {...stylex.attrs(menuStyles.searchResultCopy)}>
+                                  <span {...stylex.attrs(menuStyles.searchResultTitle)}>{document.title}</span>
+                                  <span {...stylex.attrs(menuStyles.searchResultDetail)}>{document.kind} / {document.section}</span>
                                 </span>
                                 <span {...stylex.attrs(menuStyles.chevron)} aria-hidden="true" />
                               </button>
