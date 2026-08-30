@@ -4,6 +4,8 @@ Public Omarchy plugins and themes by Palash Deb.
 
 [Open the catalog](https://omarchy.palash.dev)
 
+[View the Omarchy homepage redesign](https://omarchy.palash.dev/redesign/), created for the Omarchy Design team call.
+
 ## Included
 
 - [Bootable](https://github.com/debpalash/omarchy-bootable), an Omarchy bar plugin for safe image discovery and removable-media writing

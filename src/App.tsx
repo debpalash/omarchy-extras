@@ -1,6 +1,7 @@
-import { For, createSignal, onCleanup } from 'solid-js';
+import { For, createSignal, onSettled } from 'solid-js';
 import plugins from '../catalog/plugins.json';
 import themes from '../catalog/themes.json';
+import Redesign from './Redesign';
 import './styles.css';
 
 type CopyCommandProps = {
@@ -69,7 +70,7 @@ function highQualitySource(src: string) {
   return src.replace('/previews/', '/wallpapers/').replace(/\.jpg$/, '.webp');
 }
 
-export default function App() {
+function ExtrasApp() {
   const theme = themes[0];
   const plugin = plugins[0];
   const defaultPreviewIndex = Math.max(
@@ -85,15 +86,17 @@ export default function App() {
   );
 
   if (typeof window !== 'undefined') {
-    const enableHighQualityGallery = () => setHighQualityGalleryReady(true);
+    onSettled(() => {
+      const enableHighQualityGallery = () => setHighQualityGalleryReady(true);
 
-    if (document.readyState === 'complete') {
-      const timeout = window.setTimeout(enableHighQualityGallery, 0);
-      onCleanup(() => window.clearTimeout(timeout));
-    } else {
+      if (document.readyState === 'complete') {
+        const timeout = window.setTimeout(enableHighQualityGallery, 0);
+        return () => window.clearTimeout(timeout);
+      }
+
       window.addEventListener('load', enableHighQualityGallery, { once: true });
-      onCleanup(() => window.removeEventListener('load', enableHighQualityGallery));
-    }
+      return () => window.removeEventListener('load', enableHighQualityGallery);
+    });
   }
 
   return (
@@ -264,4 +267,10 @@ export default function App() {
       </footer>
     </>
   );
+}
+
+export default function App() {
+  const path = typeof window === 'undefined' ? '/' : window.location.pathname.replace(/\/+$/, '') || '/';
+
+  return path === '/redesign' ? <Redesign /> : <ExtrasApp />;
 }
