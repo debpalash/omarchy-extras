@@ -35,8 +35,8 @@ type DragState = {
 type ThreeModule = typeof Three;
 
 const initialWindows: DesktopWindow[] = [
-  { id: 'about', title: 'Omarchy', x: 72, y: 72, width: 670, height: 430, z: 2, workspace: 1, open: true, minimized: false, maximized: false },
-  { id: 'terminal', title: 'Terminal', x: 680, y: 245, width: 620, height: 340, z: 3, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'about', title: 'Omarchy', x: 96, y: 72, width: 760, height: 460, z: 4, workspace: 1, open: true, minimized: false, maximized: false },
+  { id: 'terminal', title: 'Terminal', x: 680, y: 245, width: 620, height: 340, z: 2, workspace: 1, open: false, minimized: false, maximized: false },
   { id: 'files', title: 'Files', x: 160, y: 105, width: 520, height: 390, z: 1, workspace: 2, open: true, minimized: false, maximized: false },
   { id: 'videos', title: 'Videos', x: 220, y: 140, width: 960, height: 360, z: 4, workspace: 3, open: true, minimized: false, maximized: false },
 ];
@@ -121,7 +121,7 @@ function WindowGlyph(props: { kind: 'minimize' | 'maximize' | 'close' }) {
 
 export default function OmarchyDesktop() {
   const [windows, setWindows] = createSignal(initialWindows);
-  const [focusedId, setFocusedId] = createSignal<WindowId>('terminal');
+  const [focusedId, setFocusedId] = createSignal<WindowId>('about');
   const [workspace, setWorkspace] = createSignal(1);
   const [launcherOpen, setLauncherOpen] = createSignal(false);
   const [isMobile, setIsMobile] = createSignal(false);
