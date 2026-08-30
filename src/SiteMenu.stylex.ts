@@ -260,9 +260,7 @@ export const menuStyles = stylex.create({
     minWidth: 0,
     overflow: 'hidden',
     backgroundColor: '#0b0a0e',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'rgba(242, 236, 227, 0.2)',
+    borderWidth: 0,
   },
   searchResultsHeader: {
     minHeight: '44px',

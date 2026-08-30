@@ -38,7 +38,7 @@ export default function LandingPage() {
         <aside {...stylex.attrs(styles.announcement)} aria-label="Project announcement">
           <a
             {...stylex.attrs(styles.announcementLink, styles.focusRing)}
-            href="/news/2026/08/omacom-foundation-launches-with-8-million/"
+            href="/news/2026/08/omacom-foundation-funding-hits-10m/"
           >
             Omacom Foundation launches with $10 million
           </a>

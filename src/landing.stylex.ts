@@ -54,23 +54,50 @@ export const styles = stylex.create({
     },
   },
   announcement: {
-    marginTop: '1.15rem',
-    color: tokens.muted,
-    fontSize: {
-      default: '0.7rem',
-      '@media (max-width: 420px)': '0.6rem',
-    },
-    letterSpacing: '0.02em',
+    marginTop: '1.35rem',
+    display: 'flex',
+    justifyContent: 'center',
     textAlign: 'center',
   },
   announcementLink: {
-    color: {
-      default: tokens.muted,
-      ':hover': tokens.green,
+    width: 'fit-content',
+    minHeight: '48px',
+    paddingBlock: '0.72rem',
+    paddingInline: {
+      default: '1.15rem',
+      '@media (max-width: 420px)': '0.85rem',
     },
-    textDecorationLine: 'underline',
-    textDecorationColor: tokens.lineStrong,
-    textUnderlineOffset: '0.2em',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: {
+      default: tokens.black,
+      ':hover': tokens.black,
+      ':active': tokens.ink,
+    },
+    backgroundColor: {
+      default: tokens.green,
+      ':hover': tokens.ink,
+      ':active': tokens.black,
+    },
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: {
+      default: tokens.green,
+      ':hover': tokens.ink,
+      ':active': tokens.green,
+    },
+    fontSize: {
+      default: '0.78rem',
+      '@media (max-width: 420px)': '0.7rem',
+    },
+    fontWeight: 700,
+    letterSpacing: '0.015em',
+    lineHeight: 1.35,
+    textDecorationLine: 'none',
+    transitionProperty: 'color, background-color, border-color',
+    transitionDuration: '100ms',
+    transitionTimingFunction: 'linear',
   },
   footer: {
     paddingBlock: {

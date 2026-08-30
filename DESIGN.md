@@ -16,7 +16,7 @@ The page lets Omarchy speak for itself. Marketing copy remains limited to the cu
 - Gradients are limited to contrast scrims over the silk and video imagery, plus one faint Tokyo Night blue wash that connects the page background to the default desktop.
 - JetBrains Mono is the only face, keeping the page close to Omarchy's terminal character.
 - Thin rules organize the page. The full-width hero is the Omarchy desktop itself, so the first interaction demonstrates the window manager instead of framing it as a product screenshot.
-- The foundation announcement is a single underlined link beneath the ASCII mark, keeping it visible without adding a separate promotional bar.
+- The foundation announcement is a compact green action strip beneath the ASCII mark. Its stronger contrast gives the funding milestone clear prominence without adding a separate promotional section.
 - Green marks action; blue marks the DHH link in the headline. Pink is reserved for the launcher selection state, matching the Omarchy desktop menu language.
 - Dark is the native presentation because the default Tokyo Night desktop and Omarchy's terminal language are the product evidence, not a generic dark-mode treatment.
 - Square controls retain Omarchy's terminal character.
