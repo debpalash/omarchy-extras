@@ -36,7 +36,7 @@ a {
   width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
   display: grid;
-  padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(1.25rem, 2.5vw, 2rem);
+  padding: clamp(0.1rem, 0.35vw, 0.3rem) 0 clamp(1.25rem, 2.5vw, 2rem);
   border-bottom: 1px solid rgba(240, 238, 245, 0.2);
 }
 

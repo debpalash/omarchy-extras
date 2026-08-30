@@ -54,7 +54,7 @@ export const styles = stylex.create({
     },
   },
   announcement: {
-    margin: 0,
+    margin: '0 0 clamp(0.65rem, 1.25vw, 1rem)',
     display: 'flex',
     justifyContent: 'center',
     textAlign: 'center',
@@ -69,7 +69,7 @@ export const styles = stylex.create({
   heroHeadline: {
     maxWidth: 'none',
     margin: '0 auto',
-    color: tokens.ink,
+    color: '#c9c6d0',
     fontSize: {
       default: 'clamp(1.7rem, 2.45vw, 2.4rem)',
       '@media (max-width: 420px)': 'clamp(1.45rem, 8vw, 2rem)',
@@ -82,7 +82,7 @@ export const styles = stylex.create({
   heroDescription: {
     maxWidth: '78ch',
     margin: '0 auto',
-    color: tokens.muted,
+    color: '#96929d',
     fontSize: {
       default: 'clamp(0.92rem, 1.35vw, 1.08rem)',
       '@media (max-width: 420px)': '0.9rem',
@@ -91,12 +91,12 @@ export const styles = stylex.create({
     textWrap: 'pretty',
   },
   heroDhhLink: {
-    color: '#bb9af7',
+    color: '#aa85c3',
     textDecorationThickness: '1px',
     textUnderlineOffset: '0.18em',
   },
   heroOmarchLink: {
-    color: tokens.green,
+    color: '#86ad63',
     fontWeight: 700,
     textDecorationThickness: '1px',
     textUnderlineOffset: '0.18em',
@@ -110,7 +110,7 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: {
-      default: tokens.ink,
+      default: '#aaa6b0',
       ':hover': tokens.green,
       ':active': tokens.green,
     },
@@ -135,13 +135,16 @@ export const styles = stylex.create({
       '@media (max-width: 720px)': '3rem 3.5rem',
     },
     display: 'grid',
-    gap: '0.7rem',
+    gap: '0.85rem',
     color: tokens.muted,
     borderTopWidth: '1px',
     borderTopStyle: 'solid',
     borderTopColor: tokens.line,
-    fontSize: '0.7rem',
-    lineHeight: 1.65,
+    fontSize: {
+      default: '0.86rem',
+      '@media (max-width: 420px)': '0.8rem',
+    },
+    lineHeight: 1.7,
     textAlign: 'center',
   },
   footerParagraph: {
