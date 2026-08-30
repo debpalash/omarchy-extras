@@ -15,10 +15,13 @@
   },
   "dependencies": {
     "@solidjs/web": "2.0.0-rc.4",
+    "@stylexjs/stylex": "^0.19.0",
     "solid-js": "2.0.0-rc.4"
   },
   "devDependencies": {
     "@solidjs/vite-plugin": "3.0.0-next.36",
+    "@stylexjs/unplugin": "^0.19.0",
+    "@types/node": "^26.4.0",
     "typescript": "^5.9.2",
     "vite": "^8.1.5",
     "wrangler": "^4.123.0"

@@ -1,16 +1,8 @@
-# Omarchy homepage submission
+# Omarchy site submission
 
-A compact homepage submission for the [Omarchy Design team call](https://omarchy.org). It presents Omarchy as a beautiful, minimalist computer for focused work.
+A Solid 2 and StyleX redesign for the [Omarchy Design team call](https://omarchy.org).
 
 [View the live submission](https://omarchy.palash.dev)
-
-## Direction
-
-- Omarchy's Tokyo Night palette and JetBrains Mono type
-- Real desktop captures instead of decorative mockups
-- Keyboard navigation, unified themes, community, and installation in one clear path
-- Two lazy-loaded video facades that fetch YouTube only after interaction
-- Responsive layouts, visible focus states, reduced-motion support, and 44px touch targets
 
 ## Develop
 
@@ -21,6 +13,6 @@ npm run check
 npm run build
 ```
 
-Built with Solid 2, Vite 8, and Cloudflare Workers Static Assets.
+The redesigned homepage uses Solid 2, StyleX, Vite 8, and Cloudflare Workers Static Assets. The official manual, news, teams, themes, security, and other routes are included locally from [`omacom/omarchy-site`](https://github.com/omacom/omarchy-site) at revision `31a5ecd`.
 
-This is an independent design submission by [Palash Deb](https://palash.dev). Omarchy branding and product screenshots belong to their respective owners.
+This is an independent design submission by [Palash Deb](https://palash.dev). Upstream Omarchy content, branding, and assets remain the property of their respective owners.

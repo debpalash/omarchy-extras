@@ -1,27 +1,38 @@
 import { For, Show, createSignal, onSettled } from 'solid-js';
+import * as stylex from '@stylexjs/stylex';
+import { styles } from './landing.stylex';
 import './landing.css';
 
-const OFFICIAL = 'https://omarchy.org';
+const OMARCHY_MARK = `                 ▄▄▄
+ ▄█████▄    ▄███████████▄    ▄███████   ▄███████   ▄███████   ▄█   █▄    ▄█   █▄
+███   ███  ███   ███   ███  ███   ███  ███   ███  ███   ███  ███   ███  ███   ███
+███   ███  ███   ███   ███  ███   ███  ███   ███  ███   █▀   ███   ███  ███   ███
+███   ███  ███   ███   ███ ▄███▄▄▄███ ▄███▄▄▄██▀  ███       ▄███▄▄▄███▄ ███▄▄▄███
+███   ███  ███   ███   ███ ▀███▀▀▀███ ▀███▀▀▀▀    ███      ▀▀███▀▀▀███  ▀▀▀▀▀▀███
+███   ███  ███   ███   ███  ███   ███ ██████████  ███   █▄   ███   ███  ▄██   ███
+███   ███  ███   ███   ███  ███   ███  ███   ███  ███   ███  ███   ███  ███   ███
+ ▀█████▀    ▀█   ███   █▀   ███   █▀   ███   ███  ███████▀   ███   █▀    ▀█████▀
+                                       ███   █▀`;
 
 const officialLinkGroups = [
   [
-    { label: 'Manual', href: `${OFFICIAL}/manual/` },
+    { label: 'Manual', href: '/manual/' },
     { label: 'ISO', href: 'https://iso.omarchy.org/omarchy-4.0.1.iso' },
     { label: 'Plugins', href: 'https://omarchyplugins.com/' },
     { label: 'GitHub', href: 'https://github.com/omacom/omarchy' },
-    { label: 'Security', href: `${OFFICIAL}/security/` },
+    { label: 'Security', href: '/security/' },
   ],
   [
-    { label: 'News', href: `${OFFICIAL}/news/` },
-    { label: 'Teams', href: `${OFFICIAL}/teams/` },
-    { label: 'Patrons', href: `${OFFICIAL}/patrons/` },
-    { label: 'Sponsorships', href: `${OFFICIAL}/sponsorships/` },
-    { label: 'AIR', href: `${OFFICIAL}/air/` },
+    { label: 'News', href: '/news/' },
+    { label: 'Teams', href: '/teams/' },
+    { label: 'Patrons', href: '/patrons/' },
+    { label: 'Sponsorships', href: '/sponsorships/' },
+    { label: 'AIR', href: '/air/' },
   ],
   [
     { label: 'Discord', href: 'https://discord.gg/tXFUdasqhY' },
-    { label: 'Meetups', href: `${OFFICIAL}/meetups/` },
-    { label: 'Workstations', href: `${OFFICIAL}/workstations/` },
+    { label: 'Meetups', href: '/meetups/' },
+    { label: 'Workstations', href: '/workstations/' },
     { label: 'Merch', href: 'https://supply.37signals.com/collections/omarchy' },
   ],
 ];
@@ -37,17 +48,18 @@ function VideoFacade(props: VideoFacadeProps) {
   const [playing, setPlaying] = createSignal(false);
 
   return (
-    <div class="rd-video-frame">
+    <div {...stylex.attrs(styles.videoFrame)}>
       <Show
         when={playing()}
         fallback={
           <button
-            class="rd-video-facade"
+            {...stylex.attrs(styles.videoFill, styles.videoFacade, styles.focusRing)}
             type="button"
             onClick={() => setPlaying(true)}
             aria-label={`Play ${props.title}`}
           >
             <img
+              {...stylex.attrs(styles.videoImage)}
               src={props.image}
               alt={props.alt}
               width="1280"
@@ -55,11 +67,15 @@ function VideoFacade(props: VideoFacadeProps) {
               loading="lazy"
               decoding="async"
             />
-            <span class="rd-play" aria-hidden="true" />
+            <span {...stylex.attrs(styles.videoShade)} aria-hidden="true" />
+            <span {...stylex.attrs(styles.play)} aria-hidden="true">
+              <span {...stylex.attrs(styles.playIcon)} />
+            </span>
           </button>
         }
       >
         <iframe
+          {...stylex.attrs(styles.videoFill)}
           src={`https://www.youtube-nocookie.com/embed/${props.videoId}?autoplay=1&rel=0`}
           title={props.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -82,32 +98,37 @@ export default function LandingPage() {
   });
 
   return (
-    <div class="omarchy-page">
-      <a class="rd-skip-link" href="#main">Skip to content</a>
+    <div {...stylex.attrs(styles.page)}>
+      <a {...stylex.attrs(styles.skipLink, styles.focusRing)} href="#main">Skip to content</a>
 
-      <aside class="rd-announcement" aria-label="Project announcement">
-        <a href={`${OFFICIAL}/news/2026/08/omacom-foundation-launches-with-8-million`}>
-          <span class="rd-live-dot" aria-hidden="true" />
+      <aside {...stylex.attrs(styles.announcement)} aria-label="Project announcement">
+        <a
+          {...stylex.attrs(styles.announcementLink, styles.focusRing)}
+          href="/news/2026/08/omacom-foundation-launches-with-8-million/"
+        >
+          <span {...stylex.attrs(styles.liveDot)} aria-hidden="true" />
           Omacom Foundation launches with <s>$8</s> $10 million
         </a>
       </aside>
 
-      <header class="rd-header">
-        <a class="rd-brand" href={`${OFFICIAL}/`} aria-label="Omarchy home">
-          <img src="/favicon.png" width="28" height="28" alt="" />
-          <span>OMARCHY</span>
+      <div class="pre">
+        <a {...stylex.attrs(styles.focusRing)} href="/" aria-label="Omarchy">
+          <pre>{OMARCHY_MARK}</pre>
         </a>
-      </header>
+      </div>
 
       <main id="main">
-        <section class="rd-hero-shell" aria-labelledby="rd-hero-title">
-          <div class="rd-hero">
-            <h1 id="rd-hero-title">
-              Beautiful, Fun &amp; Opinionated Linux by <a href="https://dhh.dk">DHH</a>
+        <section {...stylex.attrs(styles.heroShell)} aria-labelledby="rd-hero-title">
+          <span {...stylex.attrs(styles.heroGridOverlay)} aria-hidden="true" />
+          <div {...stylex.attrs(styles.contentWidth, styles.hero)}>
+            <h1 {...stylex.attrs(styles.heroTitle)} id="rd-hero-title">
+              Beautiful, Fun &amp; Opinionated Linux by{' '}
+              <a {...stylex.attrs(styles.heroTitleLink, styles.focusRing)} href="https://dhh.dk">DHH</a>
             </h1>
 
-            <figure class="rd-hero-figure">
+            <figure {...stylex.attrs(styles.heroFigure)}>
               <img
+                {...stylex.attrs(styles.heroImage)}
                 src="/screens/tokyo-night.webp"
                 alt="Omarchy Tokyo Night desktop with the application menu, terminal and system monitor"
                 width="1600"
@@ -120,19 +141,23 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <nav class="rd-official-links" aria-label="Omarchy links">
+        <nav {...stylex.attrs(styles.officialLinks)} aria-label="Omarchy links">
           <For each={officialLinkGroups}>
             {(group) => (
-              <div class="rd-link-row">
+              <div {...stylex.attrs(styles.linkRow)}>
                 <For each={group}>
-                  {(link) => <a href={link.href}>{link.label}</a>}
+                  {(link) => (
+                    <a {...stylex.attrs(styles.navLink, styles.focusRing)} href={link.href}>
+                      {link.label}
+                    </a>
+                  )}
                 </For>
               </div>
             )}
           </For>
         </nav>
 
-        <section class="rd-video-grid" aria-label="Omarchy videos">
+        <section {...stylex.attrs(styles.contentWidth, styles.videoGrid)} aria-label="Omarchy videos">
           <VideoFacade
             videoId="F7fe9pa8OeE"
             title="Omarchy introduction video"
@@ -148,17 +173,19 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer class="rd-footer">
-        <p>
+      <footer {...stylex.attrs(styles.contentWidth, styles.footer)}>
+        <p {...stylex.attrs(styles.footerParagraph)}>
           Looking to become a partner or patron of Omarchy? Write{' '}
-          <a href="mailto:david@omarchy.org">david@omarchy.org</a>
+          <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="mailto:david@omarchy.org">david@omarchy.org</a>
         </p>
-        <p>
-          Incubated at <a href="https://37signals.com/">37signals</a> (makers of{' '}
-          <a href="https://basecamp.com/">Basecamp</a> and <a href="https://www.hey.com/">HEY</a>)
+        <p {...stylex.attrs(styles.footerParagraph)}>
+          Incubated at <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://37signals.com/">37signals</a> (makers of{' '}
+          <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://basecamp.com/">Basecamp</a> and{' '}
+          <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://www.hey.com/">HEY</a>)
         </p>
-        <p>
-          Sponsored hosting by <a href="https://www.cloudflare.com/">Cloudflare</a>
+        <p {...stylex.attrs(styles.footerParagraph)}>
+          Sponsored hosting by{' '}
+          <a {...stylex.attrs(styles.footerLink, styles.focusRing)} href="https://www.cloudflare.com/">Cloudflare</a>
         </p>
       </footer>
     </div>
