@@ -335,10 +335,7 @@ export default function OmarchyDesktop() {
     return `${uiDelay().toFixed(1)} ms`;
   };
 
-  const editWidgetsFromBar = (event: MouseEvent) => {
-    if ((event.target as HTMLElement).closest('button')) return;
-    setWidgetEditor(!widgetEditorOpen());
-  };
+  const editWidgetsFromBar = () => setWidgetEditor(!widgetEditorOpen());
 
   const calendarCells = () => {
     const month = calendarMonth();
