@@ -45,7 +45,7 @@ export default function Document(props: ParentProps) {
         <link rel="preload" as="image" type="image/webp" href="/screens/tokyo-night.webp" fetchpriority="high" />
         <script type="module" src="/assets/js/script.js" />
         <meta name="description" content={description} />
-        <meta property="og:title" content="Omarchy — Beautiful, Fun & Opinionated Linux by DHH" />
+        <meta property="og:title" content="Omarchy: Beautiful, Fun & Opinionated Linux by DHH" />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
@@ -57,12 +57,12 @@ export default function Document(props: ParentProps) {
         <meta property="og:image:height" content="900" />
         <meta property="og:image:alt" content="Omarchy desktop running the Tokyo Night theme" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Omarchy — Beautiful, Fun & Opinionated Linux by DHH" />
+        <meta name="twitter:title" content="Omarchy: Beautiful, Fun & Opinionated Linux by DHH" />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImage} />
         <meta name="twitter:image:alt" content="Omarchy desktop running the Tokyo Night theme" />
         <script type="application/ld+json" innerHTML={JSON.stringify(structuredData)} />
-        <title>Omarchy — Beautiful, Fun &amp; Opinionated Linux by DHH</title>
+        <title>Omarchy: Beautiful, Fun &amp; Opinionated Linux by DHH</title>
       </head>
       <body>{props.children}</body>
     </html>

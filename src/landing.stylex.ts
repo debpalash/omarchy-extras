@@ -10,7 +10,6 @@ export const tokens = stylex.defineVars({
   surface: 'rgba(13, 13, 18, 0.72)',
   blue: '#7aa2f7',
   green: '#9ece6a',
-  turquoise: '#73daca',
 });
 
 export const styles = stylex.create({

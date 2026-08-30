@@ -13,9 +13,11 @@ The page lets Omarchy speak for itself. Visible copy is limited to wording used 
 - Tokyo Night colors connect the page to the default Omarchy desktop.
 - The official ASCII mark uses Omarchy's original TTFX laseretch playback, including its reduced-motion fallback.
 - The user-provided silk texture is reserved for the hero, where a dark overlay keeps the official headline readable.
+- Gradients are limited to contrast scrims over the silk and video imagery, plus one faint Tokyo Night blue wash that connects the page background to the default desktop.
 - JetBrains Mono is the only face, keeping the page close to Omarchy's terminal character.
 - Thin rules organize the page. Real screenshots remain the visual evidence inside a procedural laptop, so the hero represents the computer Omarchy changes rather than a decorative 3D object.
 - Green marks action; blue marks the DHH link in the headline.
+- Dark is the native presentation because the default Tokyo Night desktop and Omarchy's terminal language are the product evidence, not a generic dark-mode treatment.
 - Square controls retain Omarchy's terminal character.
 - The laptop's only shadow establishes its position above the surface. It is the page's single elevation treatment.
 
