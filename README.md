@@ -63,7 +63,11 @@ python3 install.py
 
 Requires Omarchy's Quickshell plugin host and Python 3.11+. Scans stay on your machine. [Cleanup behavior and settings](plugins/disk-guard/README.md).
 
-**Private companion plugins** · [Qwen Servers](https://github.com/debpalash/qwen-workspace) for local inference · [Android Emulator](https://github.com/debpalash/omarchy-android-emulator) for virtual devices
+**Private companion plugins**
+
+- [System Live Monitor](https://github.com/debpalash/omarchy-live-monitor) shows CPU, memory, GPU load, and local LLM throughput in the bar.
+- [Qwen Servers](https://github.com/debpalash/qwen-workspace) manages local inference servers.
+- [Android Emulator](https://github.com/debpalash/omarchy-android-emulator) manages virtual devices.
 
 ## Development
 
