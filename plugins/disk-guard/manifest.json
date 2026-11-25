@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "local.disk-guard",
+  "name": "Disk Guard",
+  "version": "0.1.0",
+  "author": "Local",
+  "description": "Disk pressure, developer artifacts, large files, and reviewed recoverable cleanup",
+  "kinds": ["bar-widget"],
+  "entryPoints": {"barWidget": "Panel.qml"},
+  "barWidget": {
+    "displayName": "Disk Guard", "category": "System", "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {"scanHours": 6, "notifications": true},
+    "schema": [
+      {"key": "scanHours", "type": "number", "label": "Scan interval (hours)"},
+      {"key": "notifications", "type": "boolean", "label": "Disk pressure notifications"}
+    ]
+  }
+}

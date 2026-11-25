@@ -1,0 +1,6 @@
+[submodule "plugins/bootable"]
+	path = plugins/bootable
+	url = https://github.com/debpalash/omarchy-bootable.git
+[submodule "themes/gta6"]
+	path = themes/gta6
+	url = https://github.com/debpalash/omarchy-gta6-theme.git

@@ -1,0 +1,95 @@
+"""Linux cache catalog. Installed SDKs, credentials and application databases excluded."""
+# Relative to home unless prefixed @cache/. Each cache has a recovery explanation.
+CACHES = [
+    ('@cache/uv', 'UV packages', 'safe', 'Python', 'Downloaded Python packages; uv downloads them again.'),
+    ('@cache/pip', 'pip packages', 'safe', 'Python', 'Downloaded wheels and archives; pip downloads them again.'),
+    ('@cache/pypoetry/cache', 'Poetry cache', 'safe', 'Python', 'Package metadata and archives; Poetry downloads them again.'),
+    ('@cache/pypoetry/artifacts', 'Poetry artifacts', 'safe', 'Python', 'Downloaded wheels; Poetry downloads them again.'),
+    ('.npm/_cacache', 'npm cache', 'safe', 'JavaScript', 'Package archives; npm downloads them again.'),
+    ('.npm/_logs', 'npm logs', 'safe', 'JavaScript', 'Historical npm logs; old diagnostics will be lost.'),
+    ('@cache/yarn', 'Yarn cache', 'safe', 'JavaScript', 'Downloaded packages; Yarn downloads them again.'),
+    ('@cache/pnpm', 'pnpm cache', 'safe', 'JavaScript', 'Package metadata; pnpm regenerates it.'),
+    ('.local/share/pnpm/store', 'pnpm store', 'caution', 'JavaScript', 'Shared package store; reinstall dependencies afterward. Hard links may retain disk blocks.'),
+    ('@cache/.bun', 'Bun download cache', 'safe', 'JavaScript', 'Downloaded packages; Bun downloads them again.'),
+    ('@cache/bun', 'Bun cache', 'safe', 'JavaScript', 'Generated Bun cache; recreated on use.'),
+    ('.bun/install/cache', 'Bun package store', 'caution', 'JavaScript', 'Shared downloaded packages; future installs need network access.'),
+    ('@cache/node-gyp', 'node-gyp headers', 'safe', 'JavaScript', 'Downloaded Node headers; native package builds download them again.'),
+    ('@cache/typescript', 'TypeScript cache', 'safe', 'JavaScript', 'Generated compiler cache; recreated on use.'),
+    ('@cache/deno', 'Deno cache', 'caution', 'JavaScript', 'Downloaded modules; offline builds may fail until downloaded again.'),
+    ('.gradle/caches', 'Gradle cache', 'caution', 'JVM / Android', 'Dependencies and compiled build cache; substantial downloads on the next build.'),
+    ('.gradle/wrapper/dists', 'Gradle distributions', 'caution', 'JVM / Android', 'Downloaded Gradle versions; the wrapper downloads them again.'),
+    ('.m2/repository', 'Maven repository', 'risky', 'JVM / Android', 'May contain locally published artifacts that cannot be downloaded again.'),
+    ('.ivy2/cache', 'Ivy dependency cache', 'caution', 'JVM / Android', 'Downloaded dependencies; builds download them again.'),
+    ('.sbt/boot', 'SBT boot cache', 'caution', 'JVM / Android', 'Downloaded SBT runtime; re-download needed.'),
+    ('@cache/go-build', 'Go build cache', 'safe', 'Go / Rust', 'Compiled Go objects; rebuilt by go build.'),
+    ('go/pkg/mod/cache/download', 'Go download cache', 'caution', 'Go / Rust', 'Downloaded module archives; re-download needed for new builds.'),
+    ('.cargo/registry/cache', 'Cargo archives', 'caution', 'Go / Rust', 'Downloaded crates; Cargo downloads them again. Installed tools are preserved.'),
+    ('.cargo/registry/src', 'Cargo sources', 'caution', 'Go / Rust', 'Unpacked crates; Cargo unpacks or downloads them again.'),
+    ('@cache/zig', 'Zig global cache', 'safe', 'Go / Rust', 'Compiled objects; Zig rebuilds them.'),
+    ('@cache/bazel', 'Bazel cache', 'caution', 'Build tools', 'Generated build cache; large rebuild may be needed.'),
+    ('@cache/ccache', 'C compiler cache', 'safe', 'Build tools', 'Compiled objects; rebuilt by the compiler.'),
+    ('@cache/sccache', 'sccache', 'safe', 'Build tools', 'Compiled objects; rebuilt by the compiler.'),
+    ('@cache/mesa_shader_cache', 'Mesa shader cache', 'safe', 'Graphics', 'Compiled shaders; first launch may briefly stutter.'),
+    ('@cache/nvidia', 'NVIDIA shader cache', 'safe', 'Graphics', 'Compiled shaders; recreated when applications launch.'),
+    ('@cache/ms-playwright', 'Playwright browsers', 'caution', 'Testing', 'Downloaded test browsers; run playwright install afterward.'),
+    ('@cache/ms-playwright-go', 'Playwright Go browsers', 'caution', 'Testing', 'Downloaded test browsers; reinstall them before running tests.'),
+    ('@cache/puppeteer', 'Puppeteer browsers', 'caution', 'Testing', 'Downloaded browsers; reinstall them before tests.'),
+    ('@cache/chromium-headless', 'Headless Chromium', 'caution', 'Testing', 'Downloaded browser builds; testing tools download them again.'),
+    ('@cache/electron', 'Electron downloads', 'caution', 'Testing', 'Downloaded Electron builds; large download on next install.'),
+    ('@cache/electron-builder', 'Electron build tools', 'caution', 'Testing', 'Downloaded packaging tools; builds download them again.'),
+    ('@cache/prisma', 'Prisma engines', 'caution', 'Testing', 'Downloaded engines; regenerate the Prisma client afterward.'),
+    ('@cache/prisma-nodejs', 'Prisma Node engines', 'caution', 'Testing', 'Downloaded engines; regenerate the Prisma client afterward.'),
+    ('@cache/composer', 'Composer cache', 'safe', 'Other languages', 'Downloaded PHP packages; Composer downloads them again.'),
+    ('.nuget/packages', 'NuGet packages', 'risky', 'Other languages', 'May include locally created packages unavailable from a feed.'),
+    ('.pub-cache', 'Dart / Flutter packages', 'caution', 'Other languages', 'Downloaded packages; pub get downloads them again.'),
+    ('@cache/huggingface', 'Hugging Face models', 'risky', 'AI / models', 'Model weights and datasets; large downloads or local-only data may be present.'),
+    ('.ollama/models', 'Ollama models', 'risky', 'AI / models', 'Model weights may include locally built models. Review carefully.'),
+    ('@cache/torch', 'Torch models', 'risky', 'AI / models', 'Downloaded model weights; substantial re-download may be needed.'),
+    ('@cache/yay', 'AUR build cache', 'risky', 'Arch Linux', 'AUR clones, build outputs and potentially local packaging changes.'),
+    ('@cache/paru', 'Paru build cache', 'risky', 'Arch Linux', 'AUR clones, build outputs and potentially local packaging changes.'),
+    ('@cache/debuginfod_client', 'Debug symbols', 'safe', 'Arch Linux', 'Downloaded debug symbols; debuginfod downloads them again.'),
+]
+# Cache-only subdirectories. Never scan whole editor/AI profiles as disposable.
+for app, folder in [('VS Code', '.config/Code'), ('VSCodium', '.config/VSCodium'),
+                    ('Cursor', '.config/Cursor'), ('Windsurf', '.config/Windsurf')]:
+    for suffix in ['Cache', 'CachedData', 'GPUCache', 'logs', 'CachedExtensionVSIXs']:
+        CACHES.append((folder+'/'+suffix, app+' / '+suffix, 'safe', 'Editors',
+                       'Cached application data or diagnostics; regenerated on launch. Installed extensions are preserved.'))
+CACHES.extend([
+    ('@cache/JetBrains', 'JetBrains indexes', 'caution', 'Editors', 'IDE indexes and logs; indexing can take time after cleanup.'),
+    ('.conda/pkgs', 'Conda packages', 'risky', 'Python', 'Package archives may include locally built packages; environments are preserved.'),
+    ('.local/share/gem/cache', 'Ruby package archives', 'caution', 'Other languages', 'Downloaded gem archives; installed gems are preserved.'),
+    ('@cache/Unity', 'Unity cache', 'caution', 'Game engines', 'Cached downloads and assets; Unity may need substantial downloads again.'),
+    ('@cache/UnityHub', 'Unity Hub cache', 'caution', 'Game engines', 'Cached downloads; installed editor versions are preserved.'),
+])
+
+# Marker -> project family; multiple families can apply in a monorepo.
+PROJECTS = {
+    'package.json': 'Node.js', 'pyproject.toml': 'Python', 'requirements.txt': 'Python',
+    'setup.py': 'Python', 'Cargo.toml': 'Rust', 'build.zig': 'Zig',
+    'go.mod': 'Go', 'build.gradle': 'Gradle', 'build.gradle.kts': 'Gradle',
+    'pom.xml': 'Maven', 'composer.json': 'PHP', 'Gemfile': 'Ruby',
+    'pubspec.yaml': 'Flutter', 'CMakeLists.txt': 'CMake', 'Package.swift': 'Swift',
+    'Podfile': 'CocoaPods', 'mix.exs': 'Elixir', 'stack.yaml': 'Haskell',
+    'shard.yml': 'Crystal', 'project.godot': 'Godot', 'Cartfile': 'Carthage',
+}
+ARTIFACTS = {
+    'Node.js': ['node_modules', '.next', '.nuxt', '.svelte-kit', '.angular', '.turbo', '.vite', '.parcel-cache', '.yarn/cache', 'dist', 'build', 'out', 'coverage'],
+    'Python': ['.venv', 'venv', '__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.tox', 'build', 'dist'],
+    'Rust': ['target'], 'Zig': ['.zig-cache', 'zig-cache', 'zig-out', 'zig-pkg'],
+    'Go': [], 'Gradle': ['.gradle', '.kotlin', '.cxx', 'build'], 'Maven': ['target'],
+    'PHP': ['vendor'], 'Ruby': ['vendor/bundle', '.bundle/cache'],
+    'Flutter': ['.dart_tool', 'build'], 'CMake': ['build', 'cmake-build-debug', 'cmake-build-release'],
+    'Swift': ['.build', '.swiftpm/cache'], 'CocoaPods': ['Pods'],
+    'Carthage': ['Carthage/Build', 'Carthage/Checkouts'],
+    'Elixir': ['_build', 'deps'], 'Haskell': ['.stack-work', 'dist-newstyle'],
+    'Crystal': ['.shards', 'lib'], 'Godot': ['.godot', '.import'],
+    'Unity': ['Library', 'Temp', 'Logs', 'obj'],
+    'Unreal': ['Binaries', 'Intermediate', 'DerivedDataCache', 'Saved/Logs'],
+    '.NET': ['bin', 'obj'], 'Terraform': ['.terraform'], 'Xcode': ['build', 'DerivedData'],
+}
+# No generic deletion of folders called build/cache/bin: project evidence is required.
+SKIP = {'.git', '.hg', '.svn', '.snapshots', 'node_modules', 'target', '.venv', 'venv',
+        '.cache', '.local', '.config', '.cargo', '.rustup', '.gradle', '.npm', '.bun',
+        'Library', '.zig-cache', 'zig-pkg', 'dist', 'build', '.next', '.terraform',
+        '.claude', '.codex', 'models', 'Downloads', 'Trash'}
