@@ -11,7 +11,7 @@
 <table width="100%">
   <tr>
     <td width="50%" valign="top">
-      <p><a href="https://github.com/debpalash/omarchy-gta6-theme/blob/f1eaa3c7c7eb8bfac1ef05e67f680124c314cf01/preview.png"><img src="docs/readme/gta6-vice-sunset.webp" width="420" alt="Vice Sunset wallpaper from the GTA VI theme"></a></p>
+      <p><a href="https://github.com/debpalash/omarchy-gta6-theme#editions"><img src="docs/readme/gta6-vice-sunset.webp" width="420" alt="Vice Sunset wallpaper from the GTA VI theme"></a></p>
       <p><strong>GTA VI Theme</strong><br>Give your desktop a new look with Vice Sunset and 15 alternate palettes.</p>
       <a href="#gta-vi-theme">Install theme</a> · <a href="https://github.com/debpalash/omarchy-gta6-theme">Theme source</a>
     </td>
