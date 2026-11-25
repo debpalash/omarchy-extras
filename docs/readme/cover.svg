@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 304" role="img" aria-labelledby="title">
+  <title id="title">Omarchy Extras</title>
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0v24" fill="none" stroke="#30344a" stroke-opacity=".48"/>
+    </pattern>
+    <linearGradient id="background" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#151622"/>
+      <stop offset="1" stop-color="#202539"/>
+    </linearGradient>
+    <linearGradient id="wallpaper" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#282945"/>
+      <stop offset="1" stop-color="#422c51"/>
+    </linearGradient>
+    <clipPath id="desktop">
+      <rect x="722" y="91" width="388" height="142" rx="2"/>
+    </clipPath>
+  </defs>
+  <rect width="1200" height="304" fill="url(#background)"/>
+  <path d="M620 0h580v304H620z" fill="url(#grid)"/>
+  <rect x="24.5" y="24.5" width="1151" height="255" fill="none" stroke="#3b4058"/>
+  <path d="M25 49V25h24m1102 0h24v24M25 255v24h24m1102 0h24v-24" fill="none" stroke="#7983a9" stroke-width="2"/>
+  <g font-family="JetBrains Mono, DejaVu Sans Mono, monospace">
+    <text x="63" y="83" font-size="18" font-weight="700" letter-spacing="3" fill="#9ece6a">ARCH LINUX / HYPRLAND</text>
+    <text x="60" y="155" font-size="58" font-weight="700" letter-spacing="-3" fill="#ebefff">Desktop extras</text>
+    <path d="M64 195h34m8 0h14m8 0h5" fill="none" stroke="#bb9af7" stroke-width="3"/>
+    <text x="63" y="235" font-size="17" fill="#bcc5e7">Themes, bar plugins, and a web demo.</text>
+  </g>
+  <rect x="702" y="65" width="428" height="188" rx="5" fill="#10111b" stroke="#424866"/>
+  <rect x="708" y="59" width="416" height="188" rx="5" fill="#1b1d2b" stroke="#7983a9"/>
+  <path d="M709 82h414" stroke="#424866"/>
+  <g fill="#7aa2f7">
+    <rect x="723" y="69" width="5" height="5" rx="1"/>
+    <rect x="734" y="69" width="5" height="5" rx="1" opacity=".55"/>
+    <rect x="745" y="69" width="5" height="5" rx="1" opacity=".32"/>
+    <rect x="756" y="69" width="5" height="5" rx="1" opacity=".32"/>
+  </g>
+  <path d="M892 71.5h48m126 0h7m8 0h7m8 0h7" stroke="#929bc2" stroke-width="2" stroke-linecap="round"/>
+  <g clip-path="url(#desktop)">
+    <rect x="722" y="91" width="388" height="142" fill="url(#wallpaper)"/>
+    <circle cx="1056" cy="161" r="47" fill="#e5a1bf"/>
+    <path d="M998 199l47-27 33 13 32-27v75H998z" fill="#222b4e"/>
+    <path d="M993 223l59-19 30 5 28-13v37H993z" fill="#19243e"/>
+    <g fill="none" stroke="#7d679b" stroke-opacity=".65">
+      <path d="M998 216h112m-112 8h112m-47-19-19 28m43-27 7 27"/>
+    </g>
+    <g fill="#151722" stroke="#646c95">
+      <rect x="731" y="101" width="165" height="123" rx="2"/>
+      <rect x="905" y="101" width="96" height="57" rx="2"/>
+      <rect x="905" y="167" width="96" height="57" rx="2"/>
+    </g>
+    <g stroke="#3b4058">
+      <path d="M731 117h165m9 0h96m-96 66h96"/>
+    </g>
+    <g fill="#9ece6a">
+      <rect x="742" y="108" width="5" height="3" rx="1"/>
+      <rect x="916" y="108" width="5" height="3" rx="1"/>
+      <rect x="916" y="174" width="5" height="3" rx="1"/>
+    </g>
+    <g fill="none" stroke-width="2" stroke-linecap="round">
+      <path d="M743 132l4 4-4 4m8 0h14" stroke="#9ece6a"/>
+      <path d="M744 157h92m-92 12h67m-67 12h106m-106 12h74" stroke="#7aa2f7" opacity=".7"/>
+      <path d="M744 208h9" stroke="#bb9af7"/>
+      <path d="M917 143l13-10 9 4 13-10 10 5 15-8 12 5" stroke="#9ece6a"/>
+      <path d="M917 197h47m-47 12h63" stroke="#bb9af7"/>
+    </g>
+  </g>
+</svg>
