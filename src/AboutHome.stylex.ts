@@ -35,6 +35,10 @@ export const aboutStyles = stylex.create({
       default: 'clamp(0.75rem, 1.5vw, 1.25rem)',
       '@media (max-width: 1100px)': '0.35rem',
     },
+    transform: {
+      default: 'translateY(-0.9rem)',
+      '@media (max-width: 1100px)': 'translateY(-0.3rem)',
+    },
   },
   mark: {
     width: {

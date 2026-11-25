@@ -54,9 +54,9 @@ const shellWidgetOptions: { id: ShellWidgetId; label: string; shortLabel: string
   { id: 'delay', label: 'UI delay', shortLabel: 'UI' },
 ];
 
-const defaultShellWidgets: ShellWidgetId[] = ['clock', 'date', 'network'];
+const defaultShellWidgets: ShellWidgetId[] = shellWidgetOptions.map((option) => option.id);
 const centerShellWidgets = new Set<ShellWidgetId>(['clock', 'date']);
-const shellWidgetStorageKey = 'omarchy-shell-widgets';
+const shellWidgetStorageKey = 'omarchy-shell-widgets-v2';
 const shellTextSizeStorageKey = 'omarchy-shell-text-size';
 const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
